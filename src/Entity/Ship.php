@@ -17,17 +17,22 @@ class Ship
     #[ORM\GeneratedValue]
     #[ORM\Column]
     private ?int $id = null;
+
     #[ORM\OneToOne(inversedBy: 'ship', cascade: ['persist', 'remove'])]
     #[ORM\JoinColumn(nullable: false)]
     private Purchase $purchase;
+
     #[ORM\Column(nullable: true)]
     private ?\DateTimeImmutable $shippedAt = null;
     #[ORM\Column]
     private int $state = 1;
+
     #[ORM\Column(nullable: true)]
     private ?int $price = null;
+
     #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
     private ?\DateTimeInterface $shipping_estimated_date = null;
+
     #[ORM\Column(nullable: true)]
     private ?int $shippingTime = null;
 

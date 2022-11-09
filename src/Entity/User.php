@@ -2,8 +2,10 @@
 
 namespace App\Entity;
 
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use App\Repository\UserRepository;
+use Doctrine\Common\Collections\Collection;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 
@@ -35,6 +37,27 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $lastname = null;
+
+	#[ORM\Column(type: Types::SIMPLE_ARRAY, nullable: true)]
+	private array $pronoun = [];
+
+	#[ORM\Column(length: 255, nullable: true)]
+	private ?string $phoneNumber = null;
+
+	#[ORM\Column(type: Types::DATE_IMMUTABLE)]
+	private ?\DateTimeImmutable $created_at = null;
+
+	#[ORM\Column(length: 255, nullable: true)]
+	private ?string $country = null;
+
+	#[ORM\Column(length: 255, nullable: true)]
+	private ?string $city = null;
+
+	#[ORM\Column(type: Types::TEXT, nullable: true)]
+	private ?string $more = null;
+
+	#[ORM\OneToMany(mappedBy: 'customer', targetEntity: Purchase::class)]
+	private Collection $purchases;
 
     public function getId(): ?int
     {
@@ -141,4 +164,39 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
         return $this;
     }
+
+	public function __toString(): string
+	{
+		return $this->firstname . (' ' . $this->lastname ?? null);
+	}
+
+	/**
+	 * @return Collection<int, Purchase>
+	 */
+	public function getPurchases(): Collection
+	{
+		return $this->purchases;
+	}
+
+	public function addPurchase(Purchase $purchase): self
+	{
+		if (!$this->purchases->contains($purchase)) {
+			$this->purchases->add($purchase);
+			$purchase->setCustomer($this);
+		}
+
+		return $this;
+	}
+
+	public function removePurchase(Purchase $purchase): self
+	{
+		if ($this->purchases->removeElement($purchase)) {
+			// set the owning side to null (unless already changed)
+			if ($purchase->getCustomer() === $this) {
+				$purchase->setCustomer(null);
+			}
+		}
+
+		return $this;
+	}
 }

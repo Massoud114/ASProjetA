@@ -20,19 +20,26 @@ class Purchase
     #[ORM\GeneratedValue]
     #[ORM\Column]
     private ?int $id = null;
+
     #[ORM\Column]
     private ?\DateTimeImmutable $createdAt;
+
     #[ORM\Column]
     private int $state = 1;
+
     #[ORM\ManyToOne(inversedBy: 'purchases')]
     #[ORM\JoinColumn(nullable: false)]
-    private ?Customer $customer = null;
+    private ?User $customer = null;
+
     #[ORM\OneToMany(mappedBy: 'purchase', targetEntity: PurchaseProduct::class, cascade: ['persist'], orphanRemoval: true)]
     private Collection $products;
+
     #[ORM\OneToOne(mappedBy: 'purchase', cascade: ['persist', 'remove'])]
     private Ship $ship;
+
     #[ORM\OneToOne(mappedBy: 'purchase', cascade: ['persist', 'remove'])]
     private Invoice $invoice;
+
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $more = null;
 
@@ -75,14 +82,14 @@ class Purchase
         return $this;
     }
 
-    public function getCustomer(): ?Customer
+    public function getCustomer(): ?User
     {
         return $this->customer;
     }
 
-    public function setCustomer(?Customer $customer): self
+    public function setCustomer(?User $user): self
     {
-        $this->customer = $customer;
+        $this->customer = $user;
 
         return $this;
     }

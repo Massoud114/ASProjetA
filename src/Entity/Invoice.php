@@ -18,15 +18,20 @@ class Invoice
     #[ORM\GeneratedValue]
     #[ORM\Column]
     private ?int $id = null;
+
     #[ORM\OneToOne(inversedBy: 'invoice', cascade: ['persist', 'remove'])]
     #[ORM\JoinColumn(nullable: false)]
     private ?Purchase $purchase = null;
+
     #[ORM\Column(length: 255)]
     private ?string $filename = null;
+
     #[ORM\Column]
     private int $state = 1;
+
     #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
     private ?\DateTimeInterface $sent_at = null;
+
     #[ORM\Column]
     private ?\DateTimeImmutable $createdAt = null;
 
