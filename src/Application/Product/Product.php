@@ -1,11 +1,12 @@
 <?php
 
-namespace App\Entity;
+namespace App\Application\Product;
 
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
-use App\Repository\ProductRepository;
+use App\Application\Product\Entity\Color;
 use Doctrine\Common\Collections\Collection;
+use App\Application\Product\Entity\Category;
 use Doctrine\Common\Collections\ArrayCollection;
 
 #[ORM\Entity(repositoryClass: ProductRepository::class)]

@@ -22,6 +22,7 @@
 .idea
 demo2
 flosun
+todo.md
 
 ###> symfony/webpack-encore-bundle ###
 /node_modules/

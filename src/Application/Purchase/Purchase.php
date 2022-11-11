@@ -1,12 +1,15 @@
 <?php
 
-namespace App\Entity;
+namespace App\Application\Purchase;
 
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
-use App\Repository\PurchaseRepository;
+use App\Infrastructure\Auth\User;
+use App\Application\Invoice\Invoice;
+use App\Application\Purchase\Entity\Ship;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\ArrayCollection;
+use App\Application\Purchase\Entity\PurchaseProduct;
 
 #[ORM\Entity(repositoryClass: PurchaseRepository::class)]
 class Purchase
@@ -38,7 +41,7 @@ class Purchase
     private Ship $ship;
 
     #[ORM\OneToOne(mappedBy: 'purchase', cascade: ['persist', 'remove'])]
-    private Invoice $invoice;
+    private \App\Application\Invoice\Invoice $invoice;
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $more = null;
@@ -146,7 +149,7 @@ class Purchase
         return $this->invoice;
     }
 
-    public function setInvoice(Invoice $invoice): self
+    public function setInvoice(\App\Application\Invoice\Invoice $invoice): self
     {
         // set the owning side of the relation if necessary
         if ($invoice->getPurchase() !== $this) {

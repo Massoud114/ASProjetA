@@ -1,8 +1,7 @@
 <?php
 
-namespace App\Repository;
+namespace App\Infrastructure\Auth;
 
-use App\Entity\User;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\Security\Core\User\PasswordUpgraderInterface;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;

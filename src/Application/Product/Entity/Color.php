@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Entity;
+namespace App\Application\Product\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use App\Repository\ColorRepository;
+use App\Application\Product\Repository\ColorRepository;
 
 #[ORM\Entity(repositoryClass: ColorRepository::class)]
 class Color

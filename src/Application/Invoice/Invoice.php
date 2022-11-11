@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Entity;
+namespace App\Application\Invoice;
 
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
-use App\Repository\InvoiceRepository;
+use App\Application\Purchase\Purchase;
 
 #[ORM\Entity(repositoryClass: InvoiceRepository::class)]
 class Invoice
@@ -66,7 +66,8 @@ class Invoice
 
     public function getState(): ?int
     {
-	    return self::STATES[$this->state];}
+	    return self::STATES[$this->state];
+	}
 
     public function setState(int $state): self
     {

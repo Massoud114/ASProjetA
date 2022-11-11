@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Repository;
+namespace App\Application\Purchase\Repository;
 
-use App\Entity\Ship;
+use App\Application\Purchase\Entity\Ship;
 use Doctrine\Persistence\ManagerRegistry;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 
 /**
- * @extends ServiceEntityRepository<Ship>
+ * @extends ServiceEntityRepository<\App\Application\Purchase\Entity\Ship>
  *
  * @method Ship|null find($id, $lockMode = null, $lockVersion = null)
  * @method Ship|null findOneBy(array $criteria, array $orderBy = null)

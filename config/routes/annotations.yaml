@@ -1,0 +1,13 @@
+controllers:
+    resource: ../../src/Client/Controller/
+    type: attribute
+admin_controllers:
+    name_prefix: admin_
+    prefix: '%admin_prefix%'
+    resource: ../../src/Admin/Controller/
+    type: attribute
+api_controllers:
+    name_prefix: api_
+    prefix: /api
+    resource: ../../src/Api/Controller/
+    type: attribute

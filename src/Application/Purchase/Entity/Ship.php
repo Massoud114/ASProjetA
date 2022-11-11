@@ -1,10 +1,11 @@
 <?php
 
-namespace App\Entity;
+namespace App\Application\Purchase\Entity;
 
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
-use App\Repository\ShipRepository;
+use App\Application\Purchase\Purchase;
+use App\Application\Purchase\Repository\ShipRepository;
 
 #[ORM\Entity(repositoryClass: ShipRepository::class)]
 class Ship

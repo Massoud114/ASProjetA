@@ -1,11 +1,12 @@
 <?php
 
-namespace App\Entity;
+namespace App\Application\Product\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use App\Repository\CategoryRepository;
+use App\Application\Product\Product;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\ArrayCollection;
+use App\Application\Product\Repository\CategoryRepository;
 
 #[ORM\Entity(repositoryClass: CategoryRepository::class)]
 class Category
@@ -44,7 +45,7 @@ class Category
     }
 
     /**
-     * @return Collection<int, Product>
+     * @return Collection<int, \App\Application\Product\Entity\Product>
      */
     public function getProducts(): Collection
     {

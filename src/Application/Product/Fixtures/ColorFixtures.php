@@ -1,11 +1,10 @@
 <?php
 
-namespace App\DataFixtures;
+namespace App\Application\Product\Fixtures;
 
-use App\Entity\Color;
-use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
-use Symfony\Component\HttpClient\HttpClient;
+use App\Application\Product\Entity\Color;
+use Doctrine\Bundle\FixturesBundle\Fixture;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 

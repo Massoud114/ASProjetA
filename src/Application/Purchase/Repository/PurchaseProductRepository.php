@@ -1,27 +1,27 @@
 <?php
 
-namespace App\Repository;
+namespace App\Application\Purchase\Repository;
 
-use App\Entity\Product;
 use Doctrine\Persistence\ManagerRegistry;
+use App\Application\Purchase\Entity\PurchaseProduct;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 
 /**
- * @extends ServiceEntityRepository<Product>
+ * @extends ServiceEntityRepository<PurchaseProduct>
  *
- * @method Product|null find($id, $lockMode = null, $lockVersion = null)
- * @method Product|null findOneBy(array $criteria, array $orderBy = null)
- * @method Product[]    findAll()
- * @method Product[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ * @method PurchaseProduct|null find($id, $lockMode = null, $lockVersion = null)
+ * @method PurchaseProduct|null findOneBy(array $criteria, array $orderBy = null)
+ * @method PurchaseProduct[]    findAll()
+ * @method PurchaseProduct[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class ProductRepository extends ServiceEntityRepository
+class PurchaseProductRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)
     {
-        parent::__construct($registry, Product::class);
+        parent::__construct($registry, PurchaseProduct::class);
     }
 
-    public function add(Product $entity, bool $flush = false): void
+    public function add(PurchaseProduct $entity, bool $flush = false): void
     {
         $this->getEntityManager()->persist($entity);
 
@@ -30,7 +30,7 @@ class ProductRepository extends ServiceEntityRepository
         }
     }
 
-    public function remove(Product $entity, bool $flush = false): void
+    public function remove(PurchaseProduct $entity, bool $flush = false): void
     {
         $this->getEntityManager()->remove($entity);
 
@@ -40,7 +40,7 @@ class ProductRepository extends ServiceEntityRepository
     }
 
 //    /**
-//     * @return Product[] Returns an array of Product objects
+//     * @return PurchaseProduct[] Returns an array of PurchaseProduct objects
 //     */
 //    public function findByExampleField($value): array
 //    {
@@ -54,7 +54,7 @@ class ProductRepository extends ServiceEntityRepository
 //        ;
 //    }
 
-//    public function findOneBySomeField($value): ?Product
+//    public function findOneBySomeField($value): ?PurchaseProduct
 //    {
 //        return $this->createQueryBuilder('p')
 //            ->andWhere('p.exampleField = :val')
