@@ -7,7 +7,7 @@ security:
         # used to reload user from session & other features (e.g. switch_user)
         app_user_provider:
             entity:
-                class: App\Infrastructure\Auth\User
+                class: App\Application\User\User
                 property: email
     firewalls:
         dev:
@@ -16,6 +16,13 @@ security:
         main:
             lazy: true
             provider: app_user_provider
+            entry_point: App\Infrastructure\Auth\Authenticator\LoginFormAuthenticator
+            custom_authenticator:
+                - App\Infrastructure\Auth\Authenticator\LoginFormAuthenticator
+                - App\Infrastructure\Auth\Authenticator\Social\GoogleAuthenticator
+#                - App\Infrastructure\Auth\Authenticator\Social\TikTokAuthenticator
+            logout:
+                path: app_logout
 
             # activate different ways to authenticate
             # https://symfony.com/doc/current/security.html#the-firewall

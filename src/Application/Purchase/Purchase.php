@@ -3,8 +3,8 @@
 namespace App\Application\Purchase;
 
 use Doctrine\DBAL\Types\Types;
+use App\Application\User\User;
 use Doctrine\ORM\Mapping as ORM;
-use App\Infrastructure\Auth\User;
 use App\Application\Invoice\Invoice;
 use App\Application\Purchase\Entity\Ship;
 use Doctrine\Common\Collections\Collection;
@@ -30,7 +30,7 @@ class Purchase
     #[ORM\Column]
     private int $state = 1;
 
-    #[ORM\ManyToOne(inversedBy: 'purchases')]
+    #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'purchases')]
     #[ORM\JoinColumn(nullable: false)]
     private ?User $customer = null;
 
@@ -41,7 +41,7 @@ class Purchase
     private Ship $ship;
 
     #[ORM\OneToOne(mappedBy: 'purchase', cascade: ['persist', 'remove'])]
-    private \App\Application\Invoice\Invoice $invoice;
+    private Invoice $invoice;
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $more = null;
@@ -149,7 +149,7 @@ class Purchase
         return $this->invoice;
     }
 
-    public function setInvoice(\App\Application\Invoice\Invoice $invoice): self
+    public function setInvoice(Invoice $invoice): self
     {
         // set the owning side of the relation if necessary
         if ($invoice->getPurchase() !== $this) {

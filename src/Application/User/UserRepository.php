@@ -1,8 +1,9 @@
 <?php
 
-namespace App\Infrastructure\Auth;
+namespace App\Application\User;
 
 use Doctrine\Persistence\ManagerRegistry;
+use App\Helper\Repository\ExtendRepositoryTrait;
 use Symfony\Component\Security\Core\User\PasswordUpgraderInterface;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
@@ -22,6 +23,8 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
     {
         parent::__construct($registry, User::class);
     }
+
+	use ExtendRepositoryTrait;
 
     public function remove(User $entity, bool $flush = false): void
     {
@@ -55,28 +58,46 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
         }
     }
 
-//    /**
-//     * @return User[] Returns an array of User objects
-//     */
-//    public function findByExampleField($value): array
-//    {
-//        return $this->createQueryBuilder('u')
-//            ->andWhere('u.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->orderBy('u.id', 'ASC')
-//            ->setMaxResults(10)
-//            ->getQuery()
-//            ->getResult()
-//        ;
-//    }
+	/**
+	 * Fonction servant à récupérer un utilisateur correspondant à un profil Oauth (discord, google )
+	 */
+	public function findForOauth(string $service, ?string $serviceID, ?string $email): ?User
+	{
+		if (null === $serviceID || null === $email) {
+			return null;
+		}
 
-//    public function findOneBySomeField($value): ?User
-//    {
-//        return $this->createQueryBuilder('u')
-//            ->andWhere('u.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->getQuery()
-//            ->getOneOrNullResult()
-//        ;
-//    }
+		return $this->createQueryBuilder('u')
+		            ->where('u.email = :email')
+		            ->orWhere("u.{$service}Id = :serviceId")
+		            ->setMaxResults(1)
+		            ->setParameters([
+			            'email' => $email,
+			            'serviceId' => $serviceID
+		            ])
+		            ->getQuery()
+		            ->getOneOrNullResult();
+	}
+
+	/**
+	 * @throws \Doctrine\ORM\NonUniqueResultException
+	 */
+	public function loadUserByUsername(string $username): ?User
+	{
+		return $this->loadUserByIdentifier($username);
+	}
+
+	/**
+	 * @throws \Doctrine\ORM\NonUniqueResultException
+	 */
+	public function loadUserByIdentifier(string $identifier): ?User
+	{
+		return $this->createQueryBuilder('u')
+		            ->where('u.username = :val')
+		            ->orWhere('u.email = :val')
+		            ->setParameter('val', $identifier)
+		            ->getQuery()
+		            ->getOneOrNullResult();
+
+	}
 }

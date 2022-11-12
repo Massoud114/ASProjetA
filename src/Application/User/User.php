@@ -1,15 +1,19 @@
 <?php
 
-namespace App\Infrastructure\Auth;
+namespace App\Application\User;
 
+use DateTime;
+use DateTimeImmutable;
+use DateTimeInterface;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use App\Application\Purchase\Purchase;
 use Doctrine\Common\Collections\Collection;
 use Symfony\Component\HttpFoundation\File\File;
+use Vich\UploaderBundle\Mapping\Annotation as Vich;
+use App\Infrastructure\Auth\Entity\SocialLoggableTrait;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
-use Vich\UploaderBundle\Mapping\Annotation as Vich;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
@@ -19,15 +23,14 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column]
     private ?int $id = null;
 
+	use SocialLoggableTrait;
+
     #[ORM\Column(length: 180, unique: true)]
     private ?string $email = null;
 
     #[ORM\Column]
     private array $roles = [];
 
-    /**
-     * @var string The hashed password
-     */
     #[ORM\Column]
     private ?string $password = null;
 
@@ -47,7 +50,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 	private ?string $phoneNumber = null;
 
 	#[ORM\Column(type: Types::DATE_IMMUTABLE)]
-	private ?\DateTimeImmutable $created_at = null;
+	private ?DateTimeImmutable $created_at = null;
 
 	#[ORM\Column(length: 2, nullable: true, options: ['default' => 'BJ'])]
 	private ?string $country = null;
@@ -55,7 +58,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 	#[ORM\Column(type: Types::TEXT, nullable: true)]
 	private ?string $more = null;
 
-	#[ORM\OneToMany(mappedBy: 'customer', targetEntity: \App\Application\Purchase\Purchase::class)]
+	#[ORM\OneToMany(mappedBy: 'customer', targetEntity: Purchase::class)]
 	private Collection $purchases;
 
 	#[ORM\Column(type: Types::STRING, nullable: true, options: ['default' => 'null'])]
@@ -70,9 +73,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 	#[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
 	private ?\DateTimeInterface $updatedAt = null;
 
-	#[ORM\Column(type: Types::DATETIME_IMMUTABLE)]
-	private \DateTimeInterface $createdAt;
-
 	#[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
 	private ?\DateTimeInterface $bannedAt = null;
 
@@ -84,6 +84,13 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
 	#[ORM\Column(type: Types::STRING, nullable: true, options: ['default' => null])]
 	private ?string $invoiceInfo = null;
+
+	#[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true, options: ['default' => null])]
+	private DateTime $agreedTermsAt;
+
+	public function __construct() {
+		$this->created_at = new DateTimeImmutable();
+	}
 
 	public function getId(): ?int
     {
@@ -260,12 +267,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 		return $this;
 	}
 
-	public function getCreatedAt(): ?\DateTimeImmutable
+	public function getCreatedAt(): ?DateTimeImmutable
 	{
 		return $this->created_at;
 	}
 
-	public function setCreatedAt(?\DateTimeImmutable $created_at): User
+	public function setCreatedAt(?DateTimeImmutable $created_at): User
 	{
 		$this->created_at = $created_at;
 		return $this;
@@ -378,5 +385,15 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 	{
 		$this->invoiceInfo = $invoiceInfo;
 		return $this;
+	}
+
+	public function getAgreedTermsAt(): ?DateTimeInterface
+	{
+		return $this->agreedTermsAt;
+	}
+
+	public function agreeToTerms()
+	{
+		$this->agreedTermsAt = new DateTime();
 	}
 }
