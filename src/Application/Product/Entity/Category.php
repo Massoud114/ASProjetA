@@ -45,7 +45,7 @@ class Category
     }
 
     /**
-     * @return Collection<int, \App\Application\Product\Entity\Product>
+     * @return Collection<int, \App\Application\Product\Product>
      */
     public function getProducts(): Collection
     {

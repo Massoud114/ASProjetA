@@ -1,7 +1,7 @@
 controllers:
     resource: ../../src/Client/Controller/
     type: attribute
-admin_controllers:
+admin:
     name_prefix: admin_
     prefix: '%admin_prefix%'
     resource: ../../src/Admin/Controller/

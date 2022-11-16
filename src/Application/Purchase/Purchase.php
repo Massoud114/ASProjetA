@@ -28,7 +28,7 @@ class Purchase
     private ?\DateTimeImmutable $createdAt;
 
     #[ORM\Column]
-    private int $state = 1;
+    private int $status = 1;
 
     #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'purchases')]
     #[ORM\JoinColumn(nullable: false)]
@@ -45,6 +45,15 @@ class Purchase
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $more = null;
+
+	#[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
+	private ?\DateTime $estimatedMakeAt = null;
+
+	public const STATUS = [
+		1 => 'En cours',
+		2 => 'Livrée',
+		3 => 'Annulée'
+	];
 
     public function __construct()
     {
@@ -69,18 +78,18 @@ class Purchase
         return $this;
     }
 
-    public function getState(): string
+    public function getStatus(): string
     {
-        return self::STATES[$this->state];
+        return self::STATES[$this->status];
     }
 
-    public function setState(int $state): self
+    public function setStatus(int $status): self
     {
-        $this->state = $state;
+		if (!in_array($status, array_keys(self::STATES))){
+			throw new \RuntimeException('Invalid status passed to Purchase');
+		}
 
-			//TODO : Throw an error
-		/*if (!in_array($state, array_keys(self::STATES))){
-		}*/
+        $this->status = $status;
 
         return $this;
     }
@@ -172,6 +181,17 @@ class Purchase
 
         return $this;
     }
+
+	public function getEstimatedMakeAt(): ?\DateTime
+	{
+		return $this->estimatedMakeAt;
+	}
+
+	public function setEstimatedMakeAt(?\DateTime $estimatedMakeAt): Purchase
+	{
+		$this->estimatedMakeAt = $estimatedMakeAt;
+		return $this;
+	}
 
 	public function getTotalString(): string
 	{

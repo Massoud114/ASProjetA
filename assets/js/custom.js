@@ -35,61 +35,6 @@ import NioApp from './vendors/nioapp/nioapp.min';
 		});
 	};
 
-	// Toastr Message @v1.0
-	NioApp.Toast = function(msg, ttype, opt) {
-		var ttype = (ttype) ? ttype : 'info', msi = '',
-			ticon = (ttype === 'info') ? 'ni ni-info-fill' : ((ttype ===
-				'success')
-				? 'ni ni-check-circle-fill'
-				: ((ttype === 'error') ? 'ni ni-cross-circle-fill' : ((ttype ===
-					'warning') ? 'ni ni-alert-fill' : ''))),
-			def = {
-				position: 'bottom-right',
-				ui: '',
-				icon: 'auto',
-				clear: false,
-			},
-			attr = (opt) ? extend(def, opt) : def;
-
-		attr.position = (attr.position)
-			? 'toast-' + attr.position
-			: 'toast-bottom-right';
-		attr.icon = (attr.icon === 'auto') ? ticon : ((attr.icon)
-			? attr.icon
-			: '');
-		attr.ui = (attr.ui) ? ' ' + attr.ui : '';
-
-		msi = (attr.icon !== '')
-			? '<span class="toastr-icon"><em class="icon ' +
-			attr.icon + '"></em></span>'
-			: '',
-			msg = (msg !== '')
-				? msi + '<div class="toastr-text">' + msg + '</div>'
-				: '';
-
-		if (msg !== '') {
-			if (attr.clear === true) {
-				toastr.clear();
-			}
-			var option = {
-				'closeButton': true,
-				'debug': false,
-				'newestOnTop': false,
-				'progressBar': false,
-				'positionClass': attr.position + attr.ui,
-				'closeHtml': '<span class="btn-trigger">Close</span>',
-				'preventDuplicates': true,
-				'showDuration': '1500',
-				'hideDuration': '1500',
-				'timeOut': '2000',
-				'toastClass': 'toastr',
-				'extendedTimeOut': '3000',
-			};
-			toastr.options = extend(option, attr);
-			toastr[ttype](msg);
-		}
-	};
-
 	NioApp.TGL = {
 		...NioApp.TGL,
 		screen: function(elm) {
@@ -236,42 +181,6 @@ import NioApp from './vendors/nioapp/nioapp.min';
 			$self.toggleClass('compact-active');
 			$self_content.toggleClass('is-compact');
 		});
-	};
-
-	// Form Validate @v1.0
-	NioApp.Validate = function(elm, opt) {
-		if ($(elm).exists()) {
-			$(elm).each(function() {
-				var def = {errorElement: 'span'},
-					attr = (opt) ? extend(def, opt) : def;
-				$(this).validate(attr);
-			});
-			NioApp.Validate.OnChange('.js-select2');
-			NioApp.Validate.OnChange('.date-picker');
-			NioApp.Validate.OnChange('.js-tagify');
-		}
-	};
-
-	//On change validation for third party plugins
-	NioApp.Validate.OnChange = function(elm) {
-		$(elm).on('change', function() {
-			$(this).valid();
-		});
-	};
-
-	NioApp.Validate.init = function() {
-		NioApp.Validate('.form-validate',
-			{
-				errorElement: 'span',
-				errorClass: 'invalid',
-				errorPlacement: function errorPlacement(error, element) {
-					if (element.parents().hasClass('input-group')) {
-						error.appendTo(element.parent().parent());
-					} else {
-						error.appendTo(element.parent());
-					}
-				},
-			});
 	};
 
 	// Wizard @v1.0
@@ -425,61 +334,6 @@ import NioApp from './vendors/nioapp/nioapp.min';
 		});
 	};
 
-	// Number Spinner @v1.0
-	NioApp.NumberSpinner = function(elm, opt) {
-		var plus = document.querySelectorAll('[data-number=\'plus\']');
-		var minus = document.querySelectorAll('[data-number=\'minus\']');
-
-		plus.forEach(function(item, index, arr) {
-			var parent = plus[index].parentNode;
-			plus[index].addEventListener('click', function() {
-				var child = plus[index].parentNode.children;
-				child.forEach(function(item, index, arr) {
-					if (child[index].classList.contains('number-spinner')) {
-						var value = (!child[index].value == '') ? parseInt(
-							child[index].value) : 0;
-						var step = (!child[index].step == '')
-							? parseInt(child[index].step)
-							: 1;
-						var max = (!child[index].max == '')
-							? parseInt(child[index].max)
-							: Infinity;
-						if (max + 1 > (value + step)) {
-							child[index].value = value + step;
-						} else {
-							child[index].value = value;
-						}
-					}
-				});
-			});
-		});
-
-		minus.forEach(function(item, index, arr) {
-			var parent = minus[index].parentNode;
-			minus[index].addEventListener('click', function() {
-				var child = minus[index].parentNode.children;
-				child.forEach(function(item, index, arr) {
-					if (child[index].classList.contains('number-spinner')) {
-						var value = (!child[index].value == '') ? parseInt(
-							child[index].value) : 0;
-						var step = (!child[index].step == '')
-							? parseInt(child[index].step)
-							: 1;
-						var min = (!child[index].min == '')
-							? parseInt(child[index].min)
-							: 0;
-						if (min - 1 < (value - step)) {
-							child[index].value = value - step;
-						} else {
-							child[index].value = value;
-						}
-					}
-				});
-			});
-		});
-
-	};
-
 	// Extra @v1.1
 	NioApp.OtherInit = function() {
 		NioApp.ClassBody();
@@ -487,7 +341,6 @@ import NioApp from './vendors/nioapp/nioapp.min';
 		NioApp.ClassNavMenu();
 		NioApp.SetHW('[data-height]', 'height');
 		NioApp.SetHW('[data-width]', 'width');
-		NioApp.NumberSpinner();
 		NioApp.Control('.custom-control-input');
 	};
 
@@ -551,9 +404,7 @@ import NioApp from './vendors/nioapp/nioapp.min';
 		NioApp.coms.docReady.push(NioApp.Ani.init);
 		NioApp.coms.docReady.push(NioApp.TGL.init);
 		NioApp.coms.docReady.push(NioApp.BS.init);
-		NioApp.coms.docReady.push(NioApp.Validate.init);
 		NioApp.coms.docReady.push(NioApp.Picker.init);
-		NioApp.coms.docReady.push(NioApp.Addons.Init);
 		NioApp.coms.docReady.push(NioApp.Wizard);
 		NioApp.coms.docReady.push(NioApp.sbCompact);
 		NioApp.coms.winLoad.push(NioApp.ModeSwitch);

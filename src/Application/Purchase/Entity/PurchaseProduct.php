@@ -3,6 +3,7 @@
 namespace App\Application\Purchase\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use App\Application\Product\Product;
 use App\Application\Purchase\Purchase;
 use App\Application\Product\Entity\Color;
 use App\Application\Purchase\Repository\PurchaseProductRepository;
@@ -21,7 +22,7 @@ class PurchaseProduct
 
     #[ORM\ManyToOne]
     #[ORM\JoinColumn(nullable: false)]
-    private \App\Application\Product\Product $product;
+    private Product $product;
 
     #[ORM\ManyToOne]
     private ?Color $color = null;
@@ -52,12 +53,12 @@ class PurchaseProduct
         return $this;
     }
 
-    public function getProduct(): ?\App\Application\Product\Product
+    public function getProduct(): ?Product
     {
         return $this->product;
     }
 
-    public function setProduct(\App\Application\Product\Product $product): self
+    public function setProduct(Product $product): self
     {
         $this->product = $product;
 		$this->price = $product->getMinPrice();

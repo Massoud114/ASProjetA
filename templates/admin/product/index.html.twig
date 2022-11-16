@@ -1,0 +1,174 @@
+{% extends 'admin/layout/_squeleton_index.html.twig' %}
+
+{% block dashboardTitle %}
+	Gestion des produits
+{% endblock %}
+
+{% block title 'Produits' %}
+
+{% block actions %}
+	<a href="#" data-target="addProduct" class="toggle btn btn-icon btn-primary d-md-none">
+		{{ icon('plus') }}
+	</a>
+	<a href="#" data-target="addProduct" class="toggle btn btn-primary d-none d-md-inline-flex">
+		{{ icon('plus') }}
+		<span>Add Product</span>
+	</a>
+{% endblock %}
+
+{% block content %}
+	<div class="nk-block">
+		<div class="nk-tb-list is-separate mb-3">
+			<div class="nk-tb-item nk-tb-head">
+				<div class="nk-tb-col nk-tb-col-check">
+					<div class="custom-control custom-control-sm custom-checkbox notext">
+						<input type="checkbox" class="custom-control-input" id="pid">
+						<label class="custom-control-label" for="pid"></label>
+					</div>
+				</div>
+				<div class="nk-tb-col tb-col-sm">{{ sort_by(rows, 'Name', 'row.name') }}</div>
+				<div class="nk-tb-col">{{ sort_by(rows, 'Name', 'row.name') }}</div>
+				<div class="nk-tb-col">{{ sort_by(rows, 'Name', 'row.name') }}</div>
+				<div class="nk-tb-col">{{ sort_by(rows, 'Name', 'row.name') }}</div>
+				<div class="nk-tb-col tb-col-md">{{ sort_by(rows, 'Name', 'row.name') }}</div>
+				<div class="nk-tb-col nk-tb-col-tools">Actions</div>
+			</div>
+			{% for product in rows %}
+				{% set showLink = path(prefix ~ '_edit', {id: product.id}) %}
+				{% set editLink = path(prefix ~ '_show', {id: product.id}) %}
+				{% set deleteLink = path(prefix ~ '_delete', {id: product.id}) %}
+				<div class="nk-tb-item">
+					<div class="nk-tb-col nk-tb-col-check">
+						<div class="custom-control custom-control-sm custom-checkbox notext">
+							<input type="checkbox" class="custom-control-input" id="pid1">
+							<label class="custom-control-label" for="pid1"></label>
+						</div>
+					</div>
+					<div class="nk-tb-col tb-col-sm">
+						<span class="tb-product">
+			                <img src="{{ vich_uploader_asset(row, 'imageFile') }}" alt="" class="thumb">
+			                <span class="title">{{ product.name }}</span>
+			            </span>
+					</div>
+					<div class="nk-tb-col">
+						<span class="tb-sub">UY3749</span>
+					</div>
+					<div class="nk-tb-col">
+						<span class="tb-lead">$ 99.49</span>
+					</div>
+					<div class="nk-tb-col">
+						<span class="tb-sub">49</span>
+					</div>
+					<div class="nk-tb-col tb-col-md">
+						<span class="tb-sub">Fitbit, Tracker</span>
+					</div>
+					<div class="nk-tb-col tb-col-md">
+						<div class="asterisk tb-asterisk">
+							<a href="#"><em class="asterisk-off icon ni ni-star"></em><em class="asterisk-on icon ni ni-star-fill"></em></a>
+						</div>
+					</div>
+					<div class="nk-tb-col nk-tb-col-tools">
+						<ul class="nk-tb-actions gx-1 my-n1">
+							<li class="me-n1">
+								<div class="dropdown">
+									<a href="#" class="dropdown-toggle btn btn-icon btn-trigger" data-bs-toggle="dropdown">{{ icon('more-h') }}</a>
+									<div class="dropdown-menu dropdown-menu-end">
+										<ul class="link-list-opt no-bdr">
+											<li><a href="{{ editLink }}">{{ icon('edit') }}<span>Edit Product</span></a></li>
+											<li><a href="{{ showLink }}">{{ icon('edit') }}<span>View Product</span></a></li>
+											<li><a href="#">{{ icon('activity-round') }}<span>Product Orders</span></a></li>
+											<li><a href="{{ deleteLink }}">{{ icon('trash') }}<span>Remove Product</span></a></li>
+										</ul>
+									</div>
+								</div>
+							</li>
+						</ul>
+					</div>
+				</div>
+			{% endfor %}
+		</div>
+
+		{{ paginate(rows) }}
+	</div>
+
+	<div class="nk-add-product toggle-slide toggle-slide-right" data-content="addProduct" data-toggle-screen="any" data-toggle-overlay="true" data-toggle-body="true" data-simplebar>
+		<div class="nk-block-head">
+			<div class="nk-block-head-content">
+				<h5 class="nk-block-title">New Product</h5>
+				<div class="nk-block-des">
+					<p>Add information and add new product.</p>
+				</div>
+			</div>
+		</div><!-- .nk-block-head -->
+		<div class="nk-block">
+			<div class="row g-3">
+				<div class="col-12">
+					<div class="form-group">
+						<label class="form-label" for="product-title">Product Title</label>
+						<div class="form-control-wrap">
+							<input type="text" class="form-control" id="product-title">
+						</div>
+					</div>
+				</div>
+				<div class="col-mb-6">
+					<div class="form-group">
+						<label class="form-label" for="regular-price">Regular Price</label>
+						<div class="form-control-wrap">
+							<input type="text" class="form-control" id="regular-price">
+						</div>
+					</div>
+				</div>
+				<div class="col-mb-6">
+					<div class="form-group">
+						<label class="form-label" for="sale-price">Sale Price</label>
+						<div class="form-control-wrap">
+							<input type="text" class="form-control" id="sale-price">
+						</div>
+					</div>
+				</div>
+				<div class="col-mb-6">
+					<div class="form-group">
+						<label class="form-label" for="stock">Stock</label>
+						<div class="form-control-wrap">
+							<input type="text" class="form-control" id="stock">
+						</div>
+					</div>
+				</div>
+				<div class="col-mb-6">
+					<div class="form-group">
+						<label class="form-label" for="SKU">SKU</label>
+						<div class="form-control-wrap">
+							<input type="text" class="form-control" id="SKU">
+						</div>
+					</div>
+				</div>
+				<div class="col-12">
+					<div class="form-group">
+						<label class="form-label" for="category">Category</label>
+						<div class="form-control-wrap">
+							<input type="text" class="form-control" id="category">
+						</div>
+					</div>
+				</div>
+				<div class="col-12">
+					<div class="form-group">
+						<label class="form-label" for="tags">Tags</label>
+						<div class="form-control-wrap">
+							<input type="text" class="form-control" id="tags">
+						</div>
+					</div>
+				</div>
+				<div class="col-12">
+					<div class="upload-zone small bg-lighter my-2">
+						<div class="dz-message">
+							<span class="dz-message-text">Drag and drop file</span>
+						</div>
+					</div>
+				</div>
+				<div class="col-12">
+					<button class="btn btn-primary"><em class="icon ni ni-plus"></em><span>Add New</span></button>
+				</div>
+			</div>
+		</div><!-- .nk-block -->
+	</div>
+{% endblock %}

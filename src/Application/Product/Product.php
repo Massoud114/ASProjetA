@@ -4,6 +4,10 @@ namespace App\Application\Product;
 
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use App\Helper\Entity\MesurableTrait;
+use App\Helper\Entity\SluggableTrait;
+use App\Helper\Entity\TimestampTrait;
+use App\Application\Media\Image\Image;
 use App\Application\Product\Entity\Color;
 use Doctrine\Common\Collections\Collection;
 use App\Application\Product\Entity\Category;
@@ -26,9 +30,6 @@ class Product
     #[ORM\Column(type: Types::SIMPLE_ARRAY, nullable: true)]
     private array $types = [];
 
-    #[ORM\Column(nullable: true)]
-    private ?float $weight = null;
-
     #[ORM\Column]
     private int $minPrice;
 
@@ -41,6 +42,9 @@ class Product
     #[ORM\Column(nullable: true)]
     private ?float $makingPrice = null;
 
+	#[ORM\Column(nullable: true)]
+    private ?float $fixedPrice = 0;
+
     #[ORM\ManyToOne(inversedBy: 'products')]
     #[ORM\JoinColumn(nullable: false)]
     private ?Category $category = null;
@@ -48,9 +52,20 @@ class Product
 	#[ORM\ManyToMany(targetEntity: Color::class)]
 	private Collection $colors;
 
+	#[ORM\Column(nullable: false)]
+	private ?string $thumbnailUrl = null;
+
+	#[ORM\OneToMany(mappedBy: 'product', targetEntity: Image::class)]
+	private Collection $productImages;
+
+	use MesurableTrait, SluggableTrait, TimestampTrait;
+
 	public function __construct()
 	{
 		$this->colors = new ArrayCollection();
+		$this->productImages = new ArrayCollection();
+		$this->createdAt = new \DateTimeImmutable();
+		$this->updatedAt = new \DateTime();
 	}
 
 	public function getId(): ?int
@@ -90,18 +105,6 @@ class Product
     public function setTypes(?array $types): self
     {
         $this->types = $types;
-
-        return $this;
-    }
-
-    public function getWeight(): ?float
-    {
-        return $this->weight;
-    }
-
-    public function setWeight(?float $weight): self
-    {
-        $this->weight = $weight;
 
         return $this;
     }
@@ -211,4 +214,58 @@ class Product
 	{
 		return (string) $this->minPrice / 100;
 	}
+
+	public function getThumbnailUrl(): ?string
+	{
+		return $this->thumbnailUrl;
+	}
+
+	public function setThumbnailUrl(?string $thumbnailUrl): self
+	{
+		$this->thumbnailUrl = $thumbnailUrl;
+
+		return $this;
+	}
+
+	/**
+	 * @return Collection<int, \App\Application\Media\Image\Image>
+	 */
+	public function getProductImages(): Collection
+	{
+		return $this->productImages;
+	}
+
+	public function addProductImage(Image $image): self
+	{
+		if (!$this->productImages->contains($image)) {
+			$this->productImages->add($image);
+			$image->setProduct($this);
+		}
+
+		return $this;
+	}
+
+	public function removeProductImage(Image $image): self
+	{
+		if ($this->productImages->removeElement($image)) {
+			// set the owning side to null (unless already changed)
+			if ($image->getCategory() === $this) {
+				$image->setCategory(null);
+			}
+		}
+
+		return $this;
+	}
+
+	public function getFixedPrice(): ?float
+	{
+		return $this->fixedPrice;
+	}
+
+	public function setFixedPrice(?float $fixedPrice): Product
+	{
+		$this->fixedPrice = $fixedPrice;
+		return $this;
+	}
+
 }

@@ -13,6 +13,7 @@ use Symfony\Component\HttpFoundation\File\File;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
 use App\Infrastructure\Auth\Entity\SocialLoggableTrait;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
@@ -395,5 +396,21 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 	public function agreeToTerms()
 	{
 		$this->agreedTermsAt = new DateTime();
+	}
+
+	public function getRoleIdentifier(): string
+	{
+		if (in_array('ROLE_SUPER_ADMIN', $this->roles)) {
+			return 'Super Administrateur';
+		} else if (in_array('ROLE_ADMIN', $this->roles)) {
+			return 'Administrateur';
+		} else {
+			throw new AccessDeniedException('Vous n\'avez pas les droits pour accéder à cette page');
+		}
+	}
+
+	public function getInitials(): string
+	{
+		return strtoupper(substr($this->firstname, 0, 1) . substr($this->lastname, 0, 1));
 	}
 }

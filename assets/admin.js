@@ -1,6 +1,4 @@
-/*import './scss/admin.scss';
-
-import jQuery from 'jquery';
+import './scss/admin.scss';
 import 'bootstrap';
-import 'bootstrap-datepicker'
-import './js/custom'*/
+import 'bootstrap-datepicker';
+import './js/custom';

@@ -6,7 +6,7 @@
 		<link rel="shortcut icon" href="./images/favicon.png">
 		<title>{% apply striptags %}{% block title '' %}{% endapply %} | LuxDec Admin</title>
 		{% block stylesheets %}
-			{{ encore_entry_link_tags('admin', {media: 'screen'}) }}
+			{{ encore_entry_link_tags('admin') }}
 		{% endblock %}
 		{% block javascripts %}
 			{{ encore_entry_script_tags('admin') }}
@@ -38,9 +38,15 @@
 							<div class="nk-sidebar-menu" data-simplebar>
 								<ul class="nk-menu">
 									<li class="nk-menu-item {{ menu_active('home') }}">
-										<a href="{{ path('') }}" class="nk-menu-link">
+										<a href="{{ path('app_test') }}" class="nk-menu-link">
 											<span class="nk-menu-icon">{{ icon('dashboard', 'fill') }}</span>
 											<span class="nk-menu-text">Dashboard</span>
+										</a>
+									</li>
+									<li class="nk-menu-item {{ menu_active('product') }}">
+										<a href="{{ path('admin_product_index') }}" class="nk-menu-link">
+											<span class="nk-menu-icon">{{ icon('product', 'fill') }}</span>
+											<span class="nk-menu-text">{{ 'product'|trans }}</span>
 										</a>
 									</li>
 								</ul>
@@ -50,7 +56,6 @@
 				</div>
 
 				<div class="nk-wrap ">
-					<!-- main header @s -->
 					<div class="nk-header nk-header-fixed is-light">
 						<div class="container-fluid">
 							<div class="nk-header-wrap">
@@ -64,61 +69,63 @@
 									</a>
 								</div>
 
-								<div class="nk-header-search ms-3 ms-xl-0">
-									{% if searchable is defined and searchable %}
-										<form>
-											{{ icon('search') }}
-											<input
-													type="text"
-													name="q"
-													class="form-control border-transparent form-focus-none"
-													placeholder="Rechercher"
-													value="{{ app.request.get('q') }}"
-											>
-										</form>
-									{% endif %}
-								</div>
+								{% if searchable is defined and searchable %}
+									<form class="nk-header-search ms-3 ms-xl-0">
+										{{ icon('search') }}
+										<input
+												type="text"
+												name="q"
+												class="form-control border-transparent form-focus-none"
+												placeholder="Rechercher globalement"
+												value="{{ app.request.get('q') }}"
+										>
+									</form>
+								{% else %}
+									<div class="nk-header-search ms-3 ms-xl-0"></div>
+								{% endif %}
 								<div class="nk-header-tools">
 									<ul class="nk-quick-nav">
-										<li class="dropdown user-dropdown">
-											<a href="#" class="dropdown-toggle me-n1" data-bs-toggle="dropdown">
-												<div class="user-toggle">
-													<div class="user-avatar sm">
-														{{ icon('user', 'alt') }}
-													</div>
-													<div class="user-info d-none d-xl-block">
-														<div class="user-status user-status-active">{{ app.user.roleIdentifier }}</div>
-														<div class="user-name dropdown-indicator">{{ app.user.username }}</div>
-													</div>
-												</div>
-											</a>
-											<div class="dropdown-menu dropdown-menu-md dropdown-menu-end">
-												<div class="dropdown-inner user-card-wrap bg-lighter d-none d-md-block">
-													<div class="user-card">
-														<div class="user-avatar">
-															<span>{{ app.user.initials }}</span>
+										{% if app.user and is_granted('ROLE_ADMIN') %}
+											<li class="dropdown user-dropdown">
+												<a href="#" class="dropdown-toggle me-n1" data-bs-toggle="dropdown">
+													<div class="user-toggle">
+														<div class="user-avatar sm">
+															{{ icon('user', 'alt') }}
 														</div>
-														<div class="user-info">
-															<span class="lead-text">{{ app.user.username }}</span>
-															<span class="sub-text">{{ app.user.email }}</span>
+														<div class="user-info d-none d-xl-block">
+															<div class="user-status user-status-active">{{ app.user.roleIdentifier }}</div>
+															<div class="user-name dropdown-indicator">{{ app.user.username }}</div>
 														</div>
 													</div>
+												</a>
+												<div class="dropdown-menu dropdown-menu-md dropdown-menu-end">
+													<div class="dropdown-inner user-card-wrap bg-lighter d-none d-md-block">
+														<div class="user-card">
+															<div class="user-avatar">
+																<span>{{ app.user.initials }}</span>
+															</div>
+															<div class="user-info">
+																<span class="lead-text">{{ app.user.username }}</span>
+																<span class="sub-text">{{ app.user.email }}</span>
+															</div>
+														</div>
+													</div>
+													<div class="dropdown-inner">
+														<ul class="link-list">
+															<li><a href="{{ path('') }}">{{ icon('user', 'alt') }}<span>View Profile</span></a></li>
+															<li><a href="{{ path('') }}">{{ icon('setting', 'alt') }}<span>Account Setting</span></a></li>
+															<li><a href="{{ path('') }}">{{ icon('activity', 'alt') }}<span>Login Activity</span></a></li>
+															<li><a class="dark-switch" href="#">{{ icon('moon', 'alt') }}<span>Dark Mode</span></a></li>
+														</ul>
+													</div>
+													<div class="dropdown-inner">
+														<ul class="link-list">
+															<li><a href="{{ path('') }}">{{ icon('signout') }}<span>Sign out</span></a></li>
+														</ul>
+													</div>
 												</div>
-												<div class="dropdown-inner">
-													<ul class="link-list">
-														<li><a href="{{ path('') }}">{{ icon('user', 'alt') }}<span>View Profile</span></a></li>
-														<li><a href="{{ path('') }}">{{ icon('setting', 'alt') }}<span>Account Setting</span></a></li>
-														<li><a href="{{ path('') }}">{{ icon('activity', 'alt') }}<span>Login Activity</span></a></li>
-														<li><a class="dark-switch" href="#">{{ icon('moon', 'alt') }}<span>Dark Mode</span></a></li>
-													</ul>
-												</div>
-												<div class="dropdown-inner">
-													<ul class="link-list">
-														<li><a href="{{ path('') }}">{{ icon('signout') }}<span>Sign out</span></a></li>
-													</ul>
-												</div>
-											</div>
-										</li>
+											</li>
+										{% endif %}
 									</ul>
 								</div>
 							</div>
