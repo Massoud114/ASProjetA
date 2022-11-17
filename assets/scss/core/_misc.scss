@@ -103,6 +103,40 @@
         }
     }
 }
+.toggle-switch-button {
+    position: relative;
+    &:before,&:after{
+        position: absolute;
+        content: "";
+        transform: translateY(-50%);
+        border-radius: 1.5rem;
+        display: block;
+        top: 50%;
+    }
+    &:before{
+        left: 0;
+        width: 3rem;
+        height: 1.5rem;
+        background-color: $custom-control-indicator-bg;
+        border: $custom-control-indicator-border-color solid $custom-control-indicator-border-width;
+    }
+    &:after{
+        height: 1rem;
+        width: 1rem;
+        left: calc(#{$custom-control-indicator-border-width} + .125rem);
+        background-color: $custom-control-indicator-border-color;
+    }
+    &.active{
+        &:before{
+            background-color: $accent-color;
+            border-color: $accent-color;
+        }
+        &:after{
+            left: calc(2rem - #{$custom-control-indicator-border-width} - .125rem);
+            background-color: $white;
+        }
+    }
+}
 
 .is-scrollable {
     overflow: auto;

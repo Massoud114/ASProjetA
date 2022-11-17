@@ -53,6 +53,8 @@
         .tb-product{
             display: flex;
             align-items: center;
+            flex-wrap: wrap;
+            justify-content: center;
             .thumb{
                 width: 48px;
                 border-radius: $border-radius;
@@ -108,7 +110,7 @@
             padding-top: 0.5rem;
             padding-bottom: 0.5rem;
             color: $base-light;
-            font-size: .9em;
+            font-size: 1em;
             border-bottom: 1px solid rgba($border-color, .9);
         }
         &-action {
@@ -160,6 +162,7 @@
                     background: $white;
                     border: none;
                     box-shadow: 0px 1px 3px 0px rgba($base-color, 0.05);
+                    text-align: center;
                     &:first-child{
                         border-radius: 4px 0 0 4px;
                     }
@@ -174,6 +177,10 @@
             .nk-tb-head .nk-tb-col{
                 padding-top: 0.75rem;
                 padding-bottom: 0.75rem;
+            }
+            .nk-tb-head .focus{
+                background: #f8f9fc;
+                box-shadow: 4px 1px 6px 0 rgb(133 79 255 / 40%);
             }
         }
     }

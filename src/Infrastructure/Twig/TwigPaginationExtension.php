@@ -25,6 +25,11 @@ class TwigPaginationExtension extends AbstractExtension
 				[$this, 'sortBy'],
 				['is_safe' => ['html'], 'needs_environment' => true]
 			),
+			new TwigFunction(
+				'sorted',
+				[$this, 'isSorted'],
+				['is_safe' => ['html'], 'needs_environment' => true]
+			),
 		];
 	}
 
@@ -65,5 +70,14 @@ class TwigPaginationExtension extends AbstractExtension
 			$template ?: (string) $pagination->getSortableTemplate(),
 			$this->processor->sortable($pagination, $title, $key, $options, $params)
 		);
+	}
+
+	public function isSorted(
+		Environment $env,
+		SlidingPagination $pagination,
+		string $key,
+	): bool
+	{
+		return $pagination->getSort() === $key;
 	}
 }

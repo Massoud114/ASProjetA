@@ -15,11 +15,14 @@ class TwigExtension extends AbstractExtension
 		];
 	}
 
-	public function nioicon(string $name, ?string $type = null): string
+	public function nioicon(string $name, ?string $type = null, string $class = null): string
 	{
 		$attr = '';
 		if ($type) {
 			$attr = "-{$type}";
+		}
+		if ($class) {
+			$attr .= " {$class}";
 		}
 		return <<<HTML
 		<em class="icon ni ni-{$name}{$attr}"></em>

@@ -1,10 +1,10 @@
 {% extends 'admin/layout/_squeleton_index.html.twig' %}
 
 {% block dashboardTitle %}
-	Gestion des produits
+	{{ 'products.manage'|trans }}
 {% endblock %}
 
-{% block title 'Produits' %}
+{% block title 'products'|trans %}
 
 {% block actions %}
 	<a href="#" data-target="addProduct" class="toggle btn btn-icon btn-primary d-md-none">
@@ -12,7 +12,7 @@
 	</a>
 	<a href="#" data-target="addProduct" class="toggle btn btn-primary d-none d-md-inline-flex">
 		{{ icon('plus') }}
-		<span>Add Product</span>
+		<span>{{ 'products.add'|trans }}</span>
 	</a>
 {% endblock %}
 
@@ -26,13 +26,20 @@
 						<label class="custom-control-label" for="pid"></label>
 					</div>
 				</div>
-				<div class="nk-tb-col tb-col-sm">{{ sort_by(rows, 'Name', 'row.name') }}</div>
-				<div class="nk-tb-col">{{ sort_by(rows, 'Name', 'row.name') }}</div>
-				<div class="nk-tb-col">{{ sort_by(rows, 'Name', 'row.name') }}</div>
-				<div class="nk-tb-col">{{ sort_by(rows, 'Name', 'row.name') }}</div>
-				<div class="nk-tb-col tb-col-md">{{ sort_by(rows, 'Name', 'row.name') }}</div>
-				<div class="nk-tb-col nk-tb-col-tools">Actions</div>
+				<div class="nk-tb-col{{ sorted(rows, 'row.name') ? ' focus' : '' }}">
+					{{ sort_by(rows, 'Name'|trans, 'row.name') }}
+				</div>
+				<div class="nk-tb-col{{ sorted(rows, 'row.fixedPrice') ? ' focus' : '' }}">
+					{{ sort_by(rows, 'fixed.price'|trans, 'row.fixedPrice') }}
+				</div>
+				<div class="nk-tb-col{{ sorted(rows, 'row.stockQuantity') ? ' focus' : '' }}">
+					{{ sort_by(rows, 'Stock'|trans, 'row.stockQuantity') }}
+				</div>
+				<div class="nk-tb-col tb-col-sm">{{ 'shown'|trans }} ?</div>
+				<div class="nk-tb-col tb-col-md">{{ icon('star', 'round', 'tb-asterisk') }}</div>
+				<div class="nk-tb-col nk-tb-col-tools">{{ 'actions'|trans }}</div>
 			</div>
+
 			{% for product in rows %}
 				{% set showLink = path(prefix ~ '_edit', {id: product.id}) %}
 				{% set editLink = path(prefix ~ '_show', {id: product.id}) %}
@@ -44,27 +51,26 @@
 							<label class="custom-control-label" for="pid1"></label>
 						</div>
 					</div>
-					<div class="nk-tb-col tb-col-sm">
+					<div class="nk-tb-col">
 						<span class="tb-product">
-			                <img src="{{ vich_uploader_asset(row, 'imageFile') }}" alt="" class="thumb">
+			                <img src="{{ product.thumbnailUrl }}" alt="" class="thumb">
 			                <span class="title">{{ product.name }}</span>
 			            </span>
 					</div>
-					<div class="nk-tb-col">
-						<span class="tb-sub">UY3749</span>
+					<div class="nk-tb-col" style="text-align: right">
+						<span class="tb-lead">{{ product.fixedPrice | format_currency('XOF', locale='fr') }}</span>
 					</div>
 					<div class="nk-tb-col">
-						<span class="tb-lead">$ 99.49</span>
+						<span class="tb-lead">{{ product.stockQuantity }}</span>
 					</div>
-					<div class="nk-tb-col">
-						<span class="tb-sub">49</span>
-					</div>
-					<div class="nk-tb-col tb-col-md">
-						<span class="tb-sub">Fitbit, Tracker</span>
+					<div class="nk-tb-col tb-col-sm">
+						<div class="enable">
+							<a style="margin-right: 50%" class="toggle-switch-button{{ product.visible ? ' active' : '' }}" href="#" data-product-id="{{ product.id }}"></a>
+						</div>
 					</div>
 					<div class="nk-tb-col tb-col-md">
 						<div class="asterisk tb-asterisk">
-							<a href="#"><em class="asterisk-off icon ni ni-star"></em><em class="asterisk-on icon ni ni-star-fill"></em></a>
+							<a href="#" data-product-id="{{ product.id }}" class="{{ product.isFavorite ? 'active' : '' }}">{{ icon('star', '', 'asterisk-off') }}{{ icon('star', 'fill', 'asterisk-on') }}</a>
 						</div>
 					</div>
 					<div class="nk-tb-col nk-tb-col-tools">
@@ -74,10 +80,10 @@
 									<a href="#" class="dropdown-toggle btn btn-icon btn-trigger" data-bs-toggle="dropdown">{{ icon('more-h') }}</a>
 									<div class="dropdown-menu dropdown-menu-end">
 										<ul class="link-list-opt no-bdr">
-											<li><a href="{{ editLink }}">{{ icon('edit') }}<span>Edit Product</span></a></li>
-											<li><a href="{{ showLink }}">{{ icon('edit') }}<span>View Product</span></a></li>
-											<li><a href="#">{{ icon('activity-round') }}<span>Product Orders</span></a></li>
-											<li><a href="{{ deleteLink }}">{{ icon('trash') }}<span>Remove Product</span></a></li>
+											<li><a href="{{ editLink }}">{{ icon('edit') }}<span>{{ 'edit'|trans }}</span></a></li>
+											<li><a href="{{ showLink }}">{{ icon('edit') }}<span>{{ 'view'|trans }}</span></a></li>
+											<li><a href="#">{{ icon('activity-round') }}<span>{{ 'products.orders'|trans }}</span></a></li>
+											<li><a href="{{ deleteLink }}">{{ icon('trash') }}<span>{{ 'remove'|trans }}</span></a></li>
 										</ul>
 									</div>
 								</div>
@@ -166,7 +172,7 @@
 					</div>
 				</div>
 				<div class="col-12">
-					<button class="btn btn-primary"><em class="icon ni ni-plus"></em><span>Add New</span></button>
+					<button class="btn btn-primary">{{ icon('plus') }}<span>Add New</span></button>
 				</div>
 			</div>
 		</div><!-- .nk-block -->

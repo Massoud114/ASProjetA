@@ -40,13 +40,13 @@
 									<li class="nk-menu-item {{ menu_active('home') }}">
 										<a href="{{ path('app_test') }}" class="nk-menu-link">
 											<span class="nk-menu-icon">{{ icon('dashboard', 'fill') }}</span>
-											<span class="nk-menu-text">Dashboard</span>
+											<span class="nk-menu-text">{{ 'dashboard'|trans }}</span>
 										</a>
 									</li>
 									<li class="nk-menu-item {{ menu_active('product') }}">
 										<a href="{{ path('admin_product_index') }}" class="nk-menu-link">
-											<span class="nk-menu-icon">{{ icon('product', 'fill') }}</span>
-											<span class="nk-menu-text">{{ 'product'|trans }}</span>
+											<span class="nk-menu-icon">{{ icon('package', 'fill') }}</span>
+											<span class="nk-menu-text">{{ 'products'|trans }}</span>
 										</a>
 									</li>
 								</ul>

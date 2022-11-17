@@ -58,6 +58,12 @@ class Product
 	#[ORM\OneToMany(mappedBy: 'product', targetEntity: Image::class)]
 	private Collection $productImages;
 
+	#[ORM\Column(type: Types::BOOLEAN, nullable: false, options: ['default' => true])]
+	private bool $visible = true;
+
+	#[ORM\Column(type: Types::BOOLEAN, options: ['default' => false])]
+	private bool $favorite = false;
+
 	use MesurableTrait, SluggableTrait, TimestampTrait;
 
 	public function __construct()
@@ -207,12 +213,12 @@ class Product
 
 	public function __toString(): string
 	{
-		return sprintf('%s ($%s)', $this->name, $this->getMinPriceString());
+		return sprintf('%s ($%s)', $this->name, $this->getFixedPriceString());
 	}
 
-	public function getMinPriceString(): string
+	public function getFixedPriceString(): string
 	{
-		return (string) $this->minPrice / 100;
+		return (string) $this->fixedPrice / 100;
 	}
 
 	public function getThumbnailUrl(): ?string
@@ -249,8 +255,8 @@ class Product
 	{
 		if ($this->productImages->removeElement($image)) {
 			// set the owning side to null (unless already changed)
-			if ($image->getCategory() === $this) {
-				$image->setCategory(null);
+			if ($image->getProduct() === $this) {
+				$image->setProduct(null);
 			}
 		}
 
@@ -266,6 +272,33 @@ class Product
 	{
 		$this->fixedPrice = $fixedPrice;
 		return $this;
+	}
+
+	public function isVisible(): bool
+	{
+		return $this->visible;
+	}
+
+	public function setVisible(bool $visible = true): Product
+	{
+		$this->visible = $visible;
+		return $this;
+	}
+
+	public function isFavorite(): bool
+	{
+		return $this->favorite;
+	}
+
+	public function setFavorite(bool $favorite = true): Product
+	{
+		$this->favorite = $favorite;
+		return $this;
+	}
+
+	public function isAvailable(): bool
+	{
+		return $this->stockQuantity > 0;
 	}
 
 }
