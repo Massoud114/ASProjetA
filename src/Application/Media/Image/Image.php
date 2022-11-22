@@ -4,6 +4,7 @@ namespace App\Application\Media\Image;
 
 use Doctrine\ORM\Mapping as ORM;
 use App\Application\Product\Product;
+use App\Application\Product\Entity\Color;
 use Symfony\Component\HttpFoundation\File\File;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
 
@@ -28,8 +29,11 @@ class Image
 	private ?\DateTimeInterface $updatedAt = null;
 
 	#[ORM\ManyToOne(inversedBy: 'productImages')]
-	#[ORM\JoinColumn(nullable: true)]
+	#[ORM\JoinColumn(nullable: false)]
 	private ?Product $product = null;
+
+	#[ORM\ManyToOne]
+	private ?Color $color = null;
 
 	public function getId(): ?int
 	{
@@ -72,6 +76,11 @@ class Image
 		$this->size = $size;
 	}
 
+	public function __toString(): string
+	{
+		return $this->name;
+	}
+
 	public function getProduct(): ?Product
 	{
 		return $this->product;
@@ -80,6 +89,18 @@ class Image
 	public function setProduct(?Product $product): self
 	{
 		$this->product = $product;
+
+		return $this;
+	}
+
+	public function getColor(): ?Color
+	{
+		return $this->color;
+	}
+
+	public function setColor(?Color $color): self
+	{
+		$this->color = $color;
 
 		return $this;
 	}

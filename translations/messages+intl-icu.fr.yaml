@@ -1,9 +1,60 @@
-prev: préc
-product: Produit
-products: Produits
+prev: "préc"
+products: "Produits"
 products.manage: 'Gestions des produits'
-products.orders: Commandes
+products.orders: "Commandes"
 products.add: 'Ajouter un produit'
+single:	'Unitaire'
+pack: 'Pack'
+on_command:	"Sur Commande"
+product:
+    label: "Produit"
+    add: 'Ajouter un produit'
+    edit: 'Modifier un produit'
+    delete: 'Supprimer un produit'
+    form:
+        name: 'Quel est le nom du produit ?'
+        nameHelp: 'Example : "Fleurs séchées de chine 100g, Pack de portes clés 50, Poster 30x40..."'
+        types:	'Quel type de produit s''agit-il ?'
+        fixedPrice: 'A quel prix le produit sera t-il vendu ?'
+        fixedPriceHelp: "Ce prix est celui qui sera affiché sur le site / Vous pourrez le modifier facilement depuis la liste des produits"
+        brand: "Marque du produit"
+        brandHelp: "Vous pouvez ignorer cette partie si vous ne souhaitez pas afficher la marque du produit"
+        description: "Décrivez un peu votre produit, ce qu'il contient, ce qu'il est, etc..."
+        descriptionHelp: "Entrer une bonne description. S'il s'agit d'un pack, listez la contenance du pack. Donnez toutes les infos possible pour permettre à un 
+        utilisateur de comprendre le produit"
+        toggleHelp: "Si vous souhaitez que le produit soit visible sur le site, cochez la case"
+        image: "Image du produit"
+        imageHelp: "Choisissez l'image qui représentera le produit. Vous pourrez la modifier après !"
+        imageLabel: "Image du produit"
+        tabHelp: "Cliquez sur les différents onglets pour ajouter plus d'informations. Votre produit sera mieux perçu si vous donnez beaucoup de détails"
+
+brand: "Marque"
+stockQuantityHelp: "Entrer 0 s'il s'agit d'une commande"
+stockQuantity: "Quantité en stock"
+makingPrice: "Prix de fabrication / réalisation"
+fixedPrice: "Prix fixé"
+maxPrice: "Prix maximum de vente"
+minPrice: "Prix minimum de vente"
+weight: "Poids"
+weightUnit: "Unité de poids"
+kg:	kg
+g:	g
+mg:	mg
+thickness: "Épaisseur"
+thicknessUnit: "Unité d'épaisseur"
+mm:	mm
+cm:	cm
+m:	m
+width: "Largeur"
+widthUnit: "Unité de largeur"
+height: "Hauteur"
+heightUnit: "Unité de hauteur"
+length: "Longueur"
+lengthUnit: "Unité de longueur"
+category: "Catégorie"
+colors: "Couleurs"
+images: "Images"
+Description: Description
 Name: Nom
 fixed.price: 'Prix fixé'
 Stock: Stock
@@ -13,3 +64,15 @@ edit: Modifier
 view: Voir
 remove: Supprimer
 dashboard: Dashboard
+save: Enregistrer
+next_step: "Étape suivante"
+prev_step: "Étape Précédente"
+back_to_list: Retour à la liste
+basic_info: Informations basiques
+global_form_help: 'Les champs marqués d''un * sont obligatoires. Vous pouvez laisser les autres champs vides.'
+dropzoneHelp: "Glisser et déposer un fichier ou cliquez pour naviguer"
+dropzoneMultiHelp: "Glisser et déposer des fichiers ou cliquez pour naviguer"
+dropzoneImage: "Glisser et déposer une image ou cliquez pour naviguer"
+dropzoneImageMultiHelp: "Glisser et déposer des images ou cliquez pour naviguer"
+more: Supplémentaires
+details: Détails

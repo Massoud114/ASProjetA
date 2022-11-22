@@ -33,6 +33,10 @@ $dot-size:
         }
     }
 }
+.dot-big{
+    height: 36px;
+    width: 36px;
+}
 @each $name, $value in $dot-size {
     .dot-#{$name}{
         height: $value;

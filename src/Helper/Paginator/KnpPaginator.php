@@ -16,8 +16,7 @@ class KnpPaginator implements PaginatorInterface
     public function __construct(
         private readonly \Knp\Component\Pager\PaginatorInterface $paginator,
         private readonly RequestStack $requestStack
-    ) {
-    }
+    ) {}
 
     public function paginate(Query $query): PaginationInterface
     {

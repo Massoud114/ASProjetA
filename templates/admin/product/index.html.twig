@@ -7,10 +7,13 @@
 {% block title 'products'|trans %}
 
 {% block actions %}
-	<a href="#" data-target="addProduct" class="toggle btn btn-icon btn-primary d-md-none">
+	<a href="{{ path(prefix ~ '_create') }}" class="btn btn-icon btn-primary d-md-none">
 		{{ icon('plus') }}
 	</a>
-	<a href="#" data-target="addProduct" class="toggle btn btn-primary d-none d-md-inline-flex">
+	{#<a href="{{ path(prefix ~ '_create') }}" data-target="addProduct" class="toggle btn btn-icon btn-primary d-md-none">
+		{{ icon('plus') }}
+	</a>#}
+	<a href="{{ path(prefix ~ '_create') }}" class="btn btn-primary d-none d-md-inline-flex">
 		{{ icon('plus') }}
 		<span>{{ 'products.add'|trans }}</span>
 	</a>
@@ -70,7 +73,10 @@
 					</div>
 					<div class="nk-tb-col tb-col-md">
 						<div class="asterisk tb-asterisk">
-							<a href="#" data-product-id="{{ product.id }}" class="{{ product.isFavorite ? 'active' : '' }}">{{ icon('star', '', 'asterisk-off') }}{{ icon('star', 'fill', 'asterisk-on') }}</a>
+							<a href="#" data-product-id="{{ product.id }}" class="{{ product.isFavorite ? 'active' : '' }}">
+								{{ icon('star', '', 'asterisk-off') }}
+								{{ icon('star', 'fill', 'asterisk-on') }}
+							</a>
 						</div>
 					</div>
 					<div class="nk-tb-col nk-tb-col-tools">

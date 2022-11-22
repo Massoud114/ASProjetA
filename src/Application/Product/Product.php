@@ -8,55 +8,88 @@ use App\Helper\Entity\MesurableTrait;
 use App\Helper\Entity\SluggableTrait;
 use App\Helper\Entity\TimestampTrait;
 use App\Application\Media\Image\Image;
-use App\Application\Product\Entity\Color;
 use Doctrine\Common\Collections\Collection;
 use App\Application\Product\Entity\Category;
 use Doctrine\Common\Collections\ArrayCollection;
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 #[ORM\Entity(repositoryClass: ProductRepository::class)]
+#[UniqueEntity(fields: ['name'], message: 'product.name.unique')]
 class Product
 {
-    #[ORM\Id]
-    #[ORM\GeneratedValue]
-    #[ORM\Column]
-    private ?int $id = null;
+	public const TYPES = [
+		'single' => 'single',
+		'pack' => 'pack',
+		'on_command' => 'on_command',
+	];
 
-    #[ORM\Column(length: 255)]
-    private string $name;
+	public const WEIGHT_UNITS = [
+		'kg' => 'kg',
+		'g' => 'g',
+		'mg' => 'mg',
+	];
 
-    #[ORM\Column(type: Types::TEXT, nullable: true)]
-    private ?string $description = null;
+	public const THICKNESS_UNITS = [
+		'mm' => 'mm',
+		'cm' => 'cm',
+		'm' => 'm',
+	];
 
-    #[ORM\Column(type: Types::SIMPLE_ARRAY, nullable: true)]
-    private array $types = [];
+	#[ORM\Id]
+	#[ORM\GeneratedValue]
+	#[ORM\Column]
+	private ?int $id = null;
 
-    #[ORM\Column]
-    private int $minPrice;
+	#[ORM\Column(length: 255)]
+	#[Assert\NotBlank]
+	#[Assert\Length(min: 3, max: 255)]
+	#[Assert\Type(type: 'string')]
+	private string $name;
 
-    #[ORM\Column(nullable: true)]
-    private ?int $maxPrice = null;
+	#[ORM\Column(type: Types::TEXT, nullable: true)]
+	#[Assert\NotBlank]
+	#[Assert\Type(type: 'string')]
+	private ?string $description = null;
 
-    #[ORM\Column]
-    private int $stockQuantity = 0;
+	#[ORM\Column(type: Types::STRING, nullable: true)]
+	#[Assert\Choice(choices: self::TYPES, message: 'product.types.invalid')]
+	private ?string $type = null;
 
-    #[ORM\Column(nullable: true)]
-    private ?float $makingPrice = null;
+	#[ORM\Column]
+	#[Assert\Type(type: 'numeric')]
+	#[Assert\PositiveOrZero]
+	private int $minPrice;
 
 	#[ORM\Column(nullable: true)]
-    private ?float $fixedPrice = 0;
+	#[Assert\Type(type: 'numeric')]
+	#[Assert\PositiveOrZero]
+	private ?int $maxPrice = null;
 
-    #[ORM\ManyToOne(inversedBy: 'products')]
-    #[ORM\JoinColumn(nullable: false)]
-    private ?Category $category = null;
+	#[ORM\Column]
+	#[Assert\Type(type: 'numeric')]
+	#[Assert\PositiveOrZero]
+	private int $stockQuantity = 0;
 
-	#[ORM\ManyToMany(targetEntity: Color::class)]
-	private Collection $colors;
+	#[ORM\Column(nullable: true)]
+	#[Assert\Type(type: 'numeric')]
+	#[Assert\PositiveOrZero]
+	private ?float $makingPrice = null;
+
+	#[ORM\Column(nullable: true)]
+	#[Assert\Type(type: 'numeric')]
+	#[Assert\PositiveOrZero]
+	#[Assert\NotBlank]
+	private ?float $fixedPrice = 0;
+
+	#[ORM\ManyToOne(inversedBy: 'products')]
+	#[ORM\JoinColumn(nullable: false)]
+	#[Assert\NotBlank]
+	private ?Category $category = null;
 
 	#[ORM\Column(nullable: false)]
+	#[Assert\NotBlank]
 	private ?string $thumbnailUrl = null;
-
-	#[ORM\OneToMany(mappedBy: 'product', targetEntity: Image::class)]
-	private Collection $productImages;
 
 	#[ORM\Column(type: Types::BOOLEAN, nullable: false, options: ['default' => true])]
 	private bool $visible = true;
@@ -64,151 +97,129 @@ class Product
 	#[ORM\Column(type: Types::BOOLEAN, options: ['default' => false])]
 	private bool $favorite = false;
 
+	#[ORM\OneToMany(mappedBy: 'product', targetEntity: Image::class, orphanRemoval: true)]
+	private Collection $productImages;
+
+	#[ORM\OneToOne(cascade: ['persist', 'remove'])]
+	#[ORM\JoinColumn(nullable: true)]
+	private ?Image $thumbnail = null;
+
 	use MesurableTrait, SluggableTrait, TimestampTrait;
 
 	public function __construct()
 	{
-		$this->colors = new ArrayCollection();
-		$this->productImages = new ArrayCollection();
 		$this->createdAt = new \DateTimeImmutable();
 		$this->updatedAt = new \DateTime();
+		$this->productImages = new ArrayCollection();
 	}
 
 	public function getId(): ?int
-    {
-        return $this->id;
-    }
+	{
+		return $this->id;
+	}
 
-    public function getName(): string
-    {
-        return $this->name;
-    }
+	public function getName(): string
+	{
+		return $this->name;
+	}
 
-    public function setName(string $name): self
-    {
-        $this->name = $name;
+	public function setName(string $name): self
+	{
+		$this->name = $name;
 
-        return $this;
-    }
+		return $this;
+	}
 
-    public function getDescription(): ?string
-    {
-        return $this->description;
-    }
+	public function getDescription(): ?string
+	{
+		return $this->description;
+	}
 
-    public function setDescription(?string $description): self
-    {
-        $this->description = $description;
+	public function setDescription(?string $description): self
+	{
+		$this->description = $description;
 
-        return $this;
-    }
+		return $this;
+	}
 
-    public function getTypes(): array
-    {
-        return $this->types;
-    }
+	public function getType(): string
+	{
+		return $this->type;
+	}
 
-    public function setTypes(?array $types): self
-    {
-        $this->types = $types;
+	public function setType(?string $type): self
+	{
+		if(!in_array($type, self::TYPES)){
+			throw new \RuntimeException('Invalid Type passed');
+		}
+		$this->type = $type;
 
-        return $this;
-    }
+		return $this;
+	}
 
-    public function getMinPrice(): int
-    {
-        return $this->minPrice;
-    }
+	public function getMinPrice(): int
+	{
+		return $this->minPrice;
+	}
 
-    public function setMinPrice(int $minPrice): self
-    {
-        $this->minPrice = $minPrice;
+	public function setMinPrice(int $minPrice): self
+	{
+		$this->minPrice = $minPrice;
 
-        return $this;
-    }
+		return $this;
+	}
 
-    public function getMaxPrice(): ?string
-    {
-        return $this->maxPrice;
-    }
+	public function getMaxPrice(): ?string
+	{
+		return $this->maxPrice;
+	}
 
-    public function setMaxPrice(string $maxPrice): self
-    {
-        $this->maxPrice = $maxPrice;
+	public function setMaxPrice(string $maxPrice): self
+	{
+		$this->maxPrice = $maxPrice;
 
-        return $this;
-    }
+		return $this;
+	}
 
 	public function getMaxPriceString(): string
 	{
-		return (string) $this->maxPrice / 100;
+		return (string)$this->maxPrice / 100;
 	}
 
-    public function getStockQuantity(): int
-    {
-        return $this->stockQuantity || 0;
-    }
-
-    public function setStockQuantity(int $stockQuantity): self
-    {
-        $this->stockQuantity = $stockQuantity;
-
-        return $this;
-    }
-
-    public function getMakingPrice(): ?float
-    {
-        return $this->makingPrice;
-    }
-
-    public function setMakingPrice(?float $makingPrice): self
-    {
-        $this->makingPrice = $makingPrice;
-
-        return $this;
-    }
-
-    public function getCategory(): ?Category
-    {
-        return $this->category;
-    }
-
-    public function setCategory(?Category $category): self
-    {
-        $this->category = $category;
-
-        return $this;
-    }
-
-	/**
-	 * @return Collection|Color[]
-	 */
-	public function getColors(): Collection|array
+	public function getStockQuantity(): int
 	{
-		return $this->colors;
+		return $this->stockQuantity || 0;
 	}
 
-	public function addColor(Color $color): self
+	public function setStockQuantity(int $stockQuantity): self
 	{
-		if (!$this->colors->contains($color)) {
-			$this->colors[] = $color;
-		}
+		$this->stockQuantity = $stockQuantity;
 
 		return $this;
 	}
 
-	public function removeColor(Color $color): self
+	public function getMakingPrice(): ?float
 	{
-		if ($this->colors->contains($color)) {
-			$this->colors->removeElement($color);
-		}
+		return $this->makingPrice;
+	}
+
+	public function setMakingPrice(?float $makingPrice): self
+	{
+		$this->makingPrice = $makingPrice;
 
 		return $this;
 	}
 
-	public function hasColors(): bool
+	public function getCategory(): ?Category
 	{
-		return count($this->colors) > 0;
+		return $this->category;
+	}
+
+	public function setCategory(?Category $category): self
+	{
+		$this->category = $category;
+
+		return $this;
 	}
 
 	public function __toString(): string
@@ -218,7 +229,7 @@ class Product
 
 	public function getFixedPriceString(): string
 	{
-		return (string) $this->fixedPrice / 100;
+		return (string)$this->fixedPrice / 100;
 	}
 
 	public function getThumbnailUrl(): ?string
@@ -229,36 +240,6 @@ class Product
 	public function setThumbnailUrl(?string $thumbnailUrl): self
 	{
 		$this->thumbnailUrl = $thumbnailUrl;
-
-		return $this;
-	}
-
-	/**
-	 * @return Collection<int, \App\Application\Media\Image\Image>
-	 */
-	public function getProductImages(): Collection
-	{
-		return $this->productImages;
-	}
-
-	public function addProductImage(Image $image): self
-	{
-		if (!$this->productImages->contains($image)) {
-			$this->productImages->add($image);
-			$image->setProduct($this);
-		}
-
-		return $this;
-	}
-
-	public function removeProductImage(Image $image): self
-	{
-		if ($this->productImages->removeElement($image)) {
-			// set the owning side to null (unless already changed)
-			if ($image->getProduct() === $this) {
-				$image->setProduct(null);
-			}
-		}
 
 		return $this;
 	}
@@ -299,6 +280,48 @@ class Product
 	public function isAvailable(): bool
 	{
 		return $this->stockQuantity > 0;
+	}
+
+	/**
+	 * @return Collection<int, Image>
+	 */
+	public function getProductImages(): Collection
+	{
+		return $this->productImages;
+	}
+
+	public function addProductImage(Image $productImage): self
+	{
+		if (!$this->productImages->contains($productImage)) {
+			$this->productImages->add($productImage);
+			$productImage->setProduct($this);
+		}
+
+		return $this;
+	}
+
+	public function removeProductImage(Image $productImage): self
+	{
+		if ($this->productImages->removeElement($productImage)) {
+			// set the owning side to null (unless already changed)
+			if ($productImage->getProduct() === $this) {
+				$productImage->setProduct(null);
+			}
+		}
+
+		return $this;
+	}
+
+	public function getThumbnail(): ?Image
+	{
+		return $this->thumbnail;
+	}
+
+	public function setThumbnail(Image $thumbnail): self
+	{
+		$this->thumbnail = $thumbnail;
+
+		return $this;
 	}
 
 }

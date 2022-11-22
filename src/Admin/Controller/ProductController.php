@@ -6,6 +6,7 @@ use App\Application\Product\Product;
 use Doctrine\ORM\EntityManagerInterface;
 use App\Helper\Paginator\PaginatorInterface;
 use Symfony\Component\HttpFoundation\Request;
+use App\Application\Product\Form\ProductType;
 use App\Application\Product\ProductRepository;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -19,8 +20,8 @@ class ProductController extends CrudController
 
 	public function __construct(
 		private readonly EntityManagerInterface $em,
-		PaginatorInterface $paginator)
-	{
+		PaginatorInterface $paginator
+	){
 		$this->paginator = $paginator;
 	}
 
@@ -34,6 +35,7 @@ class ProductController extends CrudController
 		if ($request->get('q')) {
 			$query = $this->applySearch(trim($request->get('q')), $query, ['name']);
 		}
+//		$this->paginator->
 
 		$this->paginator->allowSort('row.id', 'row.title', 'row.fixedPrice', 'row.createdAt');
 		$rows = $this->paginator->paginate($query->getQuery());
@@ -47,9 +49,25 @@ class ProductController extends CrudController
 	}
 
 	#[Route('/create', name: 'create')]
-	public function create(): Response
+	public function create(Request $request): Response
 	{
-		return $this->crudCreate();
+		$product = new Product();
+
+		$form = $this->createForm(ProductType::class, $product);
+		$form->handleRequest($request);
+		if ($form->isSubmitted() && $form->isValid()) {
+			$this->em->persist($product);
+			$this->em->flush();
+			$this->addFlash('success', 'Product created successfully');
+			return $this->redirectToRoute('admin_product_index');
+		}
+		return $this->renderForm("admin/product/create.html.twig", [
+			'form' => $form,
+			'menu' => $this->menuItem,
+			'prefix' => $this->routePrefix,
+		]);
+
+
 	}
 
 	#[Route('/{id}/edit', name: 'edit')]

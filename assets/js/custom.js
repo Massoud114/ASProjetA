@@ -295,7 +295,7 @@ import NioApp from './vendors/nioapp/nioapp.min';
 	}
 
 	// Dark Mode Switch @since v2.0
-	NioApp.ModeSwitch = function() {
+	/*NioApp.ModeSwitch = function() {
 		var toggle = $('.dark-switch');
 		if ($body.hasClass('dark-mode')) {
 			toggle.addClass('active');
@@ -307,18 +307,22 @@ import NioApp from './vendors/nioapp/nioapp.min';
 			$(this).toggleClass('active');
 			$body.toggleClass('dark-mode');
 		});
-	};
+	};*/
 
 	// Controls @v1.0.0
-	NioApp.Control = function(elm) {
+	/*NioApp.Control = function(elm) {
 		var control = document.querySelectorAll(elm);
 		control.forEach(function(item, index, arr) {
 			item.checked ? item.parentNode.classList.add('checked') : null;
 			item.addEventListener('change', function() {
 				if (item.type == 'checkbox') {
-					item.checked
-						? item.parentNode.classList.add('checked')
-						: item.parentNode.classList.remove('checked');
+					if(item.checked){
+						item.parentNode.classList.add('checked')
+						item.setAttribute("checked")
+					} else {
+						item.parentNode.classList.remove('checked');
+						item.removeAttribute("checked")
+					}
 				}
 				if (item.type == 'radio') {
 					document.querySelectorAll(
@@ -326,13 +330,14 @@ import NioApp from './vendors/nioapp/nioapp.min';
 						forEach(function(item, index, arr) {
 							item.parentNode.classList.remove('checked');
 						});
-					item.checked
-						? item.parentNode.classList.add('checked')
-						: null;
+					if(item.checked){
+						item.parentNode.classList.add('checked')
+						item.setAttribute("checked")
+					}
 				}
 			});
 		});
-	};
+	};*/
 
 	// Extra @v1.1
 	NioApp.OtherInit = function() {
@@ -341,7 +346,7 @@ import NioApp from './vendors/nioapp/nioapp.min';
 		NioApp.ClassNavMenu();
 		NioApp.SetHW('[data-height]', 'height');
 		NioApp.SetHW('[data-width]', 'width');
-		NioApp.Control('.custom-control-input');
+		/*NioApp.Control('.custom-control-input');*/
 	};
 
 	// BootstrapExtend Init @v1.0

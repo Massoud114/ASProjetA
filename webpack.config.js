@@ -22,6 +22,7 @@ Encore
      */
     .addEntry('base', './assets/base.js')
     .addEntry('admin', './assets/admin.js')
+    .addEntry('editor', './assets/js/editor.js')
 
     // enables the Symfony UX Stimulus bridge (used in assets/bootstrap.js)
     .enableStimulusBridge('./assets/controllers.json')
@@ -50,6 +51,9 @@ Encore
     // .configureBabel((config) => {
     //     config.plugins.push('@babel/a-babel-plugin');
     // })
+    .configureBabel((config) => {
+        config.plugins.push('@babel/plugin-proposal-class-properties');
+    })
 
     // enables and configure @babel/preset-env polyfills
     .configureBabelPresetEnv((config) => {

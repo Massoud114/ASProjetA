@@ -1,0 +1,27 @@
+{% extends 'admin/base.html.twig' %}
+
+{% block body %}
+	<div class="container-fluid">
+		<div class="nk-content-inner">
+			<div class="nk-content-body">
+				<div class="components-preview wide-md mx-auto">
+					<div class="nk-block-head nk-block-head-lg wide-sm">
+						<div class="nk-block-head-content">
+							<div class="nk-block-head-sub">
+								<a class="back-to" href="{{ path(prefix ~ '_index') }}">
+									{{ icon('arrow-left') }}<span>{{ 'back_to_list' | trans }}</span>
+								</a>
+							</div>
+							{% block formTitle %}{% endblock %}
+
+						</div>
+					</div>
+					<div class="nk-block nk-block-lg">
+						{% block form %}{% endblock %}
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+{% endblock %}
+

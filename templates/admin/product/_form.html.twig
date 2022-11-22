@@ -1,0 +1,214 @@
+<div class="card">
+	<div class="card-inner">
+		{{ form_start(form) }}
+			<div class="card-head">
+				<ul class="nav nav-tabs row w-100 p-0 mb-4">
+					<li class="nav-item col-md-4 text-center p-0">
+						<a class="nav-link active w-100 justify-content-center" data-bs-toggle="tab" href="#basic">
+							{{ icon('pen2') }}
+							<span>{{ 'basic_info' | trans }}</span>
+						</a>
+					</li>
+					<li class="nav-item col-md-4 text-center p-0">
+						<a class="nav-link w-100 justify-content-center" data-bs-toggle="tab" href="#details">
+							{{ icon('info-i') }}
+							<span>{{ 'details' | trans }}</span>
+						</a>
+					</li>
+				</ul>
+			</div>
+			<div class="tab-content">
+				<div class="tab-pane active" id="basic">
+					<div class="row g-4">
+						<div class="col-lg-6 col-md-8">
+							{{ form_row(form.name) }}
+						</div>
+					</div>
+					<div class="row g-4">
+						<div class="col-lg-6 col-md-8">
+							{{ form_row(form.description, {
+								'attr': {
+									'class' : 'rich-text-editor',
+									'rows': 5
+								}
+							}) }}
+						</div>
+					</div>
+					<div class="row g-4 mb-3">
+						<div class="col-lg-6 col-md-8">
+							{{ form_row(form.category) }}
+						</div>
+					</div>
+					<div class="row g-4 mb-3">
+						<div class="col-lg-4 col-md-4 col-sm-6">
+							{{ form_row(form.type) }}
+						</div>
+					</div>
+					<div class="row g-4 mb-3">
+						<div class="col-lg-6 col-md-6 col-sm-8 form-control-wrap mb-3">
+							{{ form_label(form.fixedPrice) }}
+							<div class="input-group">
+								{{ form_widget(form.fixedPrice) }}
+								{{ form_errors(form.fixedPrice) }}
+								<div class="input-group-append">
+									<span class="input-group-text">F CFA</span>
+								</div>
+								{{ form_help(form.fixedPrice) }}
+							</div>
+						</div>
+					</div>
+					<div class="col-md-4 col-sm-4">
+						{{ form_row(form.stockQuantity) }}
+					</div>
+					<div class="row-4">
+						<div class="col-lg-6 col-md-8 col-sm-12">
+							{{ form_row(form.thumbnailUrl) }}
+						</div>
+					</div>
+				</div>
+
+				<div class="tab-pane" id="details">
+					<div class="row g-4 mb-3">
+						<div class="col-md-4 col-sm-8 form-control-wrap">
+							{{ form_label(form.minPrice) }}
+							<div class="input-group">
+								{{ form_widget(form.minPrice) }}
+								{{ form_errors(form.minPrice) }}
+								<div class="input-group-append">
+									<span class="input-group-text">F CFA</span>
+								</div>
+								{{ form_help(form.minPrice) }}
+							</div>
+						</div>
+						<div class="col-md-4 col-sm-8 form-control-wrap">
+							{{ form_label(form.maxPrice) }}
+							<div class="input-group">
+								{{ form_widget(form.maxPrice) }}
+								{{ form_errors(form.maxPrice) }}
+								<div class="input-group-append">
+									<span class="input-group-text">F CFA</span>
+								</div>
+								{{ form_help(form.maxPrice) }}
+							</div>
+						</div>
+					</div>
+
+					<div class="row g-4 mb-3">
+						<div class="col-md-4 col-sm-8 form-control-wrap">
+							{{ form_label(form.makingPrice) }}
+							<div class="input-group">
+								{{ form_widget(form.makingPrice) }}
+								{{ form_errors(form.makingPrice) }}
+								<div class="input-group-append">
+									<span class="input-group-text">F CFA</span>
+								</div>
+								{{ form_help(form.makingPrice) }}
+							</div>
+						</div>
+					</div>
+
+					<div class="row g-4 mb-3">
+						<div class="col-md-3 col-sm-4">
+							{{ form_label(form.weight) }}
+							<div class="form-control-wrap">
+								<div class="input-group">
+									{{ form_widget(form.weight) }}
+									<div class="input-group-append">
+										{{ form_widget(form.weightUnit) }}
+									</div>
+								</div>
+							</div>
+							{{ form_errors(form.weight) }}
+							{{ form_errors(form.weightUnit) }}
+							{{ form_help(form.weight) }}
+							{{ form_help(form.weightUnit) }}
+						</div>
+
+						<div class="col-md-3 col-sm-4">
+							{{ form_label(form.thickness) }}
+							<div class="form-control-wrap">
+								<div class="input-group">
+									{{ form_widget(form.thickness) }}
+									<div class="input-group-append">
+										{{ form_widget(form.thicknessUnit) }}
+									</div>
+								</div>
+							</div>
+							{{ form_errors(form.thickness) }}
+							{{ form_errors(form.thicknessUnit) }}
+							{{ form_help(form.thickness) }}
+							{{ form_help(form.thicknessUnit) }}
+						</div>
+
+						<div class="col-md-3 col-sm-4">
+							{{ form_label(form.width) }}
+							<div class="form-control-wrap">
+								<div class="input-group">
+									{{ form_widget(form.width) }}
+									<div class="input-group-append">
+										{{ form_widget(form.widthUnit) }}
+									</div>
+								</div>
+							</div>
+							{{ form_errors(form.width) }}
+							{{ form_errors(form.widthUnit) }}
+							{{ form_help(form.width) }}
+							{{ form_help(form.widthUnit) }}
+						</div>
+
+						<div class="col-md-3 col-sm-4">
+							{{ form_label(form.height) }}
+							<div class="form-control-wrap">
+								<div class="input-group">
+									{{ form_widget(form.height) }}
+									<div class="input-group-append">
+										{{ form_widget(form.heightUnit) }}
+									</div>
+								</div>
+							</div>
+							{{ form_errors(form.height) }}
+							{{ form_errors(form.heightUnit) }}
+							{{ form_help(form.height) }}
+							{{ form_help(form.heightUnit) }}
+						</div>
+
+						<div class="col-md-3 col-sm-4">
+							{{ form_label(form.length) }}
+							<div class="form-control-wrap">
+								<div class="input-group">
+									{{ form_widget(form.length) }}
+									<div class="input-group-append">
+										{{ form_widget(form.lengthUnit) }}
+									</div>
+								</div>
+							</div>
+							{{ form_errors(form.length) }}
+							{{ form_errors(form.lengthUnit) }}
+							{{ form_help(form.length) }}
+							{{ form_help(form.lengthUnit) }}
+						</div>
+					</div>
+
+					<div class="row g-4">
+						<div class="col-ld-6 col-sm-7">
+							{{ form_row(form.brand) }}
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div class="m-4">
+				<div class="alert alert-warning alert-icon help-text form-text">
+					{{ icon('alert-circle') }}
+					{{ 'product.form.tabHelp' | trans }}
+				</div>
+			</div>
+
+			<div class="mt-4 text-center">
+				<div class="form-group">
+					<button type="submit" class="btn btn-lg btn-primary">{{ 'save' | trans }}</button>
+				</div>
+			</div>
+		{{ form_end(form) }}
+	</div>
+</div>
