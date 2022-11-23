@@ -8,6 +8,7 @@ use Symfony\UX\Dropzone\Form\DropzoneType;
 use App\Application\Product\Entity\Category;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use Symfony\Component\Validator\Constraints\File;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
@@ -152,14 +153,25 @@ class ProductType extends AbstractType
 				'required' => false,
 			])
 			->add('thumbnailUrl', DropzoneType::class, [
+				'mapped' => false,
 				'label' => 'product.form.imageLabel',
 				'attr' => [
 					'accept' => 'image/*',
 					'placeholder' => 'dropzoneImage'
 				],
 				'help' => 'product.form.imageHelp',
-				'multiple' => true,
+				'multiple' => false,
 				'required' => true,
+				'constraints' => [
+					new File([
+						'maxSize' => '10240k',
+						'mimeTypes' => [
+							'application/image',
+						],
+						'mimeTypesMessage' => 'invalidMimeTypeImage',
+						'maxSizeMessage' => 'invalidMaxSizeImage',
+					])
+				],
 			])
 		;
 	}

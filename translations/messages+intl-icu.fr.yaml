@@ -76,3 +76,5 @@ dropzoneImage: "Glisser et déposer une image ou cliquez pour naviguer"
 dropzoneImageMultiHelp: "Glisser et déposer des images ou cliquez pour naviguer"
 more: Supplémentaires
 details: Détails
+invalidMimeTypeImage: "Merci de fournir une image"
+invalidMaxSizeImage: "Oh vous risquez d'exploser le stockage ! Merci de fournir une image de moins de 10Mo"
