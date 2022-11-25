@@ -13,6 +13,20 @@
 						</div>
 
 						<div class="nk-block-head-content">
+							<ul class="nk-block-tools g-3">
+								<li class="nk-block-tools-opt hidden" id="massive-delete-button">
+									<a href="{{ path(prefix ~ '_massive_delete') }}" class="btn btn-icon btn-danger d-md-none">
+										{{ icon('trash') }}
+									</a>
+									<a href="{{ path(prefix ~ '_massive_delete') }}" class="btn btn-danger d-none d-md-inline-flex">
+										{{ icon('trash') }}
+										<span>{{ 'delete'|trans }}</span>
+									</a>
+								</li>
+							</ul>
+						</div>
+
+						<div class="nk-block-head-content">
 							<div class="toggle-wrap nk-block-tools-toggle">
 								<a href="#" class="btn btn-icon btn-trigger toggle-expand me-n1" data-target="pageMenu"><em class="icon ni ni-more-v"></em></a>
 								<div class="toggle-expand-content" data-content="pageMenu">
@@ -37,9 +51,7 @@
 												</div>
 											</div>
 										</li>
-										<li class="nk-block-tools-opt">
-											{% block actions %} {% endblock %}
-										</li>
+											{% block actions %}{% endblock %}
 									</ul>
 								</div>
 							</div>

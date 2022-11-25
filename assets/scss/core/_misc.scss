@@ -231,3 +231,7 @@ button.close {
 .popover-header{
     border-bottom: $popover-border-width solid darken($popover-header-bg, 5%);
 }
+
+.hidden{
+    display: none;
+}

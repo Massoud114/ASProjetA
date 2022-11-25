@@ -37,6 +37,9 @@
 						<div class="nk-sidebar-content">
 							<div class="nk-sidebar-menu" data-simplebar>
 								<ul class="nk-menu">
+									<li class="nk-menu-heading">
+										<h6 class="overline-title text-primary-alt">{{ 'selling_management' | trans }}</h6>
+									</li>
 									<li class="nk-menu-item {{ menu_active('home') }}">
 										<a href="{{ path('app_test') }}" class="nk-menu-link">
 											<span class="nk-menu-icon">{{ icon('dashboard', 'fill') }}</span>
@@ -48,6 +51,36 @@
 											<span class="nk-menu-icon">{{ icon('package', 'fill') }}</span>
 											<span class="nk-menu-text">{{ 'products'|trans }}</span>
 										</a>
+									</li>
+
+									<li class="nk-menu-heading">
+										<h6 class="overline-title text-primary-alt">{{ 'site_management' | trans }}</h6>
+									</li>
+									<li class="nk-menu-item {{ menu_active('slider') }}">
+										<a href="" class="nk-menu-link">
+											<span class="nk-menu-icon">{{ icon('movie') }}</span>
+											<span class="nk-menu-text">{{ 'sliders'|trans }}</span>
+										</a>
+									</li>
+									<li class="nk-menu-item {{ menu_active('social_links') }}">
+										<a href="" class="nk-menu-link">
+											<span class="nk-menu-icon">{{ icon('share', 'fill') }}</span>
+											<span class="nk-menu-text">{{ 'social_links'|trans }}</span>
+										</a>
+									</li>
+
+									<li class="nk-menu-heading">
+										<h6 class="overline-title text-primary-alt">{{ 'site_settings' | trans }}</h6>
+									</li>
+									<li class="nk-menu-item {{ menu_active('settings') }}">
+										<a href="" class="nk-menu-link">
+											<span class="nk-menu-icon">{{ icon('opt-dot') }}</span>
+											<span class="nk-menu-text">{{ 'settings'|trans }}</span>
+										</a>
+									</li>
+
+									<li class="nk-menu-heading">
+										<h6 class="overline-title text-primary-alt">{{ 'finance_management' | trans }}</h6>
 									</li>
 								</ul>
 							</div>

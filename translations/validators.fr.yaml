@@ -131,5 +131,5 @@ Error: Erreur
 'Please select a valid option.': 'Veuillez sélectionner une option valide.'
 'Please select a valid range.': 'Veuillez sélectionner une plage valide.'
 'Please enter a valid week.': 'Veuillez entrer une semaine valide.'
-'invalidMimeTypeImage': "Merci de fournir une image"
-'invalidMaxSizeImage': "Oh vous risquez d'exploser le stockage ! Merci de fournir une image de moins de 10Mo"
+invalidMimeTypeImage: 'Merci de fournir une image'
+invalidMaxSizeImage: "Oh vous risquez d'exploser le stockage ! Merci de fournir une image de moins de 10Mo"
