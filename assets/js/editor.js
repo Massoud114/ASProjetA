@@ -13,11 +13,16 @@ document.addEventListener('DOMContentLoaded', function() {
 			editor.style.display = 'none';
 
 			let toolbarOptions = [
-				['bold', 'italic', 'underline'],
-				['blockquote', {'list': 'bullet'}],
-				[{'header': 1}, {'header': 2}, {'header': [3, 4, 5, 6, false]}],
-				[{'align': []}],
-				['clean'],
+				['bold', 'italic', 'underline', 'strike'],
+				['blockquote', 'code-block'],
+				[{ 'list': 'ordered'}, { 'list': 'bullet' }],
+				[{ 'script': 'sub'}, { 'script': 'super' }],
+				[{ 'indent': '-1'}, { 'indent': '+1' }],
+				[{ 'header': [1, 2, 3, 4, 5, 6] }],
+				[{ 'color': [] }, { 'background': [] }],
+				[{ 'font': [] }],
+				[{ 'align': [] }],
+				['clean']
 			];
 
 			let quill = new Quill(editorContainer, {

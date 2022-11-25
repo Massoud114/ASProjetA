@@ -3,6 +3,7 @@ products: "Produits"
 products.manage: 'Gestions des produits'
 products.orders: "Commandes"
 products.add: 'Ajouter un produit'
+products.edit: 'Modification du produit'
 single:	'Unitaire'
 pack: 'Pack'
 on_command:	"Sur Commande"
@@ -11,6 +12,8 @@ product:
     add: 'Ajouter un produit'
     edit: 'Modifier un produit'
     delete: 'Supprimer un produit'
+    updated: "Le produit a bien été modifié !"
+    created: "Le produit a bien été crée !"
     form:
         name: 'Quel est le nom du produit ?'
         nameHelp: 'Example : "Fleurs séchées de chine 100g, Pack de portes clés 50, Poster 30x40..."'
@@ -27,6 +30,8 @@ product:
         imageHelp: "Choisissez l'image qui représentera le produit. Vous pourrez la modifier après !"
         imageLabel: "Image du produit"
         tabHelp: "Cliquez sur les différents onglets pour ajouter plus d'informations. Votre produit sera mieux perçu si vous donnez beaucoup de détails"
+        detailsHelp: "Soyez libre de décrire le produit comme vous le souhaitez. Vous pouvez ajouter des images, des vidéos, des liens, etc... Au moins 3 
+        paragraphes sont souhaités"
 
 brand: "Marque"
 stockQuantityHelp: "Entrer 0 s'il s'agit d'une commande"
@@ -76,5 +81,4 @@ dropzoneImage: "Glisser et déposer une image ou cliquez pour naviguer"
 dropzoneImageMultiHelp: "Glisser et déposer des images ou cliquez pour naviguer"
 more: Supplémentaires
 details: Détails
-invalidMimeTypeImage: "Merci de fournir une image"
-invalidMaxSizeImage: "Oh vous risquez d'exploser le stockage ! Merci de fournir une image de moins de 10Mo"
+form_contains_errors: "Oups! Vous avez fait une erreur dans le formulaire. Veuillez vérifier les champs marqués en rouge"

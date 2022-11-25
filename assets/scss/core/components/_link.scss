@@ -161,6 +161,25 @@ $link-list-menu-icon-rtl: $ni-chevron-left !default;
             opacity: .8;
         }
     }
+    a, form {
+        display: flex;
+        align-items: center;
+        padding: .625rem 1.125rem;
+        font-size: 14px;
+        font-weight: $fw-medium;
+        color: $base-text;
+        transition: all .4s;
+        line-height: 1.3rem;
+        position: relative;
+        &:hover{
+            color: $accent-color;
+            background: $lighter;
+        }
+        .icon{
+            font-size: 1.125rem;
+            opacity: .8;
+        }
+    }
     li.active > a, a.active {
         @extend .link-act-check;
     }

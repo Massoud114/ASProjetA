@@ -12,9 +12,11 @@ use App\Application\Product\Form\ProductType;
 use App\Application\Product\ProductRepository;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\HttpFoundation\File\File;
 use Liip\ImagineBundle\Imagine\Cache\CacheManager;
 use Symfony\Component\String\Slugger\SluggerInterface;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 
 #[Route('/product', name: 'product_')]
 class ProductController extends CrudController
@@ -25,9 +27,8 @@ class ProductController extends CrudController
 
 	public function __construct(
 		private readonly EntityManagerInterface $em,
-		PaginatorInterface $paginator,
-		private readonly string $targetDirectory,
-		private readonly CacheManager $cacheManager,
+		PaginatorInterface                      $paginator,
+		private readonly CacheManager           $cacheManager,
 	){
 		$this->paginator = $paginator;
 	}
@@ -52,6 +53,7 @@ class ProductController extends CrudController
 			'searchable' => true,
 			'menu' => $this->menuItem,
 			'prefix' => $this->routePrefix,
+			'thumbnailPath' => $this->getParameter('product_thumbnail_dir'),
 		]);
 	}
 
@@ -63,31 +65,32 @@ class ProductController extends CrudController
 	{
 		$product = new Product();
 
-		$form = $this->createForm(ProductType::class, $product);
+		$form = $this->createForm(ProductType::class, $product)
+		             ->add('saveAndCreateNew', SubmitType::class);
+
 		$form->handleRequest($request);
 
 		if ($form->isSubmitted() and $form->isValid()) {
-			$thumbnailFile = $form->get('thumbnail')->getData();
 
-			if ($thumbnailFile instanceof UploadedFile) {
-				$filename = $fileUploader->upload($thumbnailFile);
-
-				$image = new Image();
-				$image->setSize($thumbnailFile->getSize());
-				$image->setName($filename);
-
-				$product->setThumbnailUrl($this->targetDirectory . '/' . $filename);
-				$product->setThumbnail($image);
-				$image->setProduct($product);
-				$this->em->persist($image);
+			if ($form->has('thumbnailUrl')) {
+				$thumbnailFile = $form->get('thumbnailUrl')->getData();
+				if ($thumbnailFile instanceof UploadedFile) {
+					$this->persistImage($thumbnailFile, $product, $fileUploader);
+					$product->addProductImage($product->getThumbnail());
+				}
 			}
 
 			$product->setSlug($slugger->slug($product->getName()));
+			$this->removeUnit($product);
 			$this->em->persist($product);
 
 			$this->em->flush();
-			$this->addFlash('success', 'Product created successfully');
-			return $this->redirectToRoute('admin_product_index');
+			$this->addFlash('success', 'product.created');
+
+			if ($form->get('saveAndCreateNew')->isClicked()) {
+				return $this->redirectToRoute($this->routePrefix . '_create');
+			}
+			return $this->redirectToRoute($this->routePrefix . '_index');
 		}
 
 		return $this->renderForm("admin/product/create.html.twig", [
@@ -96,22 +99,70 @@ class ProductController extends CrudController
 			'prefix' => $this->routePrefix,
 		]);
 
-
 	}
 
-	#[Route('/{id}/edit', name: 'edit')]
-	public function edit(Product $product): Response
+	/**
+	 * @throws \Exception
+	 */
+	#[Route('/{id}/edit', name: 'edit', methods: ['GET', 'POST'])]
+	public function edit(Request $request, Product $product, FileUploader $fileUploader, SluggerInterface $slugger): Response
 	{
-		//$product->setBrochureFilename(
-		//    new File($this->getParameter('brochures_directory').'/'.$product->getBrochureFilename())
-		//);
-		return $this->crudEdit($product);
+		$form = $this->createForm(ProductType::class, $product);
+		$form->handleRequest($request);
+
+		if ($product->getThumbnail()) {
+			$product->setThumbnailUrl(
+		        new File($this->getParameter('product_thumbnail_dir') . '/' . $product->getThumbnail()->getName())
+			);
+		}
+
+		if ($form->isSubmitted() && $form->isValid()){
+
+			if ($form->has('thumbnailUrl')) {
+				$thumbnailFile = $form->get('thumbnailUrl')->getData();
+				if ($thumbnailFile instanceof UploadedFile) {
+					$this->persistImage($thumbnailFile, $product, $fileUploader);
+					$product->addProductImage($product->getThumbnail());
+				}
+			}
+
+			$product->setSlug($slugger->slug($product->getName()));
+
+			$this->addFlash('success', 'product.updated');
+
+			return $this->redirectToRoute('admin_product_index');
+		}
+		return $this->renderForm('admin/product/edit.html.twig', [
+			'form' => $form,
+			'menu' => $this->menuItem,
+			'prefix' => $this->routePrefix,
+		]);
 	}
 
-	#[Route('/{id}/delete', name: 'delete')]
-	public function delete(Product $product): Response
+	#[Route('/{id}/delete', name: 'delete' , methods: ['POST'])]
+	public function delete(Product $product, Request $request): Response
 	{
-		return $this->crudDelete($product);
+		if (!$this->isCsrfTokenValid('delete', $request->request->get('token'))) {
+			return $this->redirectToRoute($this->routePrefix . '_index');
+		}
+
+		if ($product->isPurchased() and !$request->request->get('force', false)) {
+			$this->addFlash('error', 'product.cannot_delete');
+			return $request->headers->get('referer') ?
+				$this->redirect($request->headers->get('referer')) :
+				$this->redirectToRoute($this->routePrefix . '_index');
+		}
+
+		$product->getProductImages()->clear();
+
+		$this->em->remove($product);
+		$this->em->flush();
+
+		$this->addFlash('success', 'product.deleted_successfully');
+
+		return $request->headers->get('referer') ?
+			$this->redirect($request->headers->get('referer')) :
+			$this->redirectToRoute($this->routePrefix . '_index');
 	}
 
 	#[Route('/{id}/show', name: 'show')]
@@ -127,9 +178,36 @@ class ProductController extends CrudController
 		return $this->crudMassiveDelete();
 	}
 
-	private function handleThumbnail(Image $image) : void
+	/**
+	 * @throws \Exception
+	 */
+	private function persistImage(UploadedFile $file, Product $product, FileUploader $fileUploader)
 	{
-		// Liip thumbnail the image
-		$this->cacheManager->getBrowserPath($this->targetDirectory . '/' . $image->getName(), 'thumbnail');
+		$fileSize = $file->getSize();
+		$filename = $fileUploader->upload($file);
+
+		$image = new Image();
+		$image->setSize($fileSize);
+		$image->setName($filename);
+
+		$product->setThumbnailUrl($filename);
+		$product->setThumbnail($image);
+		$image->setProduct($product);
+
+		$this->cacheManager->getBrowserPath($this->getParameter('product_thumbnail_dir') . '/' . $image->getName(), 'thumbnail');
+
+		$this->em->persist($image);
+	}
+
+	private function removeUnit(Product $product) : void
+	{
+		$units = ['weight', 'length', 'width', 'height', 'thickness'];
+		foreach ($units as $unit) {
+			$getMethod = 'get' . ucfirst($unit);
+			if (!$product->$getMethod()) {
+				$method = 'set' . ucfirst($unit) . 'Unit';
+				$product->$method(null);
+			}
+		}
 	}
 }

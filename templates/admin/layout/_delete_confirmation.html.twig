@@ -1,0 +1,25 @@
+<div class="modal fade zoom" tabindex="-1" id="confirmationModal" aria-modal="true" role="button" {{ stimulus_controller('modal', {
+	'handler' : 'delete-form'
+}) }}>
+	<div class="modal-dialog" role="dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title">{{ 'delete_post_modal.title'|trans }}</h5>
+				<a href="#" class="close" data-bs-dismiss="modal" aria-label="Close">
+					{{ icon('cross') }}
+				</a>
+			</div>
+			<div class="modal-body">
+				<p>{{ 'delete_post_modal.body'|trans }}</p>
+			</div>
+			<div class="modal-footer bg-light">
+				<button type="button" class="btn btn-default" id="btnNo" data-action="modal#cancel">
+					{{ icon('ban') }} {{ 'label.cancel'|trans }}
+				</button>
+				<button type="button" class="btn btn-danger" id="btnYes" data-action="modal#handle">
+					{{ icon('trash') }} {{ 'label.delete_post'|trans }}
+				</button>
+			</div>
+		</div>
+	</div>
+</div>

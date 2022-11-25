@@ -88,7 +88,6 @@ class Product
 	private ?Category $category = null;
 
 	#[ORM\Column(nullable: false)]
-	#[Assert\NotBlank]
 	private ?string $thumbnailUrl = null;
 
 	#[ORM\Column(type: Types::BOOLEAN, nullable: false, options: ['default' => true])]
@@ -103,6 +102,9 @@ class Product
 	#[ORM\OneToOne(cascade: ['persist', 'remove'])]
 	#[ORM\JoinColumn(nullable: true)]
 	private ?Image $thumbnail = null;
+
+	#[ORM\Column(type: Types::TEXT, nullable: true)]
+	private ?string $details = null;
 
 	use MesurableTrait, SluggableTrait, TimestampTrait;
 
@@ -149,7 +151,7 @@ class Product
 
 	public function setType(?string $type): self
 	{
-		if(!in_array($type, self::TYPES)){
+		if (!in_array($type, self::TYPES)) {
 			throw new \RuntimeException('Invalid Type passed');
 		}
 		$this->type = $type;
@@ -188,7 +190,7 @@ class Product
 
 	public function getStockQuantity(): int
 	{
-		return $this->stockQuantity || 0;
+		return $this->stockQuantity;
 	}
 
 	public function setStockQuantity(int $stockQuantity): self
@@ -196,6 +198,11 @@ class Product
 		$this->stockQuantity = $stockQuantity;
 
 		return $this;
+	}
+
+	public function isPurchased(): bool
+	{
+		return false;
 	}
 
 	public function getMakingPrice(): ?float
@@ -323,5 +330,41 @@ class Product
 
 		return $this;
 	}
+
+	public function getDetails(): ?string
+	{
+		return $this->details;
+	}
+
+	public function setDetails(?string $details): self
+	{
+		$this->details = $details;
+
+		return $this;
+	}
+
+	public function getCreatedAt(): \DateTimeImmutable
+	{
+		return $this->createdAt;
+	}
+
+	public function setCreatedAt(\DateTimeImmutable $createdAt): Product
+	{
+		$this->createdAt = $createdAt;
+		return $this;
+	}
+
+	public function getUpdatedAt(): \DateTime
+	{
+		return $this->updatedAt;
+	}
+
+	public function setUpdatedAt(\DateTime $updatedAt): Product
+	{
+		$this->updatedAt = $updatedAt;
+		return $this;
+	}
+
+
 
 }

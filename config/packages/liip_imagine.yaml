@@ -16,12 +16,13 @@ liip_imagine:
     filter_sets:
         cache: ~
 
+        admin_product_thumb_jpeg:
+            format: jpeg
+            quality: 75
+            filters:
+                thumbnail: { size: [96, 96], mode: inset }
         admin_product_thumb_webp:
             format: webp
             quality: 100
             filters:
-                thumbnail: { size: [96, 96], mode: outbound }
-        admin_product_thumb:
-            quality: 75
-            filters:
-                thumbnail: { size: [96, 96], mode: outbound }
+                thumbnail: { size: [96, 96], mode: inset }

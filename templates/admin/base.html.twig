@@ -186,7 +186,7 @@
 		<script>
 			window.luxdev = {
 				...(window.luxdev || {}),
-				ADMIN: {{ is_granted('ROLE_ADMIN') ? 'true' : false }},
+				ADMIN: {{ is_granted('ROLE_ADMIN') ? 'true' : 'false' }},
 				USER: {{ app.user ? app.user.id : 'null' }},
 			};
 		</script>

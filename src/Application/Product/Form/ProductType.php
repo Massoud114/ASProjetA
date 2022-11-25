@@ -13,6 +13,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 
 class ProductType extends AbstractType
 {
@@ -25,9 +26,14 @@ class ProductType extends AbstractType
 				'required' => true,
 				'help' => 'product.form.nameHelp'
 			])
-			->add('description', null, [
+			->add('description', TextareaType::class, [
+				'label' => 'product.form.description',
 				'help' => 'product.form.descriptionHelp',
 				'required' => true,
+			])
+			->add('details', null, [
+				'help' => 'product.form.detailsHelp',
+				'required' => false,
 			])
 			->add('type', ChoiceType::class, [
 				'label' => 'product.form.types',
@@ -72,7 +78,9 @@ class ProductType extends AbstractType
 			->add('weight', NumberType::class, [
 				'label' => 'weight',
 				'html5' => true,
-				'attr' => [],
+				'attr' => [
+					'step' => 0.01,
+				],
 				'required' => false,
 			])
 			->add('weightUnit', ChoiceType::class, [
@@ -92,7 +100,9 @@ class ProductType extends AbstractType
 			->add('thickness', NumberType::class, [
 				'label' => 'thickness',
 				'html5' => true,
-				'attr' => [],
+				'attr' => [
+					'step' => 0.01,
+				],
 				'required' => false,
 			])
 			->add('thicknessUnit', ChoiceType::class, [
@@ -106,7 +116,9 @@ class ProductType extends AbstractType
 			->add('width', NumberType::class, [
 				'label' => 'width',
 				'html5' => true,
-				'attr' => [],
+				'attr' => [
+					'step' => 0.01,
+				],
 				'required' => false,
 			])
 			->add('widthUnit', ChoiceType::class, [
@@ -120,7 +132,9 @@ class ProductType extends AbstractType
 			->add('height', NumberType::class, [
 				'label' => 'height',
 				'html5' => true,
-				'attr' => [],
+				'attr' => [
+					'step' => 0.01,
+				],
 				'required' => false,
 			])
 			->add('heightUnit', ChoiceType::class, [
@@ -134,7 +148,9 @@ class ProductType extends AbstractType
 			->add('length', NumberType::class, [
 				'label' => 'length',
 				'html5' => true,
-				'attr' => [],
+				'attr' => [
+					'step' => 0.01,
+				],
 				'required' => false,
 			])
 			->add('lengthUnit', ChoiceType::class, [
@@ -161,15 +177,18 @@ class ProductType extends AbstractType
 				],
 				'help' => 'product.form.imageHelp',
 				'multiple' => false,
-				'required' => true,
+				'required' => $options['data']->getId() === null,
 				'constraints' => [
 					new File([
 						'maxSize' => '10240k',
 						'mimeTypes' => [
-							'application/image',
+							'image/jpeg',
+							'image/png',
+							'image/gif',
+							'image/svg+xml',
+							'image/webp',
+							'image/jpg',
 						],
-						'mimeTypesMessage' => 'invalidMimeTypeImage',
-						'maxSizeMessage' => 'invalidMaxSizeImage',
 					])
 				],
 			])

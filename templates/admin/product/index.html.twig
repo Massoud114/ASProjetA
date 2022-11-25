@@ -44,10 +44,10 @@
 			</div>
 
 			{% for product in rows %}
-				{% set showLink = path(prefix ~ '_edit', {id: product.id}) %}
-				{% set editLink = path(prefix ~ '_show', {id: product.id}) %}
+				{% set showLink = path(prefix ~ '_show', {id: product.id}) %}
+				{% set editLink = path(prefix ~ '_edit', {id: product.id}) %}
 				{% set deleteLink = path(prefix ~ '_delete', {id: product.id}) %}
-				<div class="nk-tb-item">
+				<div class="nk-tb-item{{ product.available ? "" : " danger" }}">
 					<div class="nk-tb-col nk-tb-col-check">
 						<div class="custom-control custom-control-sm custom-checkbox notext">
 							<input type="checkbox" class="custom-control-input" id="pid1">
@@ -56,8 +56,16 @@
 					</div>
 					<div class="nk-tb-col">
 						<span class="tb-product">
-			                <img src="{{ product.thumbnailUrl }}" alt="" class="thumb">
-			                <span class="title">{{ product.name }}</span>
+							{% if product.thumbnail %}
+								<picture>
+									<source srcset="{{ (thumbnailPath ~ product.thumbnailUrl) | imagine_filter('admin_product_thumb_webp') }}" type="image/webp">
+						            <source srcset="{{ (thumbnailPath ~ product.thumbnailUrl) | imagine_filter('admin_product_thumb_jpeg') }}" type="image/jpeg">
+						            <img loading="lazy" src="{{ (thumbnailPath ~ product.thumbnailUrl) | imagine_filter('admin_product_thumb_jpeg') }}" alt="{{ product.name ~ '_image' }}" class="thumb">
+						        </picture>
+							{% else %}
+			                    <img src="{{ product.thumbnailUrl }}" alt="{{ product.name ~ '_image' }}" class="thumb">
+			                {% endif %}
+							<span class="title">{{ product.name }}</span>
 			            </span>
 					</div>
 					<div class="nk-tb-col" style="text-align: right">
@@ -87,9 +95,27 @@
 									<div class="dropdown-menu dropdown-menu-end">
 										<ul class="link-list-opt no-bdr">
 											<li><a href="{{ editLink }}">{{ icon('edit') }}<span>{{ 'edit'|trans }}</span></a></li>
-											<li><a href="{{ showLink }}">{{ icon('edit') }}<span>{{ 'view'|trans }}</span></a></li>
+											<li><a href="{{ showLink }}">{{ icon('eye') }}<span>{{ 'view'|trans }}</span></a></li>
 											<li><a href="#">{{ icon('activity-round') }}<span>{{ 'products.orders'|trans }}</span></a></li>
-											<li><a href="{{ deleteLink }}">{{ icon('trash') }}<span>{{ 'remove'|trans }}</span></a></li>
+											<li>
+												<form action="{{ deleteLink }}" method="post" data-confirmation="true" class="delete-form" id="delete-form#{{ product.id }}">
+													<input type="hidden" name="token" value="{{ csrf_token('delete') }}" />
+													<button type="submit" class="btn p-0">
+														{{ icon('trash') }}
+														<span>{{ 'remove'|trans }}</span>
+													</button>
+												</form>
+											</li>
+											<li>
+												<form action="{{ deleteLink }}" method="post" data-confirmation="true" class="delete-form" id="delete-form-force#{{ product.id }}">
+													<input type="hidden" name="token" value="{{ csrf_token('delete') }}" />
+													<input type="hidden" name="force" value="true" />
+													<button type="submit" class="btn p-0">
+														{{ icon('trash', null, 'text-danger') }}
+														<span>{{ 'forceRemove'|trans }}</span>
+													</button>
+												</form>
+											</li>
 										</ul>
 									</div>
 								</div>
@@ -102,85 +128,5 @@
 
 		{{ paginate(rows) }}
 	</div>
-
-	<div class="nk-add-product toggle-slide toggle-slide-right" data-content="addProduct" data-toggle-screen="any" data-toggle-overlay="true" data-toggle-body="true" data-simplebar>
-		<div class="nk-block-head">
-			<div class="nk-block-head-content">
-				<h5 class="nk-block-title">New Product</h5>
-				<div class="nk-block-des">
-					<p>Add information and add new product.</p>
-				</div>
-			</div>
-		</div><!-- .nk-block-head -->
-		<div class="nk-block">
-			<div class="row g-3">
-				<div class="col-12">
-					<div class="form-group">
-						<label class="form-label" for="product-title">Product Title</label>
-						<div class="form-control-wrap">
-							<input type="text" class="form-control" id="product-title">
-						</div>
-					</div>
-				</div>
-				<div class="col-mb-6">
-					<div class="form-group">
-						<label class="form-label" for="regular-price">Regular Price</label>
-						<div class="form-control-wrap">
-							<input type="text" class="form-control" id="regular-price">
-						</div>
-					</div>
-				</div>
-				<div class="col-mb-6">
-					<div class="form-group">
-						<label class="form-label" for="sale-price">Sale Price</label>
-						<div class="form-control-wrap">
-							<input type="text" class="form-control" id="sale-price">
-						</div>
-					</div>
-				</div>
-				<div class="col-mb-6">
-					<div class="form-group">
-						<label class="form-label" for="stock">Stock</label>
-						<div class="form-control-wrap">
-							<input type="text" class="form-control" id="stock">
-						</div>
-					</div>
-				</div>
-				<div class="col-mb-6">
-					<div class="form-group">
-						<label class="form-label" for="SKU">SKU</label>
-						<div class="form-control-wrap">
-							<input type="text" class="form-control" id="SKU">
-						</div>
-					</div>
-				</div>
-				<div class="col-12">
-					<div class="form-group">
-						<label class="form-label" for="category">Category</label>
-						<div class="form-control-wrap">
-							<input type="text" class="form-control" id="category">
-						</div>
-					</div>
-				</div>
-				<div class="col-12">
-					<div class="form-group">
-						<label class="form-label" for="tags">Tags</label>
-						<div class="form-control-wrap">
-							<input type="text" class="form-control" id="tags">
-						</div>
-					</div>
-				</div>
-				<div class="col-12">
-					<div class="upload-zone small bg-lighter my-2">
-						<div class="dz-message">
-							<span class="dz-message-text">Drag and drop file</span>
-						</div>
-					</div>
-				</div>
-				<div class="col-12">
-					<button class="btn btn-primary">{{ icon('plus') }}<span>Add New</span></button>
-				</div>
-			</div>
-		</div><!-- .nk-block -->
-	</div>
+	{{ include('admin/layout/_delete_confirmation.html.twig') }}
 {% endblock %}

@@ -25,7 +25,7 @@ class Image
 	#[ORM\Column(type: 'integer')]
 	private ?int $size = null;
 
-	#[ORM\Column(type: 'datetime')]
+	#[ORM\Column(type: 'datetime', nullable: true)]
 	private ?\DateTimeInterface $updatedAt = null;
 
 	#[ORM\ManyToOne(inversedBy: 'productImages')]
@@ -34,6 +34,10 @@ class Image
 
 	#[ORM\ManyToOne]
 	private ?Color $color = null;
+
+	public function __construct() {
+		$this->updatedAt = new \DateTime();
+	}
 
 	public function getId(): ?int
 	{
