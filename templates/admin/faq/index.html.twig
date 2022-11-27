@@ -1,0 +1,44 @@
+{% extends 'admin/base.html.twig' %}
+
+{% block body %}
+	<div class="container-fluid">
+		<div class="nk-content-inner">
+			<div class="nk-content-body">
+				<div class="content-page wide-sm m-auto">
+					<div class="nk-block-head nk-block-head-lg wide-xs mx-auto">
+						<div class="nk-block-head-content text-center">
+							<div class="nk-block-head-sub"><span>FAQs</span></div>
+							<h2 class="nk-block-title fw-normal">{{ 'Frequently Asked Questions' | trans }}</h2>
+							<div class="nk-block-des">
+								<p class="lead">{{ 'faq.help' | trans }}</p>
+							</div>
+							{% if is_granted('ROLE_DEVELOPER') %}
+								<a href="{{ path(prefix ~ '_create') }}" class="btn btn-primary mt-2">Ajouter</a>
+							{% endif %}
+						</div>
+					</div>
+
+					<div class="nk-block">
+						<div class="card">
+							<div id="faqs" class="accordion">
+								{% for faq in faqs %}
+									<div class="accordion-item">
+										<a href="#" class="accordion-head" data-bs-toggle="collapse" data-bs-target="#faq-q{{ faq.id }}">
+											<h6 class="title">{{ faq.question }}</h6>
+											<span class="accordion-icon"></span>
+										</a>
+										<div class="accordion-body collapse" id="faq{{ faq.id }}" data-bs-parent="#faqs">
+											<div class="accordion-inner">
+												{{ faq.answer|raw }}
+											</div>
+										</div>
+									</div>
+								{% endfor %}
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+{% endblock %}

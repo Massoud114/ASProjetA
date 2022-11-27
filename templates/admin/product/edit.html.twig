@@ -10,8 +10,14 @@
 {% block title 'product.edit'|trans %}
 
 {% block form %}
-	{% include 'admin/product/_form.html.twig' with {'form' : form} %}
+	{% include 'admin/product/_form.html.twig' with {
+		'form' : form,
+		'action' : 'edit',
+		'button_label' : 'update'
+	} %}
+	{% include 'admin/layout/_delete_confirmation.html.twig' %}
 {% endblock %}
+
 
 {% block javascripts %}
 	{{ parent() }}
@@ -22,3 +28,4 @@
 	{{ parent() }}
 	{{ encore_entry_link_tags('editor') }}
 {% endblock %}
+

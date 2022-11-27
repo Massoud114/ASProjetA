@@ -1,0 +1,13 @@
+<form
+        method="post"
+        action="{{ path(prefix ~ '_delete', {id: faq.id}) }}"
+        class="delete-form"
+        data-confirmation="true"
+        id="delete-form#{{ faq.id }}"
+>
+    <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ faq.id) }}">
+    <button type="submit" class="btn btn-danger">
+        {{ icon('trash') }}
+        <span>{{ 'remove'|trans }}</span>
+    </button>
+</form>

@@ -34,6 +34,10 @@ class ProductType extends AbstractType
 			->add('details', null, [
 				'help' => 'product.form.detailsHelp',
 				'required' => false,
+				'attr' => [
+					'class' => 'rich-text-editor',
+					'rows' => 7,
+				]
 			])
 			->add('type', ChoiceType::class, [
 				'label' => 'product.form.types',

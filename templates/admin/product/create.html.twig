@@ -10,7 +10,7 @@
 {% block title 'product.add'|trans %}
 
 {% block form %}
-	{% include 'admin/product/_form.html.twig' with {'form' : form} %}
+	{% include 'admin/product/_form.html.twig' with {'form' : form, 'action' : 'create'} %}
 {% endblock %}
 
 {% block javascripts %}
@@ -22,6 +22,3 @@
 {{ parent() }}
 	{{ encore_entry_link_tags('editor') }}
 {% endblock %}
-
-
-

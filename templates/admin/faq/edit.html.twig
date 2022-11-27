@@ -1,0 +1,29 @@
+{% extends 'admin/layout/_squeleton_new.html.twig' %}
+
+{% block title 'faq.edit'|trans %}
+
+{% block formTitle %}
+    <h2 class="nk-block-title fw-normal">{{ 'faq.edit' | trans }}</h2>
+    <div class="nk-block-des">
+        <p class="lead">{{ 'global_form_help' | trans }}</p>
+    </div>
+{% endblock %}
+
+{% block form %}
+    {% include 'admin/faq/_form.html.twig' with {
+        'button_label': 'update',
+        'form' : form,
+        'action' : 'edit'
+    } %}
+    {% include 'admin/layout/_delete_confirmation.html.twig' %}
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    {{ encore_entry_script_tags('editor') }}
+{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    {{ encore_entry_link_tags('editor') }}
+{% endblock %}

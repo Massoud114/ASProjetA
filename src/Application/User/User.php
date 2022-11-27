@@ -15,6 +15,7 @@ use App\Infrastructure\Auth\Entity\SocialLoggableTrait;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
+use function Symfony\Component\Translation\t;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
@@ -401,9 +402,13 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 	public function getRoleIdentifier(): string
 	{
 		if (in_array('ROLE_SUPER_ADMIN', $this->roles)) {
-			return 'Super Administrateur';
-		} else if (in_array('ROLE_ADMIN', $this->roles)) {
-			return 'Administrateur';
+			return t('super_admin');
+		} else if (in_array('ROLE_DEVELOPER', $this->roles)) {
+			return t('developer');
+		} else if (in_array('ROLE_STOCK', $this->roles)) {
+			return t('administrator');
+		}else if (in_array('ROLE_MANAGER', $this->roles)) {
+			return t('manager');
 		} else {
 			throw new AccessDeniedException('Vous n\'avez pas les droits pour accéder à cette page');
 		}

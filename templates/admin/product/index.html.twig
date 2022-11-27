@@ -123,7 +123,7 @@
 											<li>
 												<form action="{{ deleteLink }}" method="post" data-confirmation="true" class="delete-form" id="delete-form#{{ product.id }}">
 													<input type="hidden" name="token" value="{{ csrf_token('delete') }}" />
-													<button type="submit" class="btn p-0">
+													<button type="submit" class="btn p-0 w-100">
 														{{ icon('trash') }}
 														<span>{{ 'remove'|trans }}</span>
 													</button>
@@ -133,7 +133,7 @@
 												<form action="{{ deleteLink }}" method="post" data-confirmation="true" class="delete-form" id="delete-form-force#{{ product.id }}">
 													<input type="hidden" name="token" value="{{ csrf_token('delete') }}" />
 													<input type="hidden" name="force" value="true" />
-													<button type="submit" class="btn p-0">
+													<button type="submit" class="btn p-0 w-100">
 														{{ icon('trash', null, 'text-danger') }}
 														<span>{{ 'forceRemove'|trans }}</span>
 													</button>
