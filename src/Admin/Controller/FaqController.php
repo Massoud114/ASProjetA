@@ -47,7 +47,7 @@ class FaqController extends CrudController
         ]);
     }
 
-    #[Route('/{id}/edit', name: 'app_faq_edit', methods: ['GET', 'POST'])]
+    #[Route('/{id}/edit', name: 'edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, Faq $faq, FaqRepository $faqRepository): Response
     {
         $form = $this->createForm(FaqType::class, $faq)
@@ -67,21 +67,17 @@ class FaqController extends CrudController
         ]);
     }
 
-    #[Route('/{id}', name: 'app_faq_delete', methods: ['POST'])]
+    #[Route('/{id}', name: 'delete', methods: ['POST'])]
     public function delete(Request $request, Faq $faq, FaqRepository $faqRepository): Response
     {
         if ($this->isCsrfTokenValid('delete'.$faq->getId(), $request->request->get('_token'))) {
             $faqRepository->remove($faq, true);
         } else {
 	        $this->addFlash('error', 'invalid_csrf_token');
-	        return $request->headers->get('referer') ?
-		        $this->redirect($request->headers->get('referer')) :
-		        $this->redirectToRoute($this->routePrefix . '_index');
+	        return $this->redirectToRoute($this->routePrefix . '_index');
         }
 
-	    return $request->headers->get('referer') ?
-		    $this->redirect($request->headers->get('referer')) :
-		    $this->redirectToRoute($this->routePrefix . '_index', [], Response::HTTP_SEE_OTHER);
+	    return $this->redirectToRoute($this->routePrefix . '_index', [], Response::HTTP_SEE_OTHER);
 
     }
 }

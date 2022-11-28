@@ -7,6 +7,19 @@
 {% block title 'products'|trans %}
 
 {% block actions %}
+	<li>
+		<div class="dropdown">
+			<a href="#" class="dropdown-toggle dropdown-indicator btn btn-outline-light btn-white" data-bs-toggle="dropdown">Status</a>
+			<div class="dropdown-menu dropdown-menu-end">
+				<ul class="link-list-opt no-bdr">
+					<li><a href="#"><span></span>Favoris</a></li>
+					<li><a href="#"><span>Visibles</span></a></li>
+					<li><a href="#"><span>Non visibles</span></a></li>
+					<li><a href="#"><span>Stock vide</span></a></li>
+				</ul>
+			</div>
+		</div>
+	</li>
 	<li class="nk-block-tools-opt">
 		<a href="{{ path(prefix ~ '_create') }}" class="btn btn-icon btn-primary d-md-none">
 			{{ icon('plus') }}
@@ -23,133 +36,150 @@
 
 {% block content %}
 	<div class="nk-block">
-		<div class="nk-tb-list is-separate mb-3" {{ stimulus_controller('product-list') }}>
-			<div class="nk-tb-item nk-tb-head">
-				<div class="nk-tb-col nk-tb-col-check">
-					<div class="custom-control custom-control-sm custom-checkbox notext">
-						<input type="checkbox" class="custom-control-input" id="massiveCheck">
-						<label class="custom-control-label" for="massiveCheck"></label>
-					</div>
-				</div>
-				<div class="nk-tb-col{{ sorted(rows, 'row.name') ? ' focus' : '' }}">
-					{{ sort_by(rows, 'Name'|trans, 'row.name') }}
-				</div>
-				<div class="nk-tb-col{{ sorted(rows, 'row.fixedPrice') ? ' focus' : '' }}">
-					{{ sort_by(rows, 'fixed.price'|trans, 'row.fixedPrice') }}
-				</div>
-				<div class="nk-tb-col{{ sorted(rows, 'row.stockQuantity') ? ' focus' : '' }}">
-					{{ sort_by(rows, 'Stock'|trans, 'row.stockQuantity') }}
-				</div>
-				<div class="nk-tb-col tb-col-sm">{{ 'shown'|trans }} ?</div>
-				<div class="nk-tb-col tb-col-md">{{ icon('star', 'round', 'tb-asterisk') }}</div>
-				<div class="nk-tb-col nk-tb-col-tools">{{ 'actions'|trans }}</div>
-			</div>
+		<div class="card">
+			<div class="card-inner-group">
+				<div class="card-inner p-0">
+					<div class="nk-tb-list mb-3" {{ stimulus_controller('product-list') }}>
+						<div class="nk-tb-item nk-tb-head">
+							<div class="nk-tb-col nk-tb-col-check">
+								<div class="custom-control custom-control-sm custom-checkbox notext">
+									<input type="checkbox" class="custom-control-input" id="massiveCheck">
+									<label class="custom-control-label" for="massiveCheck"></label>
+								</div>
+							</div>
+							<div class="nk-tb-col{{ sorted(rows, 'row.name') ? ' focus' : '' }} text-center">
+								{{ sort_by(rows, 'Name'|trans, 'row.name') }}
+							</div>
+							<div class="nk-tb-col{{ sorted(rows, 'row.fixedPrice') ? ' focus' : '' }} text-center">
+								{{ sort_by(rows, 'fixed.price'|trans, 'row.fixedPrice') }}
+							</div>
+							<div class="nk-tb-col{{ sorted(rows, 'row.stockQuantity') ? ' focus' : '' }} text-center">
+								{{ sort_by(rows, 'Stock'|trans, 'row.stockQuantity') }}
+							</div>
+							<div class="nk-tb-col tb-col-sm text-center">{{ 'shown'|trans }} ?</div>
+							<div class="nk-tb-col tb-col-md text-center">{{ icon('star', 'round', 'tb-asterisk') }}</div>
+							<div class="nk-tb-col nk-tb-col-tools text-center">{{ 'actions'|trans }}</div>
+						</div>
 
-			{% for product in rows %}
-				{% set showLink = path(prefix ~ '_show', {id: product.id}) %}
-				{% set editLink = path(prefix ~ '_edit', {id: product.id}) %}
-				{% set deleteLink = path(prefix ~ '_delete', {id: product.id}) %}
-				<div class="nk-tb-item{{ product.available ? "" : " danger" }}">
-					<div class="nk-tb-col nk-tb-col-check">
-						<div class="custom-control custom-control-sm custom-checkbox notext">
-							<input
-									type="checkbox"
-									class="custom-control-input product-checkbox"
-									id="pid{{ product.id }}"
-									{{ stimulus_action('product-list', 'toggleMassiveDelete') }}
-							>
-							<label class="custom-control-label" for="pid{{ product.id }}"></label>
-						</div>
-					</div>
-					<div class="nk-tb-col">
-						<span class="tb-product">
-							{% if product.thumbnail %}
-								<picture>
-									<source srcset="{{ (thumbnailPath ~ product.thumbnailUrl) | imagine_filter('admin_product_thumb_webp') }}" type="image/webp">
-						            <source srcset="{{ (thumbnailPath ~ product.thumbnailUrl) | imagine_filter('admin_product_thumb_jpeg') }}" type="image/jpeg">
-						            <img loading="lazy" src="{{ (thumbnailPath ~ product.thumbnailUrl) | imagine_filter('admin_product_thumb_jpeg') }}" alt="{{ product.name ~ '_image' }}" class="thumb">
-						        </picture>
-							{% else %}
-			                    <img src="{{ product.thumbnailUrl }}" alt="{{ product.name ~ '_image' }}" class="thumb">
-			                {% endif %}
-							<span class="title">{{ product.name }}</span>
-			            </span>
-					</div>
-					<div class="nk-tb-col" style="text-align: right">
-						<span class="tb-lead">{{ product.fixedPrice | format_currency('XOF', locale='fr') }}</span>
-					</div>
-					<div class="nk-tb-col">
-						<span class="tb-lead">{{ product.stockQuantity }}</span>
-					</div>
-					<div class="nk-tb-col tb-col-sm">
-						<div class="enable">
-							<a
-									style="margin-right: 50%"
-									class="toggle-switch-button{{ product.visible ? ' active' : '' }}"
-									data-active="{{ product.visible ? "true" : "false" }}"
-									href="#"
-									id="switch-active-#{{ product.id }}"
-									data-product-id="{{ product.id }}"
-									{{ stimulus_action('product-list', 'toggleActive', 'click') }}
-							></a>
-						</div>
-					</div>
-					<div class="nk-tb-col tb-col-md">
-						<div class="asterisk tb-asterisk">
-							<a
-									href="#"
-									data-product-id="{{ product.id }}"
-									data-favorite="{{ product.isFavorite ? "true" : "false" }}"
-									class="{{ product.isFavorite ? 'active' : '' }}"
-									id="switch-favorite-{{ product.id }}"
-									data-product-id="{{ product.id }}"
-									{{ stimulus_action('product-list', 'toggleFavorite', 'click') }}
-							>
-								{{ icon('star', '', 'asterisk-off') }}
-								{{ icon('star', 'fill', 'asterisk-on') }}
-							</a>
-						</div>
-					</div>
-					<div class="nk-tb-col nk-tb-col-tools">
-						<ul class="nk-tb-actions gx-1 my-n1">
-							<li class="me-n1">
-								<div class="dropdown">
-									<a href="#" class="dropdown-toggle btn btn-icon btn-trigger" data-bs-toggle="dropdown">{{ icon('more-h') }}</a>
-									<div class="dropdown-menu dropdown-menu-end">
-										<ul class="link-list-opt no-bdr">
-											<li><a href="{{ editLink }}">{{ icon('edit') }}<span>{{ 'edit'|trans }}</span></a></li>
-											<li><a href="{{ showLink }}">{{ icon('eye') }}<span>{{ 'view'|trans }}</span></a></li>
-											<li><a href="#">{{ icon('activity-round') }}<span>{{ 'products.orders'|trans }}</span></a></li>
-											<li>
-												<form action="{{ deleteLink }}" method="post" data-confirmation="true" class="delete-form" id="delete-form#{{ product.id }}">
-													<input type="hidden" name="token" value="{{ csrf_token('delete') }}" />
-													<button type="submit" class="btn p-0 w-100">
-														{{ icon('trash') }}
-														<span>{{ 'remove'|trans }}</span>
-													</button>
-												</form>
-											</li>
-											<li>
-												<form action="{{ deleteLink }}" method="post" data-confirmation="true" class="delete-form" id="delete-form-force#{{ product.id }}">
-													<input type="hidden" name="token" value="{{ csrf_token('delete') }}" />
-													<input type="hidden" name="force" value="true" />
-													<button type="submit" class="btn p-0 w-100">
-														{{ icon('trash', null, 'text-danger') }}
-														<span>{{ 'forceRemove'|trans }}</span>
-													</button>
-												</form>
-											</li>
-										</ul>
+						{% for product in rows %}
+							{% set showLink = path(prefix ~ '_show', {id: product.id}) %}
+							{% set editLink = path(prefix ~ '_edit', {id: product.id}) %}
+							{% set deleteLink = path(prefix ~ '_delete', {id: product.id}) %}
+							<div class="nk-tb-item{{ product.available ? "" : " nk-tb-danger" }}">
+								<div class="nk-tb-col nk-tb-col-check">
+									<div class="custom-control custom-control-sm custom-checkbox notext">
+										<input
+												type="checkbox"
+												class="custom-control-input product-checkbox"
+												id="pid{{ product.id }}"
+												name="product[]"
+												{{ stimulus_action('product-list', 'toggleMassiveDelete') }}
+										>
+										<label class="custom-control-label" for="pid{{ product.id }}"></label>
 									</div>
 								</div>
-							</li>
-						</ul>
+								<div class="nk-tb-col">
+									<span class="tb-product justify-content-sm-center justify-content-lg-start">
+										{% if product.thumbnail %}
+											<picture>
+												<source srcset="{{ (thumbnailPath ~ product.thumbnailUrl) | imagine_filter('admin_product_thumb_webp') }}" type="image/webp">
+									            <source srcset="{{ (thumbnailPath ~ product.thumbnailUrl) | imagine_filter('admin_product_thumb_jpeg') }}" type="image/jpeg">
+									            <img loading="lazy" src="{{ (thumbnailPath ~ product.thumbnailUrl) | imagine_filter('admin_product_thumb_jpeg') }}" alt="{{ product.name ~ '_image' }}" class="thumb">
+									        </picture>
+										{% else %}
+						                    <img src="{{ product.thumbnailUrl }}" alt="{{ product.name ~ '_image' }}" class="thumb">
+						                {% endif %}
+										<span class="title">{{ product.name }}</span>
+						            </span>
+								</div>
+								<div class="nk-tb-col" style="text-align: right">
+									<span class="tb-lead">{{ product.fixedPrice | format_currency('XOF', locale='fr') }}</span>
+								</div>
+								<div class="nk-tb-col text-center">
+									<span class="tb-lead">{{ product.stockQuantity }}</span>
+								</div>
+								<div class="nk-tb-col tb-col-sm text-center">
+									<div class="enable">
+										<a
+												style="margin-right: 50%"
+												class="toggle-switch-button{{ product.visible ? ' active' : '' }}"
+												data-active="{{ product.visible ? "true" : "false" }}"
+												href="#"
+												id="switch-active-#{{ product.id }}"
+												data-product-id="{{ product.id }}"
+												{{ stimulus_action('product-list', 'toggleActive', 'click') }}
+										></a>
+									</div>
+								</div>
+								<div class="nk-tb-col tb-col-md text-center">
+									<div class="asterisk tb-asterisk">
+										<a
+												href="#"
+												data-product-id="{{ product.id }}"
+												data-favorite="{{ product.isFavorite ? "true" : "false" }}"
+												class="{{ product.isFavorite ? 'active' : '' }}"
+												id="switch-favorite-{{ product.id }}"
+												data-product-id="{{ product.id }}"
+												{{ stimulus_action('product-list', 'toggleFavorite', 'click') }}
+										>
+											{{ icon('star', '', 'asterisk-off') }}
+											{{ icon('star', 'fill', 'asterisk-on') }}
+										</a>
+									</div>
+								</div>
+								<div class="nk-tb-col nk-tb-col-tools">
+									<ul class="nk-tb-actions gx-1 my-n1">
+										<li class="me-n1">
+											<div class="dropdown">
+												<a href="#" class="dropdown-toggle btn btn-icon btn-trigger" data-bs-toggle="dropdown">{{ icon('more-h') }}</a>
+												<div class="dropdown-menu dropdown-menu-end">
+													<ul class="link-list-opt no-bdr">
+														<li><a href="{{ editLink }}">{{ icon('edit') }}<span>{{ 'edit'|trans }}</span></a></li>
+														<li><a href="{{ showLink }}">{{ icon('eye') }}<span>{{ 'view'|trans }}</span></a></li>
+														<li><a href="#">{{ icon('activity-round') }}<span>{{ 'products.orders'|trans }}</span></a></li>
+														<li>
+															<form action="{{ deleteLink }}" method="post" data-confirmation="true" class="delete-form" id="delete-form#{{ product.id }}">
+																<input type="hidden" name="token" value="{{ csrf_token('delete') }}" />
+																<button type="submit" class="btn p-0 w-100">
+																	{{ icon('trash') }}
+																	<span>{{ 'remove'|trans }}</span>
+																</button>
+															</form>
+														</li>
+														<li>
+															<form action="{{ deleteLink }}" method="post" data-confirmation="true" class="delete-form" id="delete-form-force#{{ product.id }}">
+																<input type="hidden" name="token" value="{{ csrf_token('delete') }}" />
+																<input type="hidden" name="force" value="true" />
+																<button type="submit" class="btn p-0 w-100">
+																	{{ icon('trash', null, 'text-danger') }}
+																	<span>{{ 'forceRemove'|trans }}</span>
+																</button>
+															</form>
+														</li>
+													</ul>
+												</div>
+											</div>
+										</li>
+									</ul>
+								</div>
+							</div>
+						{% endfor %}
 					</div>
 				</div>
-			{% endfor %}
+			</div>
+			<div class="card-inner">
+				<div class="nk-block-between-md g-3">
+					<div class="g">
+						{{ paginate(rows) }}
+					</div>
+					<div class="g">
+						<div class="pagination-goto d-flex justify-content-center justify-content-md-start gx-3">
+							Nombre total de produits : {{ rows|length }}
+						</div>
+					</div>
+				</div>
+			</div>
 		</div>
-
-		{{ paginate(rows) }}
 	</div>
 	{{ include('admin/layout/_delete_confirmation.html.twig') }}
 {% endblock %}

@@ -13,12 +13,16 @@ use App\Application\Product\ProductRepository;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\File\File;
+use App\Application\Media\Image\ImageRepository;
+use App\Application\Purchase\PurchaseRepository;
 use Liip\ImagineBundle\Imagine\Cache\CacheManager;
 use Symfony\Component\String\Slugger\SluggerInterface;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 
 #[Route('/product', name: 'product_')]
+#[IsGranted('ROLE_STOCK')]
 class ProductController extends CrudController
 {
 	protected string $menuItem = 'product';
@@ -33,7 +37,7 @@ class ProductController extends CrudController
 		$this->paginator = $paginator;
 	}
 
-	#[Route('/', name: 'index')]
+	#[Route('/', name: 'index', methods: ['GET'])]
 	public function index(Request $request, ProductRepository $repository): Response
 	{
 		$query = $repository
@@ -60,7 +64,7 @@ class ProductController extends CrudController
 	/**
 	 * @throws \Exception
 	 */
-	#[Route('/create', name: 'create')]
+	#[Route('/create', name: 'create', methods: ['GET', 'POST'])]
 	public function create(Request $request, FileUploader $fileUploader, SluggerInterface $slugger): Response
 	{
 		$product = new Product();
@@ -130,12 +134,13 @@ class ProductController extends CrudController
 
 			$this->addFlash('success', 'product.updated');
 
-			return $this->redirectToRoute('admin_product_index');
+			return $this->redirectToRoute($this->routePrefix . '_index');
 		}
 		return $this->renderForm('admin/product/edit.html.twig', [
 			'form' => $form,
 			'menu' => $this->menuItem,
 			'prefix' => $this->routePrefix,
+			'product' => $product
 		]);
 	}
 
@@ -143,26 +148,24 @@ class ProductController extends CrudController
 	public function delete(Product $product, Request $request): Response
 	{
 		if (!$this->isCsrfTokenValid('delete', $request->request->get('token'))) {
+			$this->addFlash('error', 'invalid_csrf_token');
 			return $this->redirectToRoute($this->routePrefix . '_index');
 		}
 
 		if ($product->isPurchased() and !$request->request->get('force', false)) {
 			$this->addFlash('error', 'product.cannot_delete');
-			return $request->headers->get('referer') ?
-				$this->redirect($request->headers->get('referer')) :
-				$this->redirectToRoute($this->routePrefix . '_index');
+			return $this->redirectToRoute($this->routePrefix . '_index');
 		}
 
 		$product->getProductImages()->clear();
+//		$product->getPurchases()->clear();
 
 		$this->em->remove($product);
 		$this->em->flush();
 
 		$this->addFlash('success', 'product.deleted_successfully');
 
-		return $request->headers->get('referer') ?
-			$this->redirect($request->headers->get('referer')) :
-			$this->redirectToRoute($this->routePrefix . '_index');
+		return $this->redirectToRoute($this->routePrefix . '_index');
 	}
 
 	#[Route('/{id}/show', name: 'show')]
@@ -171,12 +174,33 @@ class ProductController extends CrudController
 		return $this->crudShow($product);
 	}
 
-	/* Massive delete */
 	#[Route('/massive-delete', name: 'massive_delete')]
-	public function massiveDelete(): Response
+	public function massiveDelete(Request $request, ImageRepository $imageRepository, PurchaseRepository $purchaseRepository, ProductRepository $productRepository): Response
 	{
-		return $this->crudMassiveDelete();
+		if (!$this->isCsrfTokenValid('massive-delete', $request->request->get('token'))) {
+			$this->addFlash('error', 'invalid_csrf_token');
+			return $this->redirectToRoute($this->routePrefix . '_index');
+		}
+
+		$ids = $request->request->get('productIds');
+		$ids = explode(',', $ids);
+		dd($ids);
+
+		if ($purchaseRepository->countPurchaseByProducts($ids) > 0) {
+			$this->addFlash('error', 'product.cannot_delete');
+			return $this->redirectToRoute($this->routePrefix . '_index');
+		}
+		$imageRepository->removeByProducts($ids);
+		$productRepository->removeByIds($ids);
+
+		$this->addFlash("success", "products.delete.successfully");
+
+		return $request->headers->get('referer') ?
+			$this->redirect($request->headers->get('referer')) :
+			$this->redirectToRoute($this->routePrefix . '_index');
 	}
+
+
 
 	/**
 	 * @throws \Exception

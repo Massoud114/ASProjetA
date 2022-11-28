@@ -1,6 +1,6 @@
 import Quill from 'quill';
 
-document.addEventListener('DOMContentLoaded', function() {
+const bindEvents = function() {
 	let editors = document.querySelectorAll('.rich-text-editor');
 	if (editors.length > 0) {
 		editors.forEach(function(editor) {
@@ -38,4 +38,6 @@ document.addEventListener('DOMContentLoaded', function() {
 			});
 		});
 	}
-})
+};
+
+document.addEventListener('DOMContentLoaded', bindEvents)

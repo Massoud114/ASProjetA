@@ -8,24 +8,39 @@ export default class extends Controller {
 		let darkSwitcher = this.element
 		darkSwitcher.classList.add('dark-switch')
 
-		darkSwitcher.addEventListener('click', e => {
-			const themeToRemove = e.currentTarget.classList.contains('active') ? 'light' : 'dark'
-			const themeToAdd = e.currentTarget.classList.contains('active') ? 'dark' : 'light'
-			document.body.classList.add(`${themeToAdd}-mode`)
-			document.body.classList.remove(`${themeToRemove}-mode`)
-
-			if (isAuthenticated()){
-				/*jsonFetchOrFlash('/api/profil/theme', {
-					body: { theme: themeToAdd },
-					method: 'POST'
-				}).catch(console.error)*/
-			}
-			else {
-				cookie('theme', themeToAdd, {expires : 30})
-			}
+		let self = this
+		darkSwitcher.addEventListener('click', function(e) {
+			self.changeTheme(e)
 		})
 
+		this.setTheme(darkSwitcher)
+	}
 
+	disconnect() {
+		let self = this
+		this.element.removeEventListener('click', function(e) {
+			e.preventDefault()
+		})
+	}
+
+	changeTheme(e) {
+		const themeToRemove = e.currentTarget.classList.contains('active') ? 'light' : 'dark'
+		const themeToAdd = e.currentTarget.classList.contains('active') ? 'dark' : 'light'
+		document.body.classList.add(`${themeToAdd}-mode`)
+		document.body.classList.remove(`${themeToRemove}-mode`)
+
+		if (isAuthenticated()){
+			/*jsonFetchOrFlash('/api/profil/theme', {
+				body: { theme: themeToAdd },
+				method: 'POST'
+			}).catch(console.error)*/
+		}
+		else {
+			cookie('theme', themeToAdd, {expires : 30})
+		}
+	}
+
+	setTheme(darkSwitcher) {
 		if (!isAuthenticated()) {
 			const savedTheme = cookie('theme')
 			if (savedTheme === null) {
@@ -37,8 +52,8 @@ export default class extends Controller {
 			} else {
 				document.body.classList.add(`${savedTheme}-mode`)
 				savedTheme === 'dark' ?
-				darkSwitcher.classList.add('active') :
-				darkSwitcher.classList.remove('active')
+					darkSwitcher.classList.add('active') :
+					darkSwitcher.classList.remove('active')
 			}
 		} else if (document.body.classList.contains('dark-mode')){
 			darkSwitcher.classList.add('active')

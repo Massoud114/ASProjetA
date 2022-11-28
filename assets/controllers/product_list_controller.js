@@ -70,4 +70,11 @@ export default class extends Controller {
 			}
 		})
 	}
+
+	disconnect(){
+		let massiveCheckButton = document.getElementById('massiveCheck');
+		massiveCheckButton.removeEventListener('change', function(event) {
+			event.preventDefault();
+		})
+	}
 }

@@ -3,7 +3,7 @@
         "@symfony/ux-dropzone": {
             "dropzone": {
                 "enabled": true,
-                "fetch": "eager",
+                "fetch": "lazy",
                 "autoimport": {
                     "@symfony/ux-dropzone/src/style.css": true
                 }

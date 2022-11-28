@@ -83,7 +83,7 @@
             box-shadow: 0 2px 15px -4px rgba($accent-color, 0.4);
         }
     }
-    .danger {
+    &-danger {
         box-shadow: -1px 1px 12px -4px rgba($danger, 0.4);
     }
     &-col{

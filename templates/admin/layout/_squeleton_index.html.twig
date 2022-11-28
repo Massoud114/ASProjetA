@@ -15,13 +15,15 @@
 						<div class="nk-block-head-content">
 							<ul class="nk-block-tools g-3">
 								<li class="nk-block-tools-opt hidden" id="massive-delete-button">
-									<a href="{{ path(prefix ~ '_massive_delete') }}" class="btn btn-icon btn-danger d-md-none">
-										{{ icon('trash') }}
-									</a>
-									<a href="{{ path(prefix ~ '_massive_delete') }}" class="btn btn-danger d-none d-md-inline-flex">
-										{{ icon('trash') }}
-										<span>{{ 'delete'|trans }}</span>
-									</a>
+									<form action="{{ path(prefix ~ '_massive_delete') }}" class="d-inline-block" method="post" {{ stimulus_controller('massive-delete') }}>
+										<input type="hidden" name="token" value="{{ csrf_token('massive-delete') }}" />
+										<button type="submit" class="btn btn-icon btn-danger d-md-none">
+											{{ icon('trash') }}
+										</button>
+										<button type="submit" class="btn btn-danger d-none d-md-inline-flex">
+											{{ icon('trash') }} {{ 'delete'|trans }}
+										</button>
+									</form>
 								</li>
 							</ul>
 						</div>
@@ -37,18 +39,6 @@
 													{{ icon('search') }}
 												</div>
 												<input type="text" class="form-control" id="default-04" placeholder="Quick search by id">
-											</div>
-										</li>
-										<li>
-											<div class="dropdown">
-												<a href="#" class="dropdown-toggle dropdown-indicator btn btn-outline-light btn-white" data-bs-toggle="dropdown">Status</a>
-												<div class="dropdown-menu dropdown-menu-end">
-													<ul class="link-list-opt no-bdr">
-														<li><a href="#"><span>New Items</span></a></li>
-														<li><a href="#"><span>Featured</span></a></li>
-														<li><a href="#"><span>Out of Stock</span></a></li>
-													</ul>
-												</div>
 											</div>
 										</li>
 											{% block actions %}{% endblock %}

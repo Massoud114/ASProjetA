@@ -1,5 +1,5 @@
 {% if pageCount > 1 %}
-	<ul class="pagination justify-content-center">
+	<ul class="pagination justify-content-center justify-content-md-start">
 		{% if previous is defined %}
 			<li class="page-item">
 				<a class="page-link" aria-label="Prev" href="{{ path(route, query|merge({(pageParameterName): previous})) }}">&laquo;</a>
@@ -56,7 +56,7 @@
 
 		{% if next is defined %}
 			<li class="page-item">
-				<a class="page-link" href="{{ path(route, query|merge({(pageParameterName): next})) }}">Next</a>
+				<a class="page-link" href="{{ path(route, query|merge({(pageParameterName): next})) }}">&raquo;</a>
 			</li>
 		{% else %}
 			<li class="page-item disabled">
