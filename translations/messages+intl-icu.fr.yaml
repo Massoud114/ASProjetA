@@ -7,27 +7,34 @@ products.edit: 'Modification du produit'
 single: Unitaire
 pack: Pack
 on_command: 'Sur Commande'
-product.label: Produit
-product.add: 'Ajouter un produit'
-product.edit: 'Modifier un produit'
-product.delete: 'Supprimer un produit'
-product.updated: 'Le produit a bien été modifié !'
-product.created: 'Le produit a bien été crée !'
-product.form.name: 'Quel est le nom du produit ?'
-product.form.nameHelp: 'Example : "Fleurs séchées de chine 100g, Pack de portes clés 50, Poster 30x40..."'
-product.form.types: "Quel type de produit s'agit-il ?"
-product.form.fixedPrice: 'A quel prix le produit sera t-il vendu ?'
-product.form.fixedPriceHelp: 'Ce prix est celui qui sera affiché sur le site / Vous pourrez le modifier facilement depuis la liste des produits'
-product.form.brand: 'Marque du produit'
-product.form.brandHelp: 'Vous pouvez ignorer cette partie si vous ne souhaitez pas afficher la marque du produit'
-product.form.description: "Décrivez un peu votre produit, ce qu'il contient, ce qu'il est, etc..."
-product.form.descriptionHelp: "Entrer une bonne description. S'il s'agit d'un pack, listez la contenance du pack. Donnez toutes les infos possible pour permettre à un  utilisateur de comprendre le produit"
-product.form.toggleHelp: 'Si vous souhaitez que le produit soit visible sur le site, cochez la case'
-product.form.image: 'Image du produit'
-product.form.imageHelp: "Choisissez l'image qui représentera le produit. Vous pourrez la modifier après !"
-product.form.imageLabel: 'Image du produit'
-product.form.tabHelp: "Cliquez sur les différents onglets pour ajouter plus d'informations. Votre produit sera mieux perçu si vous donnez beaucoup de détails"
-product.form.detailsHelp: 'Soyez libre de décrire le produit comme vous le souhaitez. Vous pouvez ajouter des images, des vidéos, des liens, etc... Au moins 3  paragraphes sont souhaités'
+product:
+    label: Produit
+    add: 'Ajouter un produit'
+    edit: 'Modifier un produit'
+    delete: 'Supprimer un produit'
+    updated: 'Le produit a bien été modifié !'
+    created: 'Le produit a bien été crée !'
+    form:
+        name: 'Quel est le nom du produit ?'
+        nameHelp: 'Example : "Fleurs séchées de chine 100g, Pack de portes clés 50, Poster 30x40..."'
+        types: "Quel type de produit s'agit-il ?"
+        fixedPrice: 'A quel prix le produit sera t-il vendu ?'
+        fixedPriceHelp: 'Ce prix est celui qui sera affiché sur le site / Vous pourrez le modifier facilement depuis la liste des produits'
+        brand: 'Marque du produit'
+        brandHelp: 'Vous pouvez ignorer cette partie si vous ne souhaitez pas afficher la marque du produit'
+        description: "Décrivez un peu votre produit, ce qu'il contient, ce qu'il est, etc..."
+        descriptionHelp: "Entrer une bonne description. S'il s'agit d'un pack, listez la contenance du pack. Donnez toutes les infos possible pour permettre à un  utilisateur de comprendre le produit"
+        toggleHelp: 'Si vous souhaitez que le produit soit visible sur le site, cochez la case'
+        image: 'Image du produit'
+        imageHelp: "Choisissez l'image qui représentera le produit. Vous pourrez la modifier après !"
+        imageLabel: 'Image du produit'
+        tabHelp: "Cliquez sur les différents onglets pour ajouter plus d'informations. Votre produit sera mieux perçu si vous donnez beaucoup de détails"
+        detailsHelp: 'Soyez libre de décrire le produit comme vous le souhaitez. Vous pouvez ajouter des images, des vidéos, des liens, etc... Au moins 3  paragraphes sont souhaités'
+    deleted_successfully: 'Le produit a bien été supprimé !'
+    deleted_confirm: 'Êtes-vous sûr de vouloir supprimer ce produit ?'
+    deleted_error: 'Une erreur est survenue lors de la suppression du produit'
+
+
 brand: Marque
 stockQuantityHelp: "Entrer 0 s'il s'agit d'une commande"
 stockQuantity: 'Quantité en stock'

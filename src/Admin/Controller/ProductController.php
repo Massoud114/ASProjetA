@@ -19,6 +19,7 @@ use Liip\ImagineBundle\Imagine\Cache\CacheManager;
 use Symfony\Component\String\Slugger\SluggerInterface;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 
 #[Route('/product', name: 'product_')]
@@ -33,6 +34,7 @@ class ProductController extends CrudController
 		private readonly EntityManagerInterface $em,
 		PaginatorInterface                      $paginator,
 		private readonly CacheManager           $cacheManager,
+		private readonly UrlGeneratorInterface  $urlGenerator,
 	){
 		$this->paginator = $paginator;
 	}
@@ -149,12 +151,12 @@ class ProductController extends CrudController
 	{
 		if (!$this->isCsrfTokenValid('delete', $request->request->get('token'))) {
 			$this->addFlash('error', 'invalid_csrf_token');
-			return $this->redirectToRoute($this->routePrefix . '_index');
+			$this->back();
 		}
 
 		if ($product->isPurchased() and !$request->request->get('force', false)) {
 			$this->addFlash('error', 'product.cannot_delete');
-			return $this->redirectToRoute($this->routePrefix . '_index');
+			$this->back();
 		}
 
 		$product->getProductImages()->clear();
@@ -165,7 +167,7 @@ class ProductController extends CrudController
 
 		$this->addFlash('success', 'product.deleted_successfully');
 
-		return $this->redirectToRoute($this->routePrefix . '_index');
+		return $this->redirect($this->getRedirectUrl($request, $this->urlGenerator));
 	}
 
 	#[Route('/{id}/show', name: 'show')]
@@ -179,25 +181,22 @@ class ProductController extends CrudController
 	{
 		if (!$this->isCsrfTokenValid('massive-delete', $request->request->get('token'))) {
 			$this->addFlash('error', 'invalid_csrf_token');
-			return $this->redirectToRoute($this->routePrefix . '_index');
+			$this->back();
 		}
 
 		$ids = $request->request->get('productIds');
 		$ids = explode(',', $ids);
-		dd($ids);
 
-		if ($purchaseRepository->countPurchaseByProducts($ids) > 0) {
+		/*if ($purchaseRepository->countPurchaseByProducts($ids) > 0) {
 			$this->addFlash('error', 'product.cannot_delete');
-			return $this->redirectToRoute($this->routePrefix . '_index');
-		}
+			$this->back();
+		}*/
 		$imageRepository->removeByProducts($ids);
 		$productRepository->removeByIds($ids);
 
 		$this->addFlash("success", "products.delete.successfully");
 
-		return $request->headers->get('referer') ?
-			$this->redirect($request->headers->get('referer')) :
-			$this->redirectToRoute($this->routePrefix . '_index');
+		return $this->redirect($this->getRedirectUrl($request, $this->urlGenerator));
 	}
 
 

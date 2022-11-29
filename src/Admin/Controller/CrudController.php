@@ -3,6 +3,9 @@
 namespace App\Admin\Controller;
 
 use Doctrine\ORM\QueryBuilder;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 abstract class CrudController extends BaseController
 {
@@ -20,5 +23,18 @@ abstract class CrudController extends BaseController
 		}
 		return $query
 			->setParameter('search', '%'.strtolower($search).'%');
+	}
+
+	protected function back(): RedirectResponse
+	{
+		return $this->redirect($this->request->headers->get('referer'));
+	}
+
+	protected function getRedirectUrl(Request $request, UrlGeneratorInterface $urlGenerator): string
+	{
+		$referer = $request->headers->get('referer');
+		return str_contains($referer, 'show') || str_contains($referer, 'edit') ?
+			$urlGenerator->generate($this->routePrefix . '_index') :
+			$request->headers->get('referer');
 	}
 }
