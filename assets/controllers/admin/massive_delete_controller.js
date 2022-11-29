@@ -2,6 +2,10 @@ import {Controller} from '@hotwired/stimulus';
 
 export default class extends Controller {
 
+	static values = {
+		row : String
+	}
+
 	connect() {
 		this.element.addEventListener('submit', (e) => {
 			e.preventDefault();
@@ -13,16 +17,15 @@ export default class extends Controller {
 
 	appendSelectedProducts() {
 		let selected = [];
-		let checkboxes = document.querySelectorAll('.product-checkbox:checked');
+		let checkboxes = document.querySelectorAll('.' + this.crudValue + '-checkbox:checked');
 		for (let i = 0; i < checkboxes.length; i++) {
-			selected.push(checkboxes[i].id.replace('pid', ''));
+			selected.push(checkboxes[i].id.replace('id', ''));
 		}
 		let input = document.createElement('input');
 		input.type = 'hidden';
-		input.name = 'productIds';
+		input.name = this.crudValue + 'Ids';
 		input.value = selected.join(',');
 		this.element.appendChild(input);
-		console.log(selected);
 	}
 
 	disconnect() {

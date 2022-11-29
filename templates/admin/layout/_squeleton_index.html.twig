@@ -15,8 +15,8 @@
 						<div class="nk-block-head-content">
 							<ul class="nk-block-tools g-3">
 								<li class="nk-block-tools-opt hidden" id="massive-delete-button">
-									<form action="{{ path(prefix ~ '_massive_delete') }}" class="d-inline-block" method="post" {{ stimulus_controller('massive-delete') }}>
-										<input type="hidden" name="token" value="{{ csrf_token('massive-delete') }}" />
+									<form action="{{ path(prefix ~ '_massive_delete') }}" class="d-inline-block" method="post" {{ stimulus_controller('admin--massive-delete', {'row' : menu}) }}>
+										<input type="hidden" name="token" value="{{ csrf_token('massive-delete') }}"/>
 										<button type="submit" class="btn btn-icon btn-danger d-md-none">
 											{{ icon('trash') }}
 										</button>
@@ -33,15 +33,7 @@
 								<a href="#" class="btn btn-icon btn-trigger toggle-expand me-n1" data-target="pageMenu"><em class="icon ni ni-more-v"></em></a>
 								<div class="toggle-expand-content" data-content="pageMenu">
 									<ul class="nk-block-tools g-3">
-										<li>
-											<div class="form-control-wrap">
-												<div class="form-icon form-icon-right">
-													{{ icon('search') }}
-												</div>
-												<input type="text" class="form-control" id="default-04" placeholder="Quick search by id">
-											</div>
-										</li>
-											{% block actions %}{% endblock %}
+										{% block actions %}{% endblock %}
 									</ul>
 								</div>
 							</div>
@@ -49,7 +41,7 @@
 					</div>
 				</div>
 
-				{% block content ''%}
+				{% block content '' %}
 			</div>
 		</div>
 	</div>

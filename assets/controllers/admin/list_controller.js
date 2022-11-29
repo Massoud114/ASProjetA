@@ -2,6 +2,10 @@ import {Controller} from '@hotwired/stimulus';
 
 export default class extends Controller {
 
+	static values = {
+		crud: String
+	}
+
 	connect() {
 		this.bindMassiveCheck()
 	}
@@ -9,7 +13,7 @@ export default class extends Controller {
 	toggleActive(event) {
 		event.preventDefault();
 		let target = event.currentTarget;
-		let productId = target.dataset.productId;
+		let rowId = target.dataset.rowId;
 
 		const action = !(target.dataset.active === 'true');
 
@@ -27,7 +31,7 @@ export default class extends Controller {
 	toggleFavorite(event) {
 		event.preventDefault();
 		let target = event.currentTarget;
-		let productId = target.dataset.productId ;
+		let rowId = target.dataset.rowId ;
 
 		const action = !(target.dataset.favorite === 'true');
 
@@ -42,20 +46,20 @@ export default class extends Controller {
 		//TODO : Send request to server
 	}
 
-	toggleMassiveDelete(event) {
+	toggleDelete(event) {
 		let massiveDeleteButton = document.getElementById('massive-delete-button');
 		document.getElementById('massiveCheck').checked = false;
 		if(event.currentTarget.checked) {
 			massiveDeleteButton.classList.remove('hidden');
 		} else {
-			if(!document.querySelector('.product-checkbox:checked')) {
+			if(!document.querySelector('.' + this.crudValue + '-checkbox:checked')) {
 				massiveDeleteButton.classList.add('hidden');
 			}
 		}
 	}
 
 	bindMassiveCheck() {
-		let checkboxes = document.querySelectorAll('.product-checkbox');
+		let checkboxes = document.querySelectorAll('.' + this.crudValue + '-checkbox');
 		let massiveCheckButton = document.getElementById('massiveCheck');
 		let massiveDeleteButton = document.getElementById('massive-delete-button');
 

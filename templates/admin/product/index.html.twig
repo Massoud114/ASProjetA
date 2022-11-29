@@ -8,6 +8,27 @@
 
 {% block actions %}
 	<li>
+		<form
+				action="{{ path(app.request.attributes.get('_route'), app.request.query.all) }}"
+				class="form-control-wrap"
+		>
+			<button class="form-icon form-icon-left btn btn-light btn-icon">
+				{{ icon('delete') }}
+			</button>
+			<input
+					type="text"
+					name="q"
+					class="form-control"
+					placeholder="Rechercher un produit"
+					title="Rechercher un produit"
+					value="{{ app.request.get('q') }}"
+			>
+			<button class="form-icon form-icon-right btn btn-light btn-icon">
+				{{ icon('search') }}
+			</button>
+		</form>
+	</li>
+	<li>
 		<div class="dropdown">
 			<a href="#" class="dropdown-toggle dropdown-indicator btn btn-outline-light btn-white" data-bs-toggle="dropdown">Status</a>
 			<div class="dropdown-menu dropdown-menu-end">
@@ -39,7 +60,10 @@
 		<div class="card">
 			<div class="card-inner-group">
 				<div class="card-inner p-0">
-					<div class="nk-tb-list mb-3" {{ stimulus_controller('product-list') }}>
+					<div class="nk-tb-list mb-3" {{ stimulus_controller('admin--list', {
+						'crud' : 'product',
+						'url' : path(app.request.attributes.get('_route'), app.request.query.all)
+						}) }}>
 						<div class="nk-tb-item nk-tb-head">
 							<div class="nk-tb-col nk-tb-col-check">
 								<div class="custom-control custom-control-sm custom-checkbox notext">
@@ -71,11 +95,11 @@
 										<input
 												type="checkbox"
 												class="custom-control-input product-checkbox"
-												id="pid{{ product.id }}"
-												name="product[]"
-												{{ stimulus_action('product-list', 'toggleMassiveDelete') }}
+												id="id{{ product.id }}"
+												name="product"
+												{{ stimulus_action('admin--list', 'toggleDelete') }}
 										>
-										<label class="custom-control-label" for="pid{{ product.id }}"></label>
+										<label class="custom-control-label" for="id{{ product.id }}"></label>
 									</div>
 								</div>
 								<div class="nk-tb-col">
@@ -106,8 +130,8 @@
 												data-active="{{ product.visible ? "true" : "false" }}"
 												href="#"
 												id="switch-active-#{{ product.id }}"
-												data-product-id="{{ product.id }}"
-												{{ stimulus_action('product-list', 'toggleActive', 'click') }}
+												data-row-id="{{ product.id }}"
+												{{ stimulus_action('admin--list', 'toggleActive', 'click') }}
 										></a>
 									</div>
 								</div>
@@ -119,8 +143,8 @@
 												data-favorite="{{ product.isFavorite ? "true" : "false" }}"
 												class="{{ product.isFavorite ? 'active' : '' }}"
 												id="switch-favorite-{{ product.id }}"
-												data-product-id="{{ product.id }}"
-												{{ stimulus_action('product-list', 'toggleFavorite', 'click') }}
+												data-row-id="{{ product.id }}"
+												{{ stimulus_action('admin--list', 'toggleFavorite', 'click') }}
 										>
 											{{ icon('star', '', 'asterisk-off') }}
 											{{ icon('star', 'fill', 'asterisk-on') }}

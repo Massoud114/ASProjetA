@@ -52,20 +52,8 @@
 									</a>
 								</div>
 
-								{% if searchable is defined and searchable %}
-									<form class="nk-header-search ms-3 ms-xl-0">
-										{{ icon('search') }}
-										<input
-												type="text"
-												name="q"
-												class="form-control border-transparent form-focus-none"
-												placeholder="Rechercher globalement"
-												value="{{ app.request.get('q') }}"
-										>
-									</form>
-								{% else %}
-									<div class="nk-header-search ms-3 ms-xl-0"></div>
-								{% endif %}
+								<div class="nk-header-search ms-3 ms-xl-0"></div>
+
 								<div class="nk-header-tools">
 									<ul class="nk-quick-nav">
 										<li class="">
