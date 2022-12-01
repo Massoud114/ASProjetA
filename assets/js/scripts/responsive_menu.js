@@ -1,3 +1,5 @@
+import {slideDown, slideUp} from '../functions/animation';
+
 /*var $offCanvasNav = $('.mobile-menu'),
 	$offCanvasNavSubMenu = $offCanvasNav.find('.dropdown');
 //Add Toggle Button With Off Canvas Sub Menu
@@ -38,13 +40,17 @@ offCanvasNav.addEventListener('click', function (e) {
 		e.preventDefault();
 		if ($this.siblings('ul:visible').length){
 			$this.parentElement.classList.remove('active');
-			$this.siblings('ul').slideUp();
+			// $this.siblings('ul').slideUp();
+			slideUp($this.siblings('ul')).then(r => {});
 		} else {
 			$this.parentElement.classList.add('active');
 			$this.closest('li').siblings('li').classList.remove('active')
 			$this.closest('li').siblings().find('li').classList.remove('active');
-			$this.closest('li').siblings('li').find('ul:visible').slideUp();
-			$this.siblings('ul').slideDown();
+			slideUp($this.closest('li').siblings('li').find('ul:visible')).
+				then(r =>{});
+			slideDown($this.siblings('ul')).
+				then(r =>{});
+			// $this.siblings('ul').slideDown();
 		}
 	}
 })

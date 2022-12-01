@@ -1,11 +1,11 @@
 App\Application\Product\Product:
-    product_{1..50}:
+    product_{1..100}:
         name: <productName()>
-        description: <paragraph()>
-        min_price: <numberBetween(1, 10000)>
-        max_price: <numberBetween(1, 10000)>
-        making_price: <numberBetween(1, 10000)>
-        fixed_price: <numberBetween(1, 10000)>
+        description: <text()>
+        min_price: '<numberBetween(1, 100)>00'
+        max_price: '<numberBetween(1, 100)>00'
+        making_price: '<numberBetween(1, 100)>00'
+        fixed_price: '<numberBetween(1, 100)>00'
         weight: <numberBetween(1, 100)>
         weight_unit: <randomElement(['g', 'kg', 't'])>
         thickness: <numberBetween(1, 100)>
@@ -17,9 +17,11 @@ App\Application\Product\Product:
         length: <numberBetween(1, 100)>
         length_unit: <randomElement(['mm', 'cm', 'm'])>
         slug: <slug()>
-        thumbnail_url: https://picsum.photos/id/<numberBetween(1, 1000)>/200/300
-
-        category: '@category_*'
+        thumbnail_url: https://picsum.photos/id/<numberBetween(400,800)>/400/400
+        stockQuantity: <numberBetween(0, 100)>
+        type: <randomElement(['pack', 'single', 'on_command'])>
+        visible: <numberBetween(0, 1)>
+        categories: '<numberBetween(1, 5)>x @category_*'
 
 App\Application\Product\Entity\Category:
     category_{1..10}:

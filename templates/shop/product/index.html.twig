@@ -1,0 +1,64 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+	<div class="breadcrumbs-area position-relative">
+		<div class="container">
+			<div class="row">
+				<div class="col-12 text-center">
+					<div class="breadcrumb-content position-relative section-content">
+						<h3 class="title-3">Shop Sidebar</h3>
+						<ul>
+							<li><a href="index.html">Home</a></li>
+							<li>Shop</li>
+						</ul>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="shop-main-area">
+		<div class="container container-default custom-area">
+			<div class="row">
+				<div class="col-lg-3 col-12 col-custom">
+					<aside class="sidebar_widget widget-mt">
+						{% include 'shop/product/_filter.html.twig' with {
+							form: searchForm,
+							min: min,
+							max: max,
+							nbProducts : products|length
+						} only %}
+					</aside>
+				</div>
+				<div class="col-lg-9 col-12 col-custom widget-mt">
+					<!--shop toolbar start-->
+					<div class="shop_toolbar_wrapper mb-30">
+						<div class="shop_toolbar_btn">
+							<button data-role="grid_3" type="button" class="active btn-grid-3" title="Grid"><i class="fa fa-th"></i></button>
+							<button data-role="grid_list" type="button" class="btn-list" title="List"><i class="fa fa-th-list"></i></button>
+						</div>
+						<div class="shop-select">
+							<div class="d-flex flex-column w-100">
+								{% include 'shop/product/_sorting.html.twig' with products %}
+							</div>
+						</div>
+					</div>
+
+					<div class="row shop_wrapper grid_list">
+						{% include 'shop/product/_products.html.twig' with products %}
+					</div>
+
+					<div class="row">
+						<div class="col-sm-12 col-custom">
+							<div class="toolbar-bottom">
+								{% include 'shop/product/_pagination.html.twig' with products %}
+								<p class="desc-content text-center text-sm-right mb-0"> {{ products|length ~ ' ' ~ ('result'|trans) }}</p>
+							</div>
+						</div>
+					</div>
+					<!-- Bottom Toolbar End -->
+				</div>
+			</div>
+		</div>
+	</div>
+{% endblock %}

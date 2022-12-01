@@ -38,6 +38,22 @@ class PurchaseRepository extends ServiceEntityRepository
         }
     }
 
+	/**
+	 * @param int[] $ids
+	 * @return int
+	 * @throws \Doctrine\ORM\NoResultException
+	 * @throws \Doctrine\ORM\NonUniqueResultException
+	 */
+	public function countPurchaseByProducts(array $ids): int
+	{
+		return $this->createQueryBuilder('p')
+			->select('count(p.id)')
+			->where('p.product in (:ids)')
+			->setParameter('ids', $ids)
+			->getQuery()
+			->getSingleScalarResult();
+	}
+
 //    /**
 //     * @return Purchase[] Returns an array of Purchase objects
 //     */

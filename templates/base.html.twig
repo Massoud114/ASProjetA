@@ -1,8 +1,8 @@
 <!DOCTYPE html>
-<html lang="">
+<html lang="{{ app.request.locale }}">
     <head>
         <meta charset="UTF-8">
-        <title>{% block title %}Welcome!{% endblock %}</title>
+        <title>{% block title 'LuxDec' %} | LuxDec</title>
         <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text></svg>">
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
         {% block stylesheets %}
@@ -12,8 +12,34 @@
         {% block javascripts %}
             {{ encore_entry_script_tags('base') }}
         {% endblock %}
+        <meta name="turbolinks-cache-control" content="no-cache"/>
+        <link rel="apple-touch-icon" sizes="128x128" href="/favicons/icon-128x128.png">
+        {% block meta '' %}
+        <meta property="og:title" content="{{ block('title') }}"/>
+        <meta property="og:site_name" content="luxdec.bj"/>
+        <meta property="og:language" content="{{ app.request.locale }}"/>
+        <meta name="twitter:author" content="@luxdev.bj"/>
+        <link rel="stylesheet" href="/print.css" media="print">
+
     </head>
-    <body class="nk-body bg-lighter npc-general has-sidebar ">
+    <body class="">
+
+        <div id="preloader">
+            <div class="preloader">
+                <div class="spinner-block">
+                    <h1 class="spinner spinner-3 mb-0">.</h1>
+                </div>
+            </div>
+        </div>
+
+        {% include '_layout/header.html.twig' %}
+
         {% block body %}{% endblock %}
+
+        {% include '_layout/footer.html.twig' %}
+
+        <a class="scroll-to-top" href="#">
+            <i class="fa fa-arrow-up"></i>
+        </a>
     </body>
 </html>

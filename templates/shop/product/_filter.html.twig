@@ -1,0 +1,216 @@
+{{ form_start(form, {
+	attr: {
+		class : "widget_inner"
+	}
+}) }}
+	<div class="widget-list widget-mb-1">
+		<h3 class="widget-title">{{ form.q.label }}</h3>
+		<div class="search-box">
+			<div class="input-group">
+				{{ form_widget(form.q, {
+					'attr' : {
+						'aria-label' : form.q.label
+					}
+				}) }}
+				<div class="input-group-append">
+					<button class="btn btn-outline-secondary" type="button">
+						<i class="fa fa-search"></i>
+					</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	{#<div class="widget-list widget-mb-1">
+		<h3 class="widget-title">Menu Categories</h3>
+		<nav>
+			<ul class="mobile-menu p-0 m-0">
+				<li class="menu-item-has-children"><a href="#">Birthday Boqutets</a>
+					<ul class="dropdown">
+						<li><a href="#">Aster</a></li>
+						<li><a href="#">Aubrieta</a></li>
+						<li><a href="#">Basket of Gold</a></li>
+					</ul>
+				</li>
+				<li class="menu-item-has-children"><a href="#">Funeral Flowers</a>
+					<ul class="dropdown">
+						<li><a href="#">Cleome</a></li>
+						<li><a href="#">Columbine</a></li>
+						<li><a href="#">Coneflower</a></li>
+						<li><a href="#">Corepsis</a></li>
+					</ul>
+				</li>
+				<li class="menu-item-has-children"><a href="#">Interior Decor</a>
+					<ul class="dropdown">
+						<li><a href="#">Calendula</a></li>
+						<li><a href="#">Castor Bean</a></li>
+						<li><a href="#">Catmint</a></li>
+						<li><a href="#">Chives</a></li>
+					</ul>
+				</li>
+				<li class="menu-item-has-children"><a href="#">Custom Orders</a>
+					<ul class="dropdown">
+						<li><a href="#">Lily</a></li>
+						<li><a href="#">Rose</a></li>
+						<li><a href="#">Sunflower</a></li>
+					</ul>
+				</li>
+			</ul>
+		</nav>
+
+	</div>#}
+
+	<div class="widget-list widget-mb-1" {{ stimulus_controller('client--price-slider', {
+		'min' : min,
+		'max' : max,
+		'step' : 100
+	}) }}>
+		<h3 class="widget-title">{{ 'price_filter'|trans }}</h3>
+		{{ form_row(form.minPrice, {
+			'attr' : {
+				'data-client--price-slider-target' : 'minPrice'
+			}
+		}) }}
+		{{ form_row(form.maxPrice {
+			'attr' : {
+				'data-client--price-slider-target' : 'maxPrice'
+			}
+		}) }}
+		<div {{ stimulus_target('client--price-slider', 'container')}} ></div>
+		<button type="submit" {{ stimulus_action('client--price-slider', 'update') }}>{{ 'filter'|trans }}</button>
+	</div>
+
+	{#<div class="widget-list widget-mb-1">
+		<h3 class="widget-title">Categories</h3>
+		<div class="sidebar-body">
+			<ul class="sidebar-list">
+				<li><a href="#">All Product</a></li>
+				<li><a href="#">Best Seller (5)</a></li>
+				<li><a href="#">Featured (4)</a></li>
+				<li><a href="#">New Products (6)</a></li>
+			</ul>
+		</div>
+	</div>#}
+
+	{#<div class="widget-list widget-mb-2">
+		<h3 class="widget-title">Color</h3>
+		<div class="sidebar-body">
+			<ul class="checkbox-container categories-list">
+				<li>
+					<div class="custom-control custom-checkbox">
+						<input type="checkbox" class="custom-control-input" id="customCheck12">
+						<label class="custom-control-label" for="customCheck12">black (20)</label>
+					</div>
+				</li>
+				<li>
+					<div class="custom-control custom-checkbox">
+						<input type="checkbox" class="custom-control-input" id="customCheck13">
+						<label class="custom-control-label" for="customCheck13">red (6)</label>
+					</div>
+				</li>
+				<li>
+					<div class="custom-control custom-checkbox">
+						<input type="checkbox" class="custom-control-input" id="customCheck14">
+						<label class="custom-control-label" for="customCheck14">blue (8)</label>
+					</div>
+				</li>
+				<li>
+					<div class="custom-control custom-checkbox">
+						<input type="checkbox" class="custom-control-input" id="customCheck11">
+						<label class="custom-control-label" for="customCheck11">green (5)</label>
+					</div>
+				</li>
+				<li>
+					<div class="custom-control custom-checkbox">
+						<input type="checkbox" class="custom-control-input" id="customCheck15">
+						<label class="custom-control-label" for="customCheck15">pink (4)</label>
+					</div>
+				</li>
+			</ul>
+		</div>
+	</div>#}
+
+	{#<div class="widget-list widget-mb-3">
+		<h3 class="widget-title">Tags</h3>
+		<div class="sidebar-body">
+			<ul class="tags">
+				<li><a href="#">Rose</a></li>
+				<li><a href="#">Sunflower</a></li>
+				<li><a href="#">Tulip</a></li>
+				<li><a href="#">Lily</a></li>
+				<li><a href="#">Smart</a></li>
+				<li><a href="#">Modern</a></li>
+				<li><a href="#">Gift</a></li>
+			</ul>
+		</div>
+	</div>#}
+
+	{#<div class="widget-list mb-0">
+		<h3 class="widget-title">Recent Products</h3>
+		<div class="sidebar-body">
+			<div class="sidebar-product align-items-center">
+				<a href="product-details.html" class="image">
+					<img src="assets/images/cart/1.jpg" alt="product">
+				</a>
+				<div class="product-content">
+					<div class="product-title">
+						<h4 class="title-2"><a href="product-details.html">Glory of the Snow</a></h4>
+					</div>
+					<div class="price-box">
+						<span class="regular-price ">$80.00</span>
+						<span class="old-price"><del>$90.00</del></span>
+					</div>
+					<div class="product-rating">
+						<i class="fa fa-star"></i>
+						<i class="fa fa-star"></i>
+						<i class="fa fa-star"></i>
+						<i class="fa fa-star-o"></i>
+						<i class="fa fa-star-o"></i>
+					</div>
+				</div>
+			</div>
+			<div class="sidebar-product align-items-center">
+				<a href="product-details.html" class="image">
+					<img src="assets/images/cart/2.jpg" alt="product">
+				</a>
+				<div class="product-content">
+					<div class="product-title">
+						<h4 class="title-2"><a href="product-details.html">Pearly Everlasting</a></h4>
+					</div>
+					<div class="price-box">
+						<span class="regular-price ">$50.00</span>
+						<span class="old-price"><del>$60.00</del></span>
+					</div>
+					<div class="product-rating">
+						<i class="fa fa-star"></i>
+						<i class="fa fa-star"></i>
+						<i class="fa fa-star"></i>
+						<i class="fa fa-star-half-o"></i>
+						<i class="fa fa-star-o"></i>
+					</div>
+				</div>
+			</div>
+			<div class="sidebar-product align-items-center">
+				<a href="product-details.html" class="image">
+					<img src="assets/images/cart/3.jpg" alt="product">
+				</a>
+				<div class="product-content">
+					<div class="product-title">
+						<h4 class="title-2"><a href="product-details.html">Jack in the Pulpit</a></h4>
+					</div>
+					<div class="price-box">
+						<span class="regular-price ">$40.00</span>
+						<span class="old-price"><del>$50.00</del></span>
+					</div>
+					<div class="product-rating">
+						<i class="fa fa-star"></i>
+						<i class="fa fa-star"></i>
+						<i class="fa fa-star-half-o"></i>
+						<i class="fa fa-star-half-o"></i>
+						<i class="fa fa-star-o"></i>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>#}
+{{ form_end(form) }}

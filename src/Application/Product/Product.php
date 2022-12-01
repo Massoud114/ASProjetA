@@ -82,11 +82,6 @@ class Product
 	#[Assert\NotBlank]
 	private ?float $fixedPrice = 0;
 
-	#[ORM\ManyToOne(inversedBy: 'products')]
-	#[ORM\JoinColumn(nullable: false)]
-	#[Assert\NotBlank]
-	private ?Category $category = null;
-
 	#[ORM\Column(nullable: false)]
 	private ?string $thumbnailUrl = null;
 
@@ -106,6 +101,9 @@ class Product
 	#[ORM\Column(type: Types::TEXT, nullable: true)]
 	private ?string $details = null;
 
+	#[ORM\ManyToMany(targetEntity: Category::class, inversedBy: 'products')]
+	private Collection $categories;
+
 	use MesurableTrait, SluggableTrait, TimestampTrait;
 
 	public function __construct()
@@ -113,6 +111,7 @@ class Product
 		$this->createdAt = new \DateTimeImmutable();
 		$this->updatedAt = new \DateTime();
 		$this->productImages = new ArrayCollection();
+		$this->categories = new ArrayCollection();
 	}
 
 	public function getId(): ?int
@@ -213,18 +212,6 @@ class Product
 	public function setMakingPrice(?float $makingPrice): self
 	{
 		$this->makingPrice = $makingPrice;
-
-		return $this;
-	}
-
-	public function getCategory(): ?Category
-	{
-		return $this->category;
-	}
-
-	public function setCategory(?Category $category): self
-	{
-		$this->category = $category;
 
 		return $this;
 	}
@@ -348,15 +335,15 @@ class Product
 		return $this->createdAt;
 	}
 
+	public function getUpdatedAt(): \DateTime
+	{
+		return $this->updatedAt;
+	}
+
 	public function setCreatedAt(\DateTimeImmutable $createdAt): Product
 	{
 		$this->createdAt = $createdAt;
 		return $this;
-	}
-
-	public function getUpdatedAt(): \DateTime
-	{
-		return $this->updatedAt;
 	}
 
 	public function setUpdatedAt(\DateTime $updatedAt): Product
@@ -365,6 +352,34 @@ class Product
 		return $this;
 	}
 
+	/**
+	 * @return Collection<int, Category>
+	 */
+	public function getCategories(): Collection
+	{
+		return $this->categories;
+	}
+
+	public function addCategory(Category $category): self
+	{
+		if (!$this->categories->contains($category)) {
+			$this->categories->add($category);
+		}
+
+		return $this;
+	}
+
+	public function removeCategory(Category $category): self
+	{
+		$this->categories->removeElement($category);
+
+		return $this;
+	}
+
+	public function isPromo(): bool
+	{
+		return false;
+	}
 
 
 }

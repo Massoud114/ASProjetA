@@ -20,9 +20,19 @@ liip_imagine:
             format: jpeg
             quality: 75
             filters:
-                thumbnail: { size: [96, 96], mode: inset }
+                thumbnail: { size: [48, 48], mode: inset }
         admin_product_thumb_webp:
             format: webp
             quality: 100
             filters:
-                thumbnail: { size: [96, 96], mode: inset }
+                thumbnail: { size: [48, 48], mode: inset }
+        product_thumb_jpeg:
+            format: jpeg
+            quality: 75
+            filters:
+                thumbnail: { size: [400, 400], mode: inset }
+        product_thumb_webp:
+            format: webp
+            quality: 100
+            filters:
+                thumbnail: { size: [400, 400], mode: inset }

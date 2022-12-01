@@ -26,40 +26,44 @@
 
 	});*/
 
-document.querySelector('.shop_toolbar_btn > button').addEventListener('click', function (e) {
+let shopToolbarButton = document.querySelector('.shop_toolbar_btn > button');
+if (shopToolbarButton) {
+	shopToolbarButton.addEventListener('click', function(e) {
 
-	e.preventDefault();
-	document.querySelector('.shop_toolbar_btn > button').classList.remove('active');
-	this.classList.add('active');
+		e.preventDefault();
+		this.classList.remove('active');
+		this.classList.add('active');
 
-	let parentsDiv = document.querySelector('.shop_wrapper');
-	let viewMode = this.dataset.role;
+		let parentsDiv = document.querySelector('.shop_wrapper');
+		let viewMode = this.dataset.role;
 
-	parentsDiv.classList.remove('grid_3 grid_4 grid_5 grid_list')
-	parentsDiv.classList.add(viewMode);
+		parentsDiv.classList.remove('grid_3 grid_4 grid_5 grid_list');
+		parentsDiv.classList.add(viewMode);
 
-	if(viewMode == 'grid_3'){
-		let children = parentsDiv.children
-		for (let i = 0; i < children.length; i++) {
-			children[i].classList.add('col-lg-4 col-md-6 col-sm-6')
-			children[i].classList.remove('col-lg-3 col-cust-5 col-12')
+		if (viewMode == 'grid_3') {
+			let children = parentsDiv.children;
+			for (let i = 0; i < children.length; i++) {
+				children[i].classList.add('col-lg-4 col-md-6 col-sm-6');
+				children[i].classList.remove('col-lg-3 col-cust-5 col-12');
+			}
 		}
-	}
 
-	if(viewMode == 'grid_4'){
-		let children = parentsDiv.children
-		for (let i = 0; i < children.length; i++) {
-			children[i].classList.add('col-lg-3 col-md-6 col-sm-6')
-			children[i].classList.remove('col-lg-4 col-cust-5 col-12')
+		if (viewMode == 'grid_4') {
+			let children = parentsDiv.children;
+			for (let i = 0; i < children.length; i++) {
+				children[i].classList.add('col-lg-3 col-md-6 col-sm-6');
+				children[i].classList.remove('col-lg-4 col-cust-5 col-12');
+			}
 		}
-	}
 
-	if(viewMode == 'grid_list'){
-		let children = parentsDiv.children
-		for (let i = 0; i < children.length; i++) {
-			children[i].classList.add('col-12')
-			children[i].classList.remove('col-lg-3 col-lg-4 col-md-6 col-sm-6 col-cust-5')
+		if (viewMode == 'grid_list') {
+			let children = parentsDiv.children;
+			for (let i = 0; i < children.length; i++) {
+				children[i].classList.add('col-12');
+				children[i].classList.remove(
+					'col-lg-3 col-lg-4 col-md-6 col-sm-6 col-cust-5');
+			}
 		}
-	}
 
-})
+	});
+}

@@ -47,9 +47,10 @@ class ProductController extends CrudController
 		    ->orderBy('row.createdAt', "DESC");
 
 		if ($request->get('q')) {
-			$query = $this->applySearch(trim($request->get('q')), $query, ['name']);
+			$query = $this->applySearch(trim($request->get('q')), $query, ['name', 'fixedPrice']);
 		}
-//		$this->paginator->
+
+//		$this->paginator
 
 		$this->paginator->allowSort('row.id', 'row.title', 'row.fixedPrice', 'row.createdAt');
 		$rows = $this->paginator->paginate($query->getQuery());

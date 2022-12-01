@@ -1,0 +1,53 @@
+<div class="col-custom product-area col-12">
+	<div class="product-item">
+		<div class="single-product position-relative mr-0 ml-0">
+			<div class="product-image">
+				<a class="d-block" href="product-details.html">
+					{% if product.thumbnail %}
+						<picture>
+							<source srcset="{{ (thumbnailPath ~ product.thumbnailUrl) | imagine_filter('admin_product_thumb_webp') }}" type="image/webp">
+							<source srcset="{{ (thumbnailPath ~ product.thumbnailUrl) | imagine_filter('admin_product_thumb_jpeg') }}" type="image/jpeg">
+							<img loading="lazy" src="{{ (thumbnailPath ~ product.thumbnailUrl) | imagine_filter('admin_product_thumb_jpeg') }}" alt="{{ product.name ~ '_image' }}" class="product-image-1 w-100" height="350" width="350">
+						</picture>
+					{% else %}
+						<img src="{{ product.thumbnailUrl }}" alt="{{ product.name ~ '_image' }}" class="product-image-1 w-100" height="305" width="305">
+					{% endif %}
+
+				</a>
+				{% if product.isPromo %}
+					<span class="onsale">Promo!</span>
+				{% endif %}
+			</div>
+			<div class="product-content-listview">
+				<div class="product-title">
+					<h2 class="title-2"> <a href="product-details.html">{{ product.name }}</a></h2>
+				</div>
+				<div class="product-rating">
+					<i class="fa fa-star"></i>
+					<i class="fa fa-star"></i>
+					<i class="fa fa-star"></i>
+					<i class="fa fa-star-o"></i>
+					<i class="fa fa-star-o"></i>
+				</div>
+				<div class="price-box">
+					{% if product.isPromo %}
+						<span class="regular-price">{{ product.fixedPrice | format_currency('XOF', locale='fr') }}</span>
+						<span class="old-price"><del>{{ product.fixedPrice | format_currency('XOF', locale='fr') }}</del></span>
+					{% else %}
+						<span class="regular-price">{{ product.fixedPrice | format_currency('XOF', locale='fr') }}</span>
+					{% endif %}
+				</div>
+				<p class="desc-content">{{ product.description }}</p>
+				<div class="button-listview">
+					<a href="cart.html" class="btn product-cart button-icon flosun-button dark-btn" data-toggle="tooltip" data-placement="top" title="{{ 'add_to_cart' | trans }}"> <span>{{ 'add_to_cart' | trans }}</span> </a>
+					<a class="list-icon" href="compare.html" title="{{ 'compare' | trans }}">
+						<i class="lnr lnr-sync" data-toggle="tooltip" data-placement="top" title="{{ 'compare' | trans }}"></i>
+					</a>
+					<a class="list-icon" href="wishlist.html" title="{{ 'add_to_wishlist' | trans }}">
+						<i class="lnr lnr-heart" data-toggle="tooltip" data-placement="top" title="{{ 'wishlist'|trans }}"></i>
+					</a>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
