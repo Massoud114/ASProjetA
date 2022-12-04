@@ -4,16 +4,33 @@ import {cookie} from '../js/functions/cookie';
 
 export default class extends Controller {
 
+	static values = {
+		theme : String
+	}
+
 	connect() {
-		let darkSwitcher = this.element
-		darkSwitcher.classList.add('dark-switch')
+		let switcher = this.element
+		switcher.classList.add('dark-switch')
 
 		let self = this
-		darkSwitcher.addEventListener('click', function(e) {
+		switcher.addEventListener('click', function(e) {
+			e.preventDefault()
 			self.changeTheme(e)
 		})
 
-		this.setTheme(darkSwitcher)
+		this.setTheme(switcher)
+	}
+
+	themeValueChanged(){
+		if(this.themeValue === "dark") {
+			this.element.classList.add('active')
+			document.body.classList.remove('light-mode')
+			document.body.classList.add("dark-mode")
+		} else {
+			this.element.classList.remove('active')
+			document.body.classList.remove('dark-mode')
+			document.body.classList.add('light-mode')
+		}
 	}
 
 	disconnect() {
@@ -24,10 +41,7 @@ export default class extends Controller {
 	}
 
 	changeTheme(e) {
-		const themeToRemove = e.currentTarget.classList.contains('active') ? 'light' : 'dark'
-		const themeToAdd = e.currentTarget.classList.contains('active') ? 'dark' : 'light'
-		document.body.classList.add(`${themeToAdd}-mode`)
-		document.body.classList.remove(`${themeToRemove}-mode`)
+		this.themeValue = e.currentTarget.classList.contains('active') ? 'light' : 'dark'
 
 		if (isAuthenticated()){
 			/*jsonFetchOrFlash('/api/profil/theme', {
@@ -36,7 +50,7 @@ export default class extends Controller {
 			}).catch(console.error)*/
 		}
 		else {
-			cookie('theme', themeToAdd, {expires : 30})
+			cookie('theme', this.themeValue, {expires : 30})
 		}
 	}
 
@@ -46,23 +60,18 @@ export default class extends Controller {
 			if (savedTheme === null) {
 				const mq = window.matchMedia('(prefers-color-scheme: dark)')
 				if (mq.matches){
-					darkSwitcher.classList.add('active')
-					document.body.classList.add('dark-mode')
+					this.themeValue = "dark"
 				}
 			} else {
-				document.body.classList.add(`${savedTheme}-mode`)
-				savedTheme === 'dark' ?
-					darkSwitcher.classList.add('active') :
-					darkSwitcher.classList.remove('active')
+				this.themeValue = savedTheme
 			}
 		} else if (document.body.classList.contains('dark-mode')){
-			darkSwitcher.classList.add('active')
+			this.themeValue = "dark"
 		} else if (document.body.classList.contains('light-mode')){
-			darkSwitcher.classList.remove('active')
+			this.themeValue = "light"
 		} else {
 			if (window.matchMedia('(prefers-color-scheme: dark)').matches){
-				darkSwitcher.classList.add('active')
-				document.body.classList.add('dark-mode')
+				this.themeValue = "dark"
 			}
 		}
 	}

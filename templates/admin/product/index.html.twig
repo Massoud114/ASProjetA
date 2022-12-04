@@ -1,7 +1,7 @@
 {% extends 'admin/layout/_squeleton_index.html.twig' %}
 
 {% block dashboardTitle %}
-	{{ 'products.manage'|trans }}
+	{{ 'products'|trans }}
 {% endblock %}
 
 {% block title 'products'|trans %}
@@ -12,20 +12,17 @@
 				action="{{ path(app.request.attributes.get('_route'), app.request.query.all) }}"
 				class="form-control-wrap"
 		>
-			<button class="form-icon form-icon-left btn btn-light btn-icon">
-				{{ icon('delete') }}
-			</button>
 			<input
 					type="text"
 					name="q"
 					class="form-control"
-					placeholder="Rechercher un produit"
+					placeholder="Rechercher"
 					title="Rechercher un produit"
 					value="{{ app.request.get('q') }}"
 			>
-			<button class="form-icon form-icon-right btn btn-light btn-icon">
+			<div class="form-icon form-icon-right">
 				{{ icon('search') }}
-			</button>
+			</div>
 		</form>
 	</li>
 	<li>
@@ -50,7 +47,7 @@
 		</a>#}
 		<a href="{{ path(prefix ~ '_create') }}" class="btn btn-primary d-none d-md-inline-flex">
 			{{ icon('plus') }}
-			<span>{{ 'products.add'|trans }}</span>
+			<span>{{ 'add'|trans }}</span>
 		</a>
 	</li>
 {% endblock %}

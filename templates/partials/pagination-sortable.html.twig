@@ -3,15 +3,10 @@
 	{% if sorted %}
 		<span style="float: right;">
 			{% if direction == 'desc' %}
-				{{ icon('arrow-long-up') }}
+				{{ icon('upword-alt','fill') }}
 			{% else %}
-				{{ icon('arrow-long-down') }}
+				{{ icon('downward-alt','fill') }}
 			{% endif %}
-		</span>
-	{% else %}
-		<span style="float: right;">
-			<em class="icon ni ni-arrow-long-up" style="opacity: 0.3;"></em>
-			<em class="icon ni ni-arrow-long-down" style="opacity: 0.3;"></em>
 		</span>
 	{% endif %}
 </a>
