@@ -1,0 +1,33 @@
+<?php
+
+namespace App\Api\Controller;
+
+use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\HttpFoundation\Request;
+use App\Client\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\HttpFoundation\JsonResponse;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
+
+class ProfilController extends AbstractController
+{
+	/**
+	 * Permet le changement de thème pour l'utilisateur.
+	 * @throws \JsonException
+	 */
+	#[Route('/profil/theme', name: "profil_theme", methods: ['POST'])]
+	#[IsGranted("IS_AUTHENTICATED_FULLY")]
+	public function theme(Request $request, EntityManagerInterface $em): JsonResponse
+	{
+		$data = json_decode((string) $request->getContent(), true, 512, JSON_THROW_ON_ERROR);
+		$theme = $data['theme'] ?? null;
+		if (!in_array($theme, ['light', 'dark'])) {
+			return $this->json(['title' => "Ce thème n'est pas supporté"], Response::HTTP_UNPROCESSABLE_ENTITY);
+		}
+		$this->getUserOrThrow()->setTheme($theme);
+		$em->flush();
+
+		return $this->json(null);
+	}
+}

@@ -38,6 +38,20 @@ class ImageRepository extends ServiceEntityRepository
         }
     }
 
+	/**
+	 * @param int[] $ids
+	 * @return void
+	 */
+	public function removeByProducts(array $ids): void
+	{
+		$this->createQueryBuilder('i')
+			->where('i.product in (:ids)')
+			->setParameter('ids', $ids)
+			->delete()
+			->getQuery()
+			->execute();
+	}
+
 //    /**
 //     * @return Image[] Returns an array of Image objects
 //     */

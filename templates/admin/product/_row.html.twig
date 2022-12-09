@@ -1,0 +1,99 @@
+{% set showLink = path(prefix ~ '_show', {id: product.id}) %}
+{% set editLink = path(prefix ~ '_edit', {id: product.id}) %}
+{% set deleteLink = path(prefix ~ '_delete', {id: product.id}) %}
+<div class="nk-tb-item{{ product.available ? "" : " nk-tb-danger" }}">
+	<div class="nk-tb-col nk-tb-col-check">
+		<div class="custom-control custom-control-sm custom-checkbox notext">
+			<input
+				type="checkbox"
+				class="custom-control-input product-checkbox"
+				id="id{{ product.id }}"
+				value="id{{ product.id }}"
+				name="product"
+				data-checkbox-all-target="checkbox"
+			>
+			<label class="custom-control-label" for="id{{ product.id }}"></label>
+		</div>
+	</div>
+	<div class="nk-tb-col">
+		<span class="tb-product justify-content-sm-center justify-content-lg-start">
+		{% if product.thumbnail %}
+			<picture>
+				<source srcset="{{ (thumbnailPath ~ product.thumbnailUrl) | imagine_filter('admin_product_thumb_webp') }}" type="image/webp">
+				<source srcset="{{ (thumbnailPath ~ product.thumbnailUrl) | imagine_filter('admin_product_thumb_jpeg') }}" type="image/jpeg">
+				<img loading="lazy" src="{{ (thumbnailPath ~ product.thumbnailUrl) | imagine_filter('admin_product_thumb_jpeg') }}" alt="{{ product.name ~ '_image' }}" class="thumb">
+			</picture>
+		{% else %}
+			<img src="{{ product.thumbnailUrl }}" alt="{{ product.name ~ '_image' }}" class="thumb">
+		{% endif %}
+			<span class="title">{{ product.name }}</span>
+		</span>
+	</div>
+	<div class="nk-tb-col" style="text-align: right">
+		<span class="tb-lead">{{ product.fixedPrice | format_currency('XOF', locale='fr') }}</span>
+	</div>
+	<div class="nk-tb-col text-center">
+		<span class="tb-lead">{{ product.stockQuantity }}</span>
+	</div>
+	<div class="nk-tb-col tb-col-md text-center">
+		<div class="asterisk tb-asterisk">
+			<a
+					href="#"
+					data-product-id="{{ product.id }}"
+					data-favorite="{{ product.isFavorite ? "true" : "false" }}"
+					class="{{ product.isFavorite ? 'active' : '' }}"
+					id="switch-favorite-{{ product.id }}"
+					data-row-id="{{ product.id }}"
+					{{ stimulus_action('admin--list', 'toggleFavorite', 'click') }}
+			>
+				{{ icon('star', '', 'asterisk-off') }}
+				{{ icon('star', 'fill', 'asterisk-on') }}
+			</a>
+		</div>
+	</div>
+	<div class="nk-tb-col nk-tb-col-tools">
+		<ul class="nk-tb-actions gx-1 my-n1">
+			<li class="me-n1">
+				<div class="dropdown">
+					<a href="#" class="dropdown-toggle btn btn-icon btn-trigger" data-bs-toggle="dropdown">{{ icon('more-h') }}</a>
+					<div class="dropdown-menu dropdown-menu-end">
+						<ul class="link-list-opt no-bdr">
+							<li><a href="{{ editLink }}">{{ icon('edit') }}<span>{{ 'edit'|trans }}</span></a></li>
+							<li><a href="{{ showLink }}">{{ icon('eye') }}<span>{{ 'view'|trans }}</span></a></li>
+							<li><a href="#">{{ icon('activity-round') }}<span>{{ 'products.orders'|trans }}</span></a></li>
+							<li>
+								<a class="text-danger product-delete" href="#" data-url="{{ deleteLink }}">{{ icon('trash') }}
+									<span>{{ 'remove'|trans }}</span>
+								</a>
+							</li>
+							{#<li>
+								<form
+										action="{{ deleteLink }}"
+										method="post"
+										class="delete-form"
+										id="delete-form-force#{{ product.id }}"
+										{{ stimulus_controller('submit-confirm', {
+											'title' : 'delete_warning_title'|trans,
+											'text' : 'delete_warning_text'|trans,
+											'icon' : 'warning',
+											'confirmButtonText' : 'delete.label'|trans,
+											'cancel' : 'cancel'|trans,
+											'asyncSubmit' : true
+										}) }}
+										{{ stimulus_action('submit-confirm', 'onSubmit') }}
+								>
+									<input type="hidden" name="token" value="{{ csrf_token('delete') }}"/>
+									<input type="hidden" name="force" value="true"/>
+									<button type="submit" class="btn p-0 w-100">
+										{{ icon('trash', null, 'text-danger') }}
+										<span>{{ 'forceRemove'|trans }}</span>
+									</button>
+								</form>
+							</li>#}
+						</ul>
+					</div>
+				</div>
+			</li>
+		</ul>
+	</div>
+</div>
