@@ -24,6 +24,8 @@ security:
                 - App\Infrastructure\Auth\Authenticator\LoginFormAuthenticator
                 - App\Infrastructure\Auth\Authenticator\Social\GoogleAuthenticator
 #                - App\Infrastructure\Auth\Authenticator\Social\TikTokAuthenticator
+            json_login:
+                check_path: /api/login
             logout:
                 path: app_logout
 

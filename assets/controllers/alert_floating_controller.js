@@ -45,17 +45,6 @@ export default class extends Controller
 			e.preventDefault()
 			this.close()
 		})
-		/*<div class="toastr toast-success" aria-live="polite" style="">
-				<div class="toast-progress" style="width: 27.3%;"></div>
-				<span class="btn-trigger toast-close-button"
-				      role="button">Close</span>
-				<div class="toast-message"><span class="toastr-icon"><em
-					class="icon ni ni-check-circle-fill"></em></span>
-					<div class="toastr-text"><h5>Update Successfully</h5>
-						<p>Your profile has been successfully updated.</p></div>
-				</div>
-			</div>
-	*/
 	}
 
 	close () {

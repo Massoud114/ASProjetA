@@ -2,7 +2,14 @@
 	<ul class="pagination justify-content-center justify-content-md-start">
 		{% if previous is defined %}
 			<li class="page-item">
-				<a class="page-link" aria-label="Prev" href="{{ path(route, query|merge({(pageParameterName): previous})) }}">&laquo;</a>
+				<a
+					class="page-link"
+					aria-label="Prev"
+					href="{{ path(route, query|merge({(pageParameterName): previous})) }}"
+					{{ stimulus_action('reload-content', 'refreshContent', 'click', {
+						'url' : path(route, query|merge({(pageParameterName): previous})),
+					}) }}
+				>&laquo;</a>
 			</li>
 		{% else %}
 			<li class="page-item disabled">
@@ -12,11 +19,23 @@
 
 		{% if startPage > 1 %}
 			<li class="page-item">
-				<a class="page-link" href="{{ path(route, query|merge({(pageParameterName): 1})) }}">1</a>
+				<a
+					class="page-link"
+					href="{{ path(route, query|merge({(pageParameterName): 1})) }}"
+					{{ stimulus_action('reload-content', 'refreshContent', 'click', {
+						'url' : path(route, query|merge({(pageParameterName): 1})),
+					}) }}
+				>1</a>
 			</li>
 			{% if startPage == 3 %}
 				<li class="page-item">
-					<a class="page-link" href="{{ path(route, query|merge({(pageParameterName): 2})) }}">2</a>
+					<a
+						class="page-link"
+						href="{{ path(route, query|merge({(pageParameterName): 2})) }}"
+						{{ stimulus_action('reload-content', 'refreshContent', 'click', {
+							'url' : path(route, query|merge({(pageParameterName): 2})),
+						}) }}
+					>2</a>
 				</li>
 			{% elseif startPage != 2 %}
 				<li class="page-item">
@@ -28,7 +47,13 @@
 		{% for page in pagesInRange %}
 			{% if page != current %}
 				<li class="page-item">
-					<a class="page-link" href="{{ path(route, query|merge({(pageParameterName): page})) }}">{{ page }}</a>
+					<a
+						class="page-link"
+						href="{{ path(route, query|merge({(pageParameterName): page})) }}"
+						{{ stimulus_action('reload-content', 'refreshContent', 'click', {
+							'url' : path(route, query|merge({(pageParameterName): page})),
+						}) }}
+					>{{ page }}</a>
 				</li>
 			{% else %}
 				<li class="page-item active">
@@ -45,18 +70,36 @@
 					</li>
 				{% else %}
 					<li class="page-item">
-						<a class="page-link" href="{{ path(route, query|merge({(pageParameterName): pageCount - 1})) }}">{{ pageCount - 1 }}</a>
+						<a
+							class="page-link"
+							href="{{ path(route, query|merge({(pageParameterName): pageCount - 1})) }}"
+							{{ stimulus_action('reload-content', 'refreshContent', 'click', {
+								'url' : path(route, query|merge({(pageParameterName): pageCount - 1}))
+							}) }}
+						>{{ pageCount - 1 }}</a>
 					</li>
 				{% endif %}
 			{% endif %}
 			<li class="page-item">
-				<a class="page-link" href="{{ path(route, query|merge({(pageParameterName): pageCount})) }}">{{ pageCount }}</a>
+				<a
+					class="page-link"
+					href="{{ path(route, query|merge({(pageParameterName): pageCount})) }}"
+					{{ stimulus_action('reload-content', 'refreshContent', 'click', {
+						'url' : path(route, query|merge({(pageParameterName): pageCount})),
+					}) }}
+				>{{ pageCount }}</a>
 			</li>
 		{% endif %}
 
 		{% if next is defined %}
 			<li class="page-item">
-				<a class="page-link" href="{{ path(route, query|merge({(pageParameterName): next})) }}">&raquo;</a>
+				<a
+					class="page-link"
+					href="{{ path(route, query|merge({(pageParameterName): next})) }}"
+					{{ stimulus_action('reload-content', 'refreshContent', 'click', {
+						'url' : path(route, query|merge({(pageParameterName): next})),
+					}) }}
+				>&raquo;</a>
 			</li>
 		{% else %}
 			<li class="page-item disabled">

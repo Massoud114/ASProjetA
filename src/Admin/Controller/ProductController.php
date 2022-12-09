@@ -55,7 +55,9 @@ class ProductController extends CrudController
 		$this->paginator->allowSort('row.id', 'row.title', 'row.fixedPrice', 'row.createdAt');
 		$rows = $this->paginator->paginate($query->getQuery());
 
-		return $this->render("admin/product/index.html.twig", [
+		$template = $request->isXmlHttpRequest() ? '_list' : 'index';
+
+		return $this->render("admin/product/{$template}.html.twig", [
 			'rows' => $rows,
 			'searchable' => true,
 			'menu' => $this->menuItem,

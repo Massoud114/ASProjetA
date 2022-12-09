@@ -70,7 +70,7 @@ class FaqController extends CrudController
     #[Route('/{id}', name: 'delete', methods: ['POST'])]
     public function delete(Request $request, Faq $faq, FaqRepository $faqRepository): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$faq->getId(), $request->request->get('_token'))) {
+        if ($this->isCsrfTokenValid('delete', $request->request->get('_token'))) {
             $faqRepository->remove($faq, true);
         } else {
 	        $this->addFlash('error', 'invalid_csrf_token');

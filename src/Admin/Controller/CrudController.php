@@ -25,15 +25,6 @@ abstract class CrudController extends BaseController
 			->setParameter('search', '%'.strtolower($search).'%');
 	}
 
-	protected function applyFilter(string $filter, QueryBuilder $query): QueryBuilder
-	{
-		if (empty($filter)) {
-			return $query;
-		}
-		$query->andWhere("row.{$filter} = 1");
-		return $query;
-	}
-
 	protected function back(): RedirectResponse
 	{
 		return $this->redirect($this->request->headers->get('referer'));

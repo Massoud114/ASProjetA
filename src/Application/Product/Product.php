@@ -2,20 +2,44 @@
 
 namespace App\Application\Product;
 
+use ApiPlatform\Metadata\Get;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use ApiPlatform\Metadata\Patch;
+use ApiPlatform\Metadata\Delete;
 use App\Helper\Entity\MesurableTrait;
 use App\Helper\Entity\SluggableTrait;
 use App\Helper\Entity\TimestampTrait;
+use ApiPlatform\Metadata\ApiResource;
 use App\Application\Media\Image\Image;
 use Doctrine\Common\Collections\Collection;
 use App\Application\Product\Entity\Category;
 use Doctrine\Common\Collections\ArrayCollection;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 #[ORM\Entity(repositoryClass: ProductRepository::class)]
 #[UniqueEntity(fields: ['name'], message: 'product.name.unique')]
+#[ApiResource(
+	operations: [
+		new Get(
+			normalizationContext: [
+				'groups' => ['product:item:read'],
+				'enable_max_depth' => false,
+			],
+			security: 'is_granted("ROLE_ADMIN")y',
+		),
+		new Patch(
+			denormalizationContext: [
+				'groups' => ['product:write'],
+				'enable_max_depth' => false,
+			],
+			security: 'is_granted("ROLE_ADMIN")',
+		),
+		new Delete(),
+	]
+)]
 class Product
 {
 	public const TYPES = [
@@ -41,67 +65,97 @@ class Product
 	#[ORM\Column]
 	private ?int $id = null;
 
-	#[ORM\Column(length: 255)]
-	#[Assert\NotBlank]
-	#[Assert\Length(min: 3, max: 255)]
-	#[Assert\Type(type: 'string')]
+	#[
+		ORM\Column(length: 255),
+		Assert\NotBlank,
+		Assert\Length(min: 3, max: 255),
+		Assert\Type(type: 'string'),
+		Groups(['product:item:read', 'product:collection:read', 'product:write'])
+	]
 	private string $name;
 
-	#[ORM\Column(type: Types::TEXT, nullable: true)]
-	#[Assert\NotBlank]
-	#[Assert\Type(type: 'string')]
+	#[
+		ORM\Column(type: Types::TEXT, nullable: true),
+		Assert\NotBlank,
+		Assert\Type(type: 'string'),
+		Groups(['product:item:read', 'product:write'])
+	]
 	private ?string $description = null;
 
-	#[ORM\Column(type: Types::STRING, nullable: true)]
-	#[Assert\Choice(choices: self::TYPES, message: 'product.types.invalid')]
+	#[
+		ORM\Column(type: Types::STRING, nullable: true),
+		Assert\Choice(choices: self::TYPES, message: 'product.types.invalid'),
+		Groups(['product:item:read', 'product:write'])
+	]
 	private ?string $type = null;
 
-	#[ORM\Column]
-	#[Assert\Type(type: 'numeric')]
-	#[Assert\PositiveOrZero]
+	#[
+		ORM\Column,
+		Assert\Type(type: 'numeric'),
+		Assert\PositiveOrZero,
+		Groups(['product:item:read', 'product:write'])
+	]
 	private int $minPrice;
 
-	#[ORM\Column(nullable: true)]
-	#[Assert\Type(type: 'numeric')]
-	#[Assert\PositiveOrZero]
+	#[
+		ORM\Column(nullable: true),
+		Assert\Type(type: 'numeric'),
+		Assert\PositiveOrZero,
+		Groups(['product:item:read', 'product:write'])
+	]
 	private ?int $maxPrice = null;
 
-	#[ORM\Column]
-	#[Assert\Type(type: 'numeric')]
-	#[Assert\PositiveOrZero]
+	#[
+		ORM\Column,
+		Assert\Type(type: 'numeric'),
+		Assert\PositiveOrZero,
+		Groups(['product:item:read', 'product:collection:read', 'product:write'])
+	]
 	private int $stockQuantity = 0;
 
-	#[ORM\Column(nullable: true)]
-	#[Assert\Type(type: 'numeric')]
-	#[Assert\PositiveOrZero]
+	#[
+		ORM\Column(nullable: true),
+		Assert\Type(type: 'numeric'),
+		Assert\PositiveOrZero,
+		Groups(['product:item:read', 'product:write'])
+	]
 	private ?float $makingPrice = null;
 
 	#[ORM\Column(nullable: true)]
 	#[Assert\Type(type: 'numeric')]
 	#[Assert\PositiveOrZero]
 	#[Assert\NotBlank]
+	#[Groups(['product:item:read', 'product:collection:read', 'product:write'])]
 	private ?float $fixedPrice = 0;
 
 	#[ORM\Column(nullable: false)]
+	#[Groups(['product:item:read', 'product:collection:read'])]
 	private ?string $thumbnailUrl = null;
 
 	#[ORM\Column(type: Types::BOOLEAN, nullable: false, options: ['default' => true])]
+	#[Groups(['product:item:read', 'product:collection:read', 'product:write'])]
 	private bool $visible = true;
 
 	#[ORM\Column(type: Types::BOOLEAN, options: ['default' => false])]
+	#[Groups(['product:item:read', 'product:collection:read', 'product:write'])]
 	private bool $favorite = false;
 
 	#[ORM\OneToMany(mappedBy: 'product', targetEntity: Image::class, orphanRemoval: true)]
+	#[Groups(['product:item:read', 'product:write'])]
 	private Collection $productImages;
 
 	#[ORM\OneToOne(cascade: ['persist', 'remove'])]
 	#[ORM\JoinColumn(nullable: true)]
+	#[Groups(['product:item:read', 'product:collection:read', 'product:write'])]
 	private ?Image $thumbnail = null;
 
 	#[ORM\Column(type: Types::TEXT, nullable: true)]
+	#[Groups(['product:item:read', 'product:write'])]
 	private ?string $details = null;
 
-	#[ORM\ManyToMany(targetEntity: Category::class, inversedBy: 'products')]
+	#[
+		ORM\ManyToMany(targetEntity: Category::class, inversedBy: 'products'),
+	]
 	private Collection $categories;
 
 	use MesurableTrait, SluggableTrait, TimestampTrait;

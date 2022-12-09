@@ -1,5 +1,6 @@
 import {Controller} from '@hotwired/stimulus';
 import {isAuthenticated} from '../js/functions/auth';
+import {jsonFetchOrFlash} from '../js/functions/api';
 import {cookie} from '../js/functions/cookie';
 
 export default class extends Controller {
@@ -44,12 +45,11 @@ export default class extends Controller {
 		this.themeValue = e.currentTarget.classList.contains('active') ? 'light' : 'dark'
 
 		if (isAuthenticated()){
-			/*jsonFetchOrFlash('/api/profil/theme', {
-				body: { theme: themeToAdd },
+			jsonFetchOrFlash('/api/profil/theme', {
+				body: { theme: this.themeValue },
 				method: 'POST'
-			}).catch(console.error)*/
-		}
-		else {
+			}).catch(console.error)
+		} else {
 			cookie('theme', this.themeValue, {expires : 30})
 		}
 	}

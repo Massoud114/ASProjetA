@@ -1,4 +1,9 @@
-<a {% for attr, value in options %} {{ attr }}="{{ value }}" {% endfor %}>
+<a
+	{% for attr, value in options %} {{ attr }}="{{ value }}" {% endfor %}
+		{{ stimulus_action('reload-content', 'refreshContent', 'click', {
+			'url' : options.href,
+		}) }}
+>
 	<span>{{ title }}</span>
 	{% if sorted %}
 		<span style="float: right;">

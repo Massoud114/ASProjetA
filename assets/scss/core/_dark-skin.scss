@@ -6,6 +6,12 @@ $dark-card-bg: darken($dark, 6%);
 $dark-border-color: lighten($darker, 8%);
 $dark-border-light: $light-800;
 
+//smooth transition between dark and light
+$dark-transition: background-color 0.3s ease-in-out, color 0.3s ease-in-out, border-color 0.3s ease-in-out;
+body, .card, .nk-sidebar, .nk-footer, .dropdown-menu, .toast {
+    transition: $dark-transition;
+}
+
 // Dark Mode
 body.dark-mode {
     background: $dark-body-bg !important;
