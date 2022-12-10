@@ -1,20 +1,33 @@
 <div class="nk-sidebar-content">
 	<div class="nk-sidebar-menu" data-simplebar>
 		<ul class="nk-menu">
-			<li class="nk-menu-heading">
-				<h6 class="overline-title text-primary-alt">{{ 'selling_management' | trans }}</h6>
-			</li>
 			<li class="nk-menu-item {{ menu_active('home') }}">
 				<a href="{{ path('app_test') }}" class="nk-menu-link">
 					<span class="nk-menu-icon">{{ icon('dashboard', 'fill') }}</span>
 					<span class="nk-menu-text">{{ 'dashboard'|trans }}</span>
 				</a>
 			</li>
+			<li class="nk-menu-heading">
+				<h6 class="overline-title text-primary-alt">{{ 'selling_management' | trans }}</h6>
+			</li>
 			<li class="nk-menu-item {{ menu_active('product') }}">
-				<a href="{{ path('admin_product_index') }}" class="nk-menu-link">
+				<a href="{{ path('admin_product_index') }}" class="nk-menu-link" title="{{ 'products'|trans }}">
 					<span class="nk-menu-icon">{{ icon('package', 'fill') }}</span>
 					<span class="nk-menu-text">{{ 'products'|trans }}</span>
 				</a>
+			</li>
+			<li class="nk-menu-item has-sub {{ menu_active('category') }}">
+				<a href="#" class="nk-menu-link nk-menu-toggle" title="">
+					<span class="nk-menu-icon">{{ icon('puzzle', 'fill') }}</span>
+					<span class="nk-menu-text">{{ 'others'|trans }}</span>
+				</a>
+				<ul class="nk-menu-sub">
+					<li class="nk-menu-item {{ menu_active('category') }}   ">
+						<a href="{{ path('admin_category_index') }}" class="nk-menu-link" title="{{ 'categories.manage'|trans }}">
+							<span class="nk-menu-text">{{ 'categories'|trans }}</span>
+						</a>
+					</li>
+				</ul>
 			</li>
 
 			<li class="nk-menu-heading">

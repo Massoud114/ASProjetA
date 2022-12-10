@@ -3,78 +3,131 @@
 namespace App\Admin\Controller;
 
 use App\Application\Product\Entity\Category;
+use App\Helper\Paginator\PaginatorInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use App\Application\Product\Form\CategoryType;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\String\Slugger\SluggerInterface;
 use App\Application\Product\Repository\CategoryRepository;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use function Symfony\Component\Translation\t;
 
 #[Route('/category', name: 'category_')]
 class CategoryController extends CrudController
 {
 	protected string $menuItem = 'category';
 	protected string $routePrefix = 'admin_category';
+	private PaginatorInterface $paginator;
 
-    #[Route('/', name: 'index', methods: ['GET'])]
-    public function index(CategoryRepository $categoryRepository): Response
-    {
-        return $this->render('admin/category/index.html.twig', [
-            'categories' => $categoryRepository->getCategories(),
-	        'prefix' => $this->routePrefix,
-	        'menu' => $this->menuItem
-        ]);
-    }
+	public function __construct(
+		PaginatorInterface $paginator,
+	)
+	{
+		$this->paginator = $paginator;
+	}
 
-    #[Route('/create', name: 'create', methods: ['GET', 'POST'])]
-    public function new(Request $request, CategoryRepository $categoryRepository): Response
-    {
-        $category = new Category();
-        $form = $this->createForm(CategoryType::class, $category);
+	#[Route('/', name: 'index', methods: ['GET'])]
+	public function index(Request $request, CategoryRepository $repository): Response
+	{
+		$query = $repository
+			->createQueryBuilder('row')
+			->orderBy('row.createdAt', 'DESC')
+		;
+		if ($request->get('q')) {
+			$query = $this->applySearch(trim($request->get('q')), $query, ['name']);
+		}
+
+		$this->paginator->allowSort('row.name');
+		$rows = $this->paginator->paginate($query->getQuery());
+
+		$template = $request->isXmlHttpRequest() ? '_list' : 'index';
+
+		return $this->render("admin/category/{$template}.html.twig", [
+			'rows' => $rows,
+			'prefix' => $this->routePrefix,
+			'menu' => $this->menuItem,
+		]);
+	}
+
+	#[Route('/create', name: 'create', methods: ['GET', 'POST'])]
+	public function new(Request $request, CategoryRepository $categoryRepository, SluggerInterface $slugger): Response
+	{
+		$category = new Category();
+		$form = $this->createForm(CategoryType::class, $category)
+		             ->add('saveAndCreateNew', SubmitType::class)
+		;
 		$form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $categoryRepository->add($category, true);
+		if ($form->isSubmitted() && $form->isValid()) {
+			$categoryRepository->add($category, true);
 
-            return $this->redirectToRoute($this->routePrefix . '_index', [], Response::HTTP_SEE_OTHER);
-        }
+			$category->setSlug($slugger->slug($category->getName()));
 
-        return $this->renderForm('admin/category/create.html.twig', [
-            'category' => $category,
-            'form' => $form,
-	        'prefix' => $this->routePrefix,
-        ]);
-    }
+			if ($form->get('saveAndCreateNew')->isClicked()) {
+				return $this->redirectToRoute($this->routePrefix . '_create');
+			}
+			return $this->redirectToRoute($this->routePrefix . '_index', [], Response::HTTP_SEE_OTHER);
+		}
 
-    #[Route('/{id}/edit', name: 'edit', methods: ['GET', 'POST'])]
-    public function edit(Request $request, Category $category, CategoryRepository $categoryRepository): Response
-    {
-        $form = $this->createForm(CategoryType::class, $category);
-	    $form->handleRequest($request);
+		return $this->renderForm('admin/category/create.html.twig', [
+			'category' => $category,
+			'form' => $form,
+			'prefix' => $this->routePrefix,
+			'menu' => $this->menuItem,
+		]);
+	}
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $categoryRepository->add($category, true);
+	#[Route('/{id}/edit', name: 'edit', methods: ['GET', 'POST'])]
+	public function edit(Request $request, Category $category, CategoryRepository $categoryRepository, SluggerInterface $slugger): Response
+	{
+		$form = $this->createForm(CategoryType::class, $category);
+		$form->handleRequest($request);
 
-            return $this->redirectToRoute($this->routePrefix . '_index', [], Response::HTTP_SEE_OTHER);
-        }
+		if ($form->isSubmitted() && $form->isValid()) {
+			$category->setSlug($slugger->slug($category->getName()));
+			$categoryRepository->add($category, true);
 
-        return $this->renderForm('admin/category/edit.html.twig', [
-            'category' => $category,
-            'form' => $form,
-	        'prefix' => $this->routePrefix,
-        ]);
-    }
+			return $this->redirectToRoute($this->routePrefix . '_index', [], Response::HTTP_SEE_OTHER);
+		}
 
-    #[Route('/{id}', name: 'delete', methods: ['POST'])]
-    public function delete(Request $request, Category $category, CategoryRepository $categoryRepository): Response
-    {
-        if ($this->isCsrfTokenValid('delete', $request->request->get('_token'))) {
-            $categoryRepository->remove($category, true);
-        } else {
-	        $this->addFlash('error', 'invalid_csrf_token');
-	        return $this->redirectToRoute($this->routePrefix . '_index');
-        }
+		return $this->renderForm('admin/category/edit.html.twig', [
+			'category' => $category,
+			'form' => $form,
+			'prefix' => $this->routePrefix,
+		]);
+	}
 
-	    return $this->redirectToRoute($this->routePrefix . '_index', [], Response::HTTP_SEE_OTHER);
+	#[Route('/{id}/delete', name: 'delete', methods: ['POST', 'DELETE'])]
+	public function delete(Request $request, Category $category, CategoryRepository $categoryRepository): Response
+	{
+		if ($request->isXmlHttpRequest()) {
+			$request->request->add(json_decode($request->getContent(), true));
+			if (!$this->isCsrfTokenValid('delete', $request->request->get('token'))) {
+				return $this->json(['title' => 'invalid_csrf_token', 'detail' => 'Invalid Token'], Response::HTTP_FORBIDDEN);
+			}
+			if ($category->getChildren()->count()) {
+				return $this->json(['title' => 'cannot_be_delete', 'detail' => 'Delete Children'], Response::HTTP_FORBIDDEN);
+			}
 
-    }
+			$categoryRepository->remove($category, true);
+
+			return new JsonResponse([], 200);
+		}
+
+		if (!$this->isCsrfTokenValid('delete', $request->request->get('token'))) {
+			$this->addFlash('error', 'invalid_csrf_token');
+			return $this->redirectBack($this->routePrefix . '_index', []);
+		}
+		if ($category->getChildren()->count()) {
+			$this->addFlash('error', t('cannot_be_delete') . ' - ' . t('has_children'));
+			return $this->redirectBack($this->routePrefix . '_index', []);
+		}
+
+//		$categoryRepository->remove($category, true);
+		$this->addFlash('success', t('category.deleted'));
+		return $this->redirectToRoute($this->routePrefix . '_index', [], Response::HTTP_SEE_OTHER);
+
+	}
 }

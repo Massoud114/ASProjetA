@@ -165,9 +165,10 @@ class ProductType extends AbstractType
 				],
 				'required' => false,
 			])
-			->add('category', EntityType::class, [
+			->add('categories', EntityType::class, [
 				'label' => 'category',
 				'class' => Category::class,
+				'multiple' => true,
 				'choice_label' => 'name',
 				'attr' => [],
 				'required' => false,

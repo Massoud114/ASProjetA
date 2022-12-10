@@ -19,11 +19,11 @@ class CategoryType extends AbstractType
 	            'required' => true
             ])
             ->add('parent', EntityType::class, [
-				'class' => Category::class
+				'class' => Category::class,
+	            'required' => false,
+	            'label' => 'category.parent',
+	            'help' => 'category.parent.help'
             ])
-	        ->add('children', EntityType::class, [
-				'class' => Category::class
-	        ])
         ;
     }
 

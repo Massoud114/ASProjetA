@@ -106,6 +106,7 @@ class ProductController extends CrudController
 			'form' => $form,
 			'menu' => $this->menuItem,
 			'prefix' => $this->routePrefix,
+			'product' => $product,
 		]);
 
 	}

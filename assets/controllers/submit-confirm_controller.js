@@ -1,6 +1,7 @@
 import {Controller} from '@hotwired/stimulus';
 import {Modal} from 'bootstrap';
 import {flash} from '../js/functions/window';
+import {jsonFetchOrFlash} from '../js/functions/api';
 
 export default class extends Controller {
 
@@ -10,25 +11,26 @@ export default class extends Controller {
 		icon: String,
 		cancel: String,
 		confirmButtonText: String,
-		asyncSubmit: Boolean
-	}
+		asyncSubmit: Boolean,
+		successText: String,
+	};
 
 	connect() {
 	}
 
 	onSubmit(event) {
-		event.preventDefault()
-		this.modal = this.createModalContainer()
+		event.preventDefault();
+		this.modal = this.createModalContainer();
 	}
 
 	createModalContainer() {
-		const modalContainer = document.createElement('div')
-		modalContainer.classList.add('modal')
-		modalContainer.classList.add('fade')
-		modalContainer.classList.add('zoom')
-		modalContainer.setAttribute('tabindex', '-1')
-		modalContainer.setAttribute('role', 'dialog')
-		modalContainer.setAttribute('aria-modal', 'true')
+		const modalContainer = document.createElement('div');
+		modalContainer.classList.add('modal');
+		modalContainer.classList.add('fade');
+		modalContainer.classList.add('zoom');
+		modalContainer.setAttribute('tabindex', '-1');
+		modalContainer.setAttribute('role', 'dialog');
+		modalContainer.setAttribute('aria-modal', 'true');
 		modalContainer.innerHTML = `
 		 	<div class="modal-dialog" role="dialog">
 		 		<div class="modal-content">
@@ -43,29 +45,31 @@ export default class extends Controller {
 		 			</div>
 		 			<div class="modal-footer bg-light">
 		 				<button type="button" class="btn btn-default cancelButton" id="btnNo">
-		 					<em class="icon ni ni-ban"></em> <span>${this.cancelValue}</span>
+		 					<em class="icon ni ni-na"></em> <span>${this.cancelValue}</span>
 		 				</button>
 		 				<button type="button" class="btn btn-danger confirmButton" id="btnYes">
-		 					<em class="icon ni ni-trash"></em> ${this.confirmButtonTextValue || null}
+		 					<em class="icon ni ni-trash"></em>  <span>${this.confirmButtonTextValue || null}</span>
 		 				</button>
 		 			</div>
 		 		</div>
 		 	</div>
-		`
-		this.modalContainer = modalContainer
-		document.body.appendChild(modalContainer)
+		`;
+		this.modalContainer = modalContainer;
+		document.body.appendChild(modalContainer);
 		this.modal = new Modal(modalContainer, {
 			keyboard: false,
-		})
-		this.modal.show()
-		modalContainer.querySelector('#btnNo').addEventListener('click', (e) => {
-			this.modal.hide()
-			modalContainer.remove()
-		})
-		modalContainer.querySelector('#btnYes').addEventListener('click', (e) => {
-			this.submitForm().then(r => r)
-		})
-		return this.modal
+		});
+		this.modal.show();
+		modalContainer.querySelector('#btnNo').
+			addEventListener('click', (e) => {
+				this.modal.hide();
+				modalContainer.remove();
+			});
+		modalContainer.querySelector('#btnYes').
+			addEventListener('click', (e) => {
+				this.submitForm().then(r => r);
+			});
+		return this.modal;
 	}
 
 	disconnect() {
@@ -73,35 +77,32 @@ export default class extends Controller {
 
 	async submitForm() {
 		if (!this.asyncSubmitValue) {
-			this.element.submit()
-			return
+			this.element.submit();
+			return;
 		}
-		this.startLoading()
-		const response = await fetch(this.element.action, {
+		this.startLoading();
+		const response = await jsonFetchOrFlash(this.element.action, {
 			method: this.element.method,
-			body: new URLSearchParams(new FormData(this.element))
-		}).then((r) => {
-			flash("Le produit a bien été supprimé", "success")
-		}).catch(e => {
-			flash(e.response, "danger")
-		}).finally(() => {
-			this.modal.hide()
-			this.modalContainer.remove()
-		})
-
+			body: new FormData(this.element),
+		});
+		if (response) {
+			flash(this.successTextValue || "Done", 'success');
+		}
+		this.modal.hide();
+		this.modalContainer.remove();
 		this.dispatch('async:submitted', {
 			response,
-		})
+		});
 	}
 
-	startLoading(){
-		const confirmButton = this.modalContainer.querySelector('#btnYes')
-		const cancelButton = this.modalContainer.querySelector('#btnNo')
+	startLoading() {
+		const confirmButton = this.modalContainer.querySelector('#btnYes');
+		const cancelButton = this.modalContainer.querySelector('#btnNo');
 		confirmButton.innerHTML = `
 			<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
             <span>Chargement...</span>
-		`
-		confirmButton.setAttribute('disabled', 'disabled')
-		cancelButton.setAttribute('disabled', 'disabled')
+		`;
+		confirmButton.setAttribute('disabled', 'disabled');
+		cancelButton.setAttribute('disabled', 'disabled');
 	}
 }

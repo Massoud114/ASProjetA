@@ -1,7 +1,6 @@
-{% block actions %}
-	<li class="nk-block-tools-opt" id="massive-delete-button"
-	>
-		<form
+<li class="nk-block-tools-opt" id="massive-delete-button"
+>
+	<form
 			action="{{ path(prefix ~ '_massive_delete') }}"
 			class="d-inline-block"
 			method="post"
@@ -18,58 +17,57 @@
 			{{ stimulus_target('checkbox-all', 'action') }}
 			{{ stimulus_action('submit-confirm', 'onSubmit', 'submit') }}
 
+	>
+		<input type="hidden" name="token" value="{{ csrf_token('massive-delete') }}"/>
+		<input type="hidden" name="ids" value=""/>
+		<button type="submit" class="btn btn-icon btn-danger d-md-none">
+			{{ icon('trash') }}
+		</button>
+		<button type="submit" class="btn btn-danger d-none d-md-inline-flex">
+			{{ icon('trash') }} {{ 'delete'|trans }}
+		</button>
+	</form>
+</li>
+<li>
+	<form
+			action="{{ path(app.request.attributes.get('_route'), app.request.query.all) }}"
+			class="form-control-wrap"
+	>
+		<input
+				type="text"
+				name="q"
+				class="form-control"
+				placeholder="Rechercher"
+				title="Rechercher un produit"
+				value="{{ app.request.get('q') }}"
 		>
-			<input type="hidden" name="token" value="{{ csrf_token('massive-delete') }}"/>
-			<input type="hidden" name="ids" value=""/>
-			<button type="submit" class="btn btn-icon btn-danger d-md-none">
-				{{ icon('trash') }}
-			</button>
-			<button type="submit" class="btn btn-danger d-none d-md-inline-flex">
-				{{ icon('trash') }} {{ 'delete'|trans }}
-			</button>
-		</form>
-	</li>
-	<li>
-		<form
-				action="{{ path(app.request.attributes.get('_route'), app.request.query.all) }}"
-				class="form-control-wrap"
-		>
-			<input
-					type="text"
-					name="q"
-					class="form-control"
-					placeholder="Rechercher"
-					title="Rechercher un produit"
-					value="{{ app.request.get('q') }}"
-			>
-			<div class="form-icon form-icon-right">
-				{{ icon('search') }}
-			</div>
-		</form>
-	</li>
-	<li>
-		<div class="dropdown">
-			<a href="#" class="dropdown-toggle dropdown-indicator btn btn-outline-light btn-white" data-bs-toggle="dropdown">Status</a>
-			<div class="dropdown-menu dropdown-menu-end">
-				<ul class="link-list-opt no-bdr">
-					<li><a href="#"><span></span>Favoris</a></li>
-					<li><a href="#"><span>Visibles</span></a></li>
-					<li><a href="#"><span>Non visibles</span></a></li>
-					<li><a href="#"><span>Stock vide</span></a></li>
-				</ul>
-			</div>
+		<div class="form-icon form-icon-right">
+			{{ icon('search') }}
 		</div>
-	</li>
-	<li class="nk-block-tools-opt">
-		<a href="{{ path(prefix ~ '_create') }}" class="btn btn-icon btn-primary d-md-none">
-			{{ icon('plus') }}
-		</a>
-		{# <a href="{{ path(prefix ~ '_create') }}" data-target="addProduct" class="toggle btn btn-icon btn-primary d-md-none">
+	</form>
+</li>
+<li>
+	<div class="dropdown">
+		<a href="#" class="dropdown-toggle dropdown-indicator btn btn-outline-light btn-white" data-bs-toggle="dropdown">Status</a>
+		<div class="dropdown-menu dropdown-menu-end">
+			<ul class="link-list-opt no-bdr">
+				<li><a href="#"><span></span>Favoris</a></li>
+				<li><a href="#"><span>Visibles</span></a></li>
+				<li><a href="#"><span>Non visibles</span></a></li>
+				<li><a href="#"><span>Stock vide</span></a></li>
+			</ul>
+		</div>
+	</div>
+</li>
+<li class="nk-block-tools-opt">
+	<a href="{{ path(prefix ~ '_create') }}" class="btn btn-icon btn-primary d-md-none">
+		{{ icon('plus') }}
+	</a>
+	{# <a href="{{ path(prefix ~ '_create') }}" data-target="addProduct" class="toggle btn btn-icon btn-primary d-md-none">
 			{{ icon('plus') }}
 		</a> #}
-		<a href="{{ path(prefix ~ '_create') }}" class="btn btn-primary d-none d-md-inline-flex">
-			{{ icon('plus') }}
-			<span>{{ 'add'|trans }}</span>
-		</a>
-	</li>
-{% endblock %}
+	<a href="{{ path(prefix ~ '_create') }}" class="btn btn-primary d-none d-md-inline-flex">
+		{{ icon('plus') }}
+		<span>{{ 'add'|trans }}</span>
+	</a>
+</li>

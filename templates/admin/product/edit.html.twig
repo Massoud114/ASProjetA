@@ -1,11 +1,6 @@
 {% extends 'admin/layout/_squeleton_new.html.twig' %}
 
-{% block formTitle %}
-	<h2 class="nk-block-title fw-normal">{{ 'product.edit' | trans }}</h2>
-	<div class="nk-block-des">
-		<p class="lead">{{ 'global_form_help' | trans }}</p>
-	</div>
-{% endblock %}
+{% block formTitle 'product.edit' | trans %}
 
 {% block title 'product.edit'|trans %}
 
@@ -13,11 +8,9 @@
 	{% include 'admin/product/_form.html.twig' with {
 		'form' : form,
 		'action' : 'edit',
-		'button_label' : 'update'
+		'button_label' : 'update'|trans
 	} %}
-	{% include 'admin/layout/_delete_confirmation.html.twig' %}
 {% endblock %}
-
 
 {% block javascripts %}
 	{{ parent() }}

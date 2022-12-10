@@ -13,8 +13,8 @@ export default class extends Controller
 		if (!this.alertContainer) {
 			return
 		}
-		if (this.typeValue === "error" || this.typeValue === null){
-			this.typeValue = 'danger'
+		if (this.typeValue === "danger" || this.typeValue === null){
+			this.typeValue = 'error'
 		}
 		this.createAlert()
 	}
@@ -51,14 +51,13 @@ export default class extends Controller
 		let element = this.element
 		window.setTimeout(async () => {
 			await slideUp(element)
-			element.parentElement.removeChild(element)
 			element.dispatchEvent(new CustomEvent('alert-close'))
 		}, 200)
 	}
 
 	getIcon() {
 		switch (this.typeValue) {
-			case "danger":
+			case "error":
 				return "cross-circle-fill"
 			case "warning":
 				return "alert-fill"

@@ -1,11 +1,18 @@
 <form
-		method="post"
-		class="delete-form"
-		data-confirmation="true"
-		id="delete-form#{{ product.id }}"
 		action="{{ path(prefix ~ '_delete', {id: product.id}) }}"
+		method="post"
+		{{ stimulus_controller('submit-confirm', {
+			title : 'delete_warning_title'|trans,
+			text : 'delete_warning_text'|trans,
+			icon : 'warning',
+			confirmButtonText : 'delete.label'|trans,
+			cancel: 'cancel'|trans,
+			asyncSubmit : 'false',
+		}) }}
+		{{ stimulus_action('submit-confirm', 'onSubmit', 'submit') }}
 >
-	<input type="hidden" name="token" value="{{ csrf_token('delete') }}" />
+	<input type="hidden" name="token" value="{{ csrf_token('delete') }}"/>
+	<input type="hidden" name="method" value="DELETE">
 	<button type="submit" class="btn btn-danger">
 		{{ icon('trash') }}
 		<span>{{ 'remove'|trans }}</span>

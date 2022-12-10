@@ -88,7 +88,7 @@ export class ApiError {
   }
 
   get name () {
-    return `${this.data.title} ${this.data.detail || ''}`
+    return `${this.data.title} : ${this.data.detail || ''}`
   }
 
   // Renvoie les violations indexé par propertyPath

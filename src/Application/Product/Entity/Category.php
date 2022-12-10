@@ -2,11 +2,13 @@
 
 namespace App\Application\Product\Entity;
 
+use DateTimeImmutable;
 use Doctrine\ORM\Mapping as ORM;
 use App\Application\Product\Product;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Validator\Constraints as Assert;
 use App\Application\Product\Repository\CategoryRepository;
 
 #[ORM\Entity(repositoryClass: CategoryRepository::class)]
@@ -18,8 +20,12 @@ class Category
     #[Groups(['product:item:read', 'product:collection:read', 'product:write'])]
     private ?int $id = null;
 
-    #[ORM\Column(length: 255)]
-    #[Groups(['product:item:read', 'product:collection:read'])]
+    #[
+		ORM\Column(length: 255),
+		Groups(['product:item:read', 'product:collection:read']),
+        Assert\NotBlank(),
+	    Assert\Length(min: 4)
+    ]
     private ?string $name = null;
 
     #[ORM\ManyToMany(targetEntity: Product::class, mappedBy: 'categories')]
@@ -40,8 +46,12 @@ class Category
     #[ORM\OneToMany(mappedBy: 'parent', targetEntity: self::class)]
     private Collection $children;
 
+    #[ORM\Column(nullable: true)]
+    private ?DateTimeImmutable $createdAt = null;
+
     public function __construct()
     {
+		$this->createdAt = new DateTimeImmutable();
         $this->products = new ArrayCollection();
         $this->children = new ArrayCollection();
     }
@@ -145,7 +155,19 @@ class Category
     }
 
 	public function __toString(): string
-	{
-		return $this->name;
-	}
+         	{
+         		return $this->name;
+         	}
+
+    public function getCreatedAt(): ?DateTimeImmutable
+    {
+        return $this->createdAt;
+    }
+
+    public function setCreatedAt(?DateTimeImmutable $createdAt): self
+    {
+        $this->createdAt = $createdAt;
+
+        return $this;
+    }
 }

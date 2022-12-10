@@ -12,7 +12,10 @@
 									{{ icon('arrow-left') }}<span>{{ 'back_to_list' | trans }}</span>
 								</a>
 							</div>
-							{% block formTitle %}{% endblock %}
+							<h3 class="nk-block-title fw-normal">{% block formTitle '' %}</h3>
+							<div class="nk-block-des">
+								<p class="lead h-5">{{ 'global_form_help' | trans }}</p>
+							</div>
 
 						</div>
 					</div>
