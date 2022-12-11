@@ -23,6 +23,11 @@ Encore
     .addEntry('base', './assets/base.js')
     .addEntry('admin', './assets/admin.js')
     .addEntry('editor', './assets/js/editor.js')
+    .copyFiles({
+        from: './assets/images',
+        to: 'images/[path][name].[ext]',
+        pattern: /\.(webp|png|jpg|svg|jpeg|JPG|PNG|JPEG)$/,
+    })
 
     // enables the Symfony UX Stimulus bridge (used in assets/bootstrap.js)
     .enableStimulusBridge('./assets/controllers.json')

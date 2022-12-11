@@ -294,20 +294,6 @@ import NioApp from './vendors/nioapp/nioapp.min';
 		}
 	}
 
-	// Dark Mode Switch @since v2.0
-	/*NioApp.ModeSwitch = function() {
-		var toggle = $('.dark-switch');
-		if ($body.hasClass('dark-mode')) {
-			toggle.addClass('active');
-		} else {
-			toggle.removeClass('active');
-		}
-		toggle.on('click', function(e) {
-			e.preventDefault();
-			$(this).toggleClass('active');
-			$body.toggleClass('dark-mode');
-		});
-	};*/
 
 	// Controls @v1.0.0
 	/*NioApp.Control = function(elm) {
@@ -412,7 +398,6 @@ import NioApp from './vendors/nioapp/nioapp.min';
 		NioApp.coms.docReady.push(NioApp.Picker.init);
 		NioApp.coms.docReady.push(NioApp.Wizard);
 		NioApp.coms.docReady.push(NioApp.sbCompact);
-		NioApp.coms.winLoad.push(NioApp.ModeSwitch);
 	};
 
 	NioApp.init();
