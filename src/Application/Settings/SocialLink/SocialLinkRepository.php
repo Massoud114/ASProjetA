@@ -1,26 +1,26 @@
 <?php
 
-namespace App\Application\Settings;
+namespace App\Application\Settings\SocialLink;
 
 use Doctrine\Persistence\ManagerRegistry;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 
 /**
- * @extends ServiceEntityRepository<SocialMedia>
+ * @extends ServiceEntityRepository<SocialLink>
  *
- * @method SocialMedia|null find($id, $lockMode = null, $lockVersion = null)
- * @method SocialMedia|null findOneBy(array $criteria, array $orderBy = null)
- * @method SocialMedia[]    findAll()
- * @method SocialMedia[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ * @method SocialLink|null find($id, $lockMode = null, $lockVersion = null)
+ * @method SocialLink|null findOneBy(array $criteria, array $orderBy = null)
+ * @method SocialLink[]    findAll()
+ * @method SocialLink[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class SocialMediaRepository extends ServiceEntityRepository
+class SocialLinkRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)
     {
-        parent::__construct($registry, SocialMedia::class);
+        parent::__construct($registry, SocialLink::class);
     }
 
-    public function add(SocialMedia $entity, bool $flush = false): void
+    public function add(SocialLink $entity, bool $flush = false): void
     {
         $this->getEntityManager()->persist($entity);
 
@@ -29,7 +29,7 @@ class SocialMediaRepository extends ServiceEntityRepository
         }
     }
 
-    public function remove(SocialMedia $entity, bool $flush = false): void
+    public function remove(SocialLink $entity, bool $flush = false): void
     {
         $this->getEntityManager()->remove($entity);
 

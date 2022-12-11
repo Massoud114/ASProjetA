@@ -1,0 +1,8 @@
+{% extends 'admin/layout/_squeleton_new.html.twig' %}
+
+{% block title 'social_links.add'|trans %}
+{% block formTitle 'social_links.add'|trans %}
+
+{% block form %}
+	{% include 'admin/social_links/_form.html.twig' with {'form' : form, 'action' : 'create'} %}
+{% endblock %}

@@ -1,0 +1,13 @@
+{% extends 'admin/layout/_squeleton_new.html.twig' %}
+
+{% block formTitle  'social_links.edit' | trans %}
+
+{% block title 'social_links.edit'|trans %}
+
+{% block form %}
+	{% include 'admin/social_links/_form.html.twig' with {
+		'form' : form,
+		'action' : 'edit',
+		'button_label' : 'update'|trans
+	} %}
+{% endblock %}

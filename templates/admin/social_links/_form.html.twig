@@ -1,0 +1,39 @@
+<div class="card">
+	<div class="card-inner">
+		{{ form_start(form) }}
+			{% if form.vars.errors|length > 0 %}
+				<div class="alert alert-fill alert-danger alert-icon">
+					{{ icon('cross-circle') }} {{ 'form_contains_error' | trans }}
+				</div>
+			{% endif %}
+
+			<div class="row g-4">
+				<div class="col-lg-6 col-md-8">
+					{{ form_row(form.name) }}
+				</div>
+			</div>
+			<div class="row g-4 mb-3">
+				<div class="col-lg-4 col-md-4 col-sm-6">
+					{{ form_row(form.icon) }}
+				</div>
+			</div>
+
+			<div class="mt-4 text-center">
+				<div class="form-group">
+					{% if action is defined and action == "create" %}
+						{{ form_widget(form.saveAndCreateNew, {
+							'attr' : {
+								'class' : 'btn-lg btn-outline-secondary me-gs'
+							}
+						}) }}
+					{% endif %}
+					<button type="submit" class="btn btn-lg btn-primary">{{ button_label|default('save') | trans }}</button>
+				</div>
+			</div>
+		{{ form_end(form) }}
+
+		{% if action is defined and action == "edit" %}
+			{{ include("admin/social_links/_delete.html.twig") }}
+		{% endif %}
+	</div>
+</div>

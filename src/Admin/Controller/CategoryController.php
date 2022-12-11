@@ -12,9 +12,11 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\String\Slugger\SluggerInterface;
 use App\Application\Product\Repository\CategoryRepository;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use function Symfony\Component\Translation\t;
 
 #[Route('/category', name: 'category_')]
+#[IsGranted('ROLE_STOCK')]
 class CategoryController extends CrudController
 {
 	protected string $menuItem = 'category';
@@ -125,7 +127,7 @@ class CategoryController extends CrudController
 			return $this->redirectBack($this->routePrefix . '_index', []);
 		}
 
-//		$categoryRepository->remove($category, true);
+		$categoryRepository->remove($category, true);
 		$this->addFlash('success', t('category.deleted'));
 		return $this->redirectToRoute($this->routePrefix . '_index', [], Response::HTTP_SEE_OTHER);
 

@@ -1,0 +1,58 @@
+{% extends 'admin/base.html.twig' %}
+
+{% block title 'Paramètres du site' %}
+
+{% block body %}
+	<div class="container-fluid">
+		<div class="nk-content-inner">
+			<div class="nk-content-body">
+				<div class="nk-block-head nk-block-head-sm">
+					<div class="nk-block-between">
+						<div class="nk-block-head-content">
+							<h3 class="nk-block-title page-title">{{ 'social_links'|trans }}</h3>
+							<p>{{ 'social_links.form.help'| trans }}</p>
+						</div>
+					</div>
+				</div>
+				<div class="nk-block nk-block-lg">
+					<div class="card">
+						<div class="card-inner">
+							<div class="tab-content">
+								{{ form_start(form, {
+									attr: {
+										'class' : "gy-3 form-settings"
+									}
+								}) }}
+									{% for input in formInputs %}
+										<div class="row g-3 align-center">
+											<div class="col-lg-5">
+												<div class="form-group">
+													{{ form_label(input) }}
+												</div>
+											</div>
+											<div class="col-lg-7">
+												<div class="form-group">
+													<div class="form-control-wrap">
+														{{ form_widget(input) }}
+													</div>
+												</div>
+											</div>
+										</div>
+									{% endfor %}
+									{{ form_widget(form._token) }}
+									<div class="row g-3">
+										<div class="col-lg-7">
+											<div class="form-group mt-2">
+												<button type="submit" class="btn btn-lg btn-primary">{{ 'update'|trans }}</button>
+											</div>
+										</div>
+									</div>
+								</div>
+							<form>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+{% endblock %}

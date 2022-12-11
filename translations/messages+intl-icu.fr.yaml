@@ -1,13 +1,13 @@
-prev: préc
-products: Produits
+prev: "préc"
+products: "Produits"
 products.manage: 'Gestions des produits'
-products.orders: Commandes
+products.orders: "Commandes"
 products.add: 'Ajouter un produit'
 products.edit: 'Modification du produit'
-single: Unitaire
-pack: Pack
+single: "Unitaire"
+pack: "Pack"
 on_command: 'Sur Commande'
-product.label: Produit
+product.label: "Produit"
 product.add: 'Ajouter un produit'
 product.edit: 'Modifier un produit'
 product.delete: 'Supprimer un produit'
@@ -34,45 +34,45 @@ product.deleted_error: 'Une erreur est survenue lors de la suppression du produi
 products.deleted_successfully: 'Les produits ont bien été supprimé !'
 products.deleted_confirm: 'Êtes-vous sûr de vouloir supprimer ces produit ?'
 products.deleted_error: 'Une erreur est survenue lors de la suppression des produit'
-brand: Marque
+brand: "Marque"
 stockQuantityHelp: "Entrer 0 s'il s'agit d'une commande"
 stockQuantity: 'Quantité en stock'
 makingPrice: 'Prix de fabrication / réalisation'
 fixedPrice: 'Prix fixé'
 maxPrice: 'Prix maximum de vente'
 minPrice: 'Prix minimum de vente'
-weight: Poids
+weight: "Poids"
 weightUnit: 'Unité de poids'
-kg: kg
-g: g
-mg: mg
-thickness: Épaisseur
+kg: "kg"
+g: "g"
+mg: "mg"
+thickness: "Épaisseur"
 thicknessUnit: "Unité d'épaisseur"
-mm: mm
-cm: cm
-m: m
-width: Largeur
+mm: "mm"
+cm: "cm"
+m: "m"
+width: "Largeur"
 widthUnit: 'Unité de largeur'
-height: Hauteur
+height: "Hauteur"
 heightUnit: 'Unité de hauteur'
-length: Longueur
+length: "Longueur"
 lengthUnit: 'Unité de longueur'
-category: Catégorie
-colors: Couleurs
-images: Images
-Description: Description
-Name: Nom
+category: "Catégorie"
+colors: "Couleurs"
+images: "Images"
+Description: "Description"
+Name: "Nom"
 fixed.price: 'Prix fixé'
-Stock: Stock
-shown: Affiché
-actions: Actions
-edit: Modifier
-update: Mettre à jour
-view: Voir
-remove: Supprimer
-delete: Supprimer
-dashboard: Tableau de bord
-save: Enregistrer
+Stock: "Stock"
+shown: "Affiché"
+actions: "Actions"
+edit: "Modifier"
+update: "Mettre à jour"
+view: "Voir"
+remove: "Supprimer"
+delete: "Supprimer"
+dashboard: "Tableau de bord"
+save: "Enregistrer"
 next_step: 'Étape suivante'
 prev_step: 'Étape Précédente'
 back_to_list: 'Retour à la liste'
@@ -82,37 +82,37 @@ dropzoneHelp: 'Glisser et déposer un fichier ou cliquez pour naviguer'
 dropzoneMultiHelp: 'Glisser et déposer des fichiers ou cliquez pour naviguer'
 dropzoneImage: 'Glisser et déposer une image ou cliquez pour naviguer'
 dropzoneImageMultiHelp: 'Glisser et déposer des images ou cliquez pour naviguer'
-more: Supplémentaires
-details: Détails
+more: "Supplémentaires"
+details: "Détails"
 form_contains_errors: 'Oups! Vous avez fait une erreur dans le formulaire. Veuillez vérifier les champs marqués en rouge'
 selling_management: 'Gestion des ventes'
 site_management: 'Gestion du site'
 site_settings: 'Paramètres du site'
-sliders: Carousel
-settings: Paramètres
+sliders: "Carousel"
+settings: "Paramètres"
 finance_management: 'Gestion des finances'
 delete_warning_title: 'Êtes vous sur de vouloir supprimer ?'
 delete_warning_text: 'Vous ne pourrez pas revenir en arrière, vérifier bien que vous ne risquez rien en supprimant. Ne forcez la suppression que si cela est nécessaire'
-cancel: Annuler
-delete.label: Supprimer
+cancel: "Annuler"
+delete.label: "Supprimer"
 forceRemove: 'Forcer la suppression'
 form_contains_error: 'Le formulaire contient des erreurs'
 social_links: 'Liens sociaux'
 super_admin: 'Super Administrateur'
-developer: Développeur
-administrator: Administrateur
-manager: Gestionnaire
+developer: "Développeur"
+administrator: "Administrateur"
+manager: "Gestionnaire"
 product.search: 'Rechercher un produit'
 'Frequently Asked Questions': 'Questions fréquentes'
 faq.help: __faq.help
 faq.edit: 'Éditer la FAQ'
 faq.add: 'Ajouter une FAQ'
-result: Résultat
+result: "Résultat"
 add_to_cart: 'Ajouter au Panier'
-compare: Comparer
+compare: "Comparer"
 add_to_wishlist: 'Ajouter à la liste de souhaits'
 wishlist: 'Liste de souhaits'
-others: Autres
+others: "Autres"
 categories.manage: "Gérer les catégories"
 categories: "Catégories"
 delete_modal.title: "Êtes vous sur de vouloir supprimer ?"
@@ -120,3 +120,7 @@ delete_modal.body: "Vous ne pourrez pas revenir en arrière, vérifier bien que 
 label.cancel: "Annuler"
 label.delete: "Supprimer"
 add: "Ajouter"
+save_and_create_new: "Enregistrer et créer"
+
+social_links.form:
+    help: "Laissez vide les liens que vous ne  souhaitez pas affichez ou que vous n'avez pas"

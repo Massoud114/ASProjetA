@@ -1,0 +1,16 @@
+{% set editLink = path(prefix ~ '_edit', {id: socialLink.id}) %}
+{% set deleteLink = path(prefix ~ '_delete', {id: socialLink.id}) %}
+
+<tr class="tb-odr-item">
+	<td class="tb-odr-info">
+		<span class="tb-odr-id">{{ socialLink.name }}</span>
+	</td>
+	<td class="tb-odr-action">
+		<div class="tb-odr-btns">
+			<a href="{{ editLink }}" class="d-md-none d-inline btn btn-sm btn-primary">{{ icon('pen') }}</a>
+			<a href="{{ editLink }}" class="d-none d-md-inline btn btn-sm btn-primary">{{ 'edit'|trans }}</a>
+			<a href="#" data-url="{{ deleteLink }}" class="socialLink-delete d-md-none btn btn-sm btn-danger">{{ icon('trash') }}</a>
+			<a href="#" data-url="{{ deleteLink }}" class="socialLink-delete d-none d-md-inline btn btn-sm btn-danger">{{ 'delete'|trans }}</a>
+		</div>
+	</td>
+</tr>

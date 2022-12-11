@@ -33,31 +33,45 @@
 			<li class="nk-menu-heading">
 				<h6 class="overline-title text-primary-alt">{{ 'site_management' | trans }}</h6>
 			</li>
-			<li class="nk-menu-item {{ menu_active('slider') }}">
-				<a href="" class="nk-menu-link">
-					<span class="nk-menu-icon">{{ icon('movie') }}</span>
-					<span class="nk-menu-text">{{ 'sliders'|trans }}</span>
-				</a>
-			</li>
-			<li class="nk-menu-item {{ menu_active('social_links') }}">
-				<a href="" class="nk-menu-link">
-					<span class="nk-menu-icon">{{ icon('share', 'fill') }}</span>
-					<span class="nk-menu-text">{{ 'social_links'|trans }}</span>
-				</a>
-			</li>
 
-			<li class="nk-menu-heading">
-				<h6 class="overline-title text-primary-alt">{{ 'site_settings' | trans }}</h6>
-			</li>
-			<li class="nk-menu-item {{ menu_active('settings') }}">
-				<a href="" class="nk-menu-link">
+			<li class="nk-menu-item has-sub {{ menu_active('social_clients') }}">
+				<a href="" class="nk-menu-link nk-menu-toggle" title="">
 					<span class="nk-menu-icon">{{ icon('opt-dot') }}</span>
 					<span class="nk-menu-text">{{ 'settings'|trans }}</span>
 				</a>
+				<ul class="nk-menu-sub">
+					<li class="nk-menu-item {{ menu_active('slider') }}">
+						<a href="" class="nk-menu-link">
+							<span class="nk-menu-icon">{{ icon('movie') }}</span>
+							<span class="nk-menu-text">{{ 'sliders'|trans }}</span>
+						</a>
+					</li>
+					<li class="nk-menu-item {{ menu_active('social_client') }}">
+						<a href="{{ path('admin_social_links_client') }}" class="nk-menu-link">
+							<span class="nk-menu-icon">{{ icon('share', 'fill') }}</span>
+							<span class="nk-menu-text">{{ 'social_links'|trans }}</span>
+						</a>
+					</li>
+				</ul>
 			</li>
 
 			<li class="nk-menu-heading">
-				<h6 class="overline-title text-primary-alt">{{ 'finance_management' | trans }}</h6>
+				<h6 class="overline-title text-primary-alt">{{ 'developer' | trans }}</h6>
+			</li>
+
+			<li class="nk-menu-item has-sub {{ menu_active('social') }}">
+				<a href="" class="nk-menu-link nk-menu-toggle" title="">
+					<span class="nk-menu-icon">{{ icon('opt-dot') }}</span>
+					<span class="nk-menu-text">{{ 'settings'|trans }}</span>
+				</a>
+				<ul class="nk-menu-sub">
+					<li class="nk-menu-item {{ menu_active('social') }}">
+						<a href="{{ path('admin_social_links_index') }}" class="nk-menu-link">
+							<span class="nk-menu-icon">{{ icon('share', 'fill') }}</span>
+							<span class="nk-menu-text">{{ 'social_links'|trans }}</span>
+						</a>
+					</li>
+				</ul>
 			</li>
 		</ul>
 	</div>

@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Application\Settings;
+namespace App\Application\Settings\SocialLink;
 
 use Doctrine\ORM\Mapping as ORM;
 
-#[ORM\Entity(repositoryClass: SocialMediaRepository::class)]
-class SocialMedia
+#[ORM\Entity(repositoryClass: SocialLinkRepository::class)]
+class SocialLink
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -43,7 +43,7 @@ class SocialMedia
         return $this->url;
     }
 
-    public function setUrl(string $url): self
+    public function setUrl(?string $url): self
     {
         $this->url = $url;
 

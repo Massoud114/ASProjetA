@@ -1,5 +1,5 @@
 <form
-	action="{{ path(prefix ~ '_delete', {id: category.id}) }}"
+	action="{{ path(prefix ~ '_delete', {id: socialLink.id}) }}"
 	method="post"
 	{{ stimulus_controller('submit-confirm', {
 		title : 'delete_warning_title'|trans,
