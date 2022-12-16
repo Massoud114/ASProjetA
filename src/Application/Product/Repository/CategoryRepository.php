@@ -66,4 +66,15 @@ class CategoryRepository extends ServiceEntityRepository
 	public function getCategories()
 	{
 	}
+
+	public function search(string $name): array
+	{
+		return $this->createQueryBuilder('c')
+			->select('c.id, c.name')
+			->where('c.name LIKE :name')
+			->setParameter('name', "%$name%")
+			->setMaxResults(15)
+			->getQuery()
+			->getResult();
+	}
 }

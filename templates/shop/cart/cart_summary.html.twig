@@ -1,0 +1,81 @@
+<a href="cart_html" class="minicart-btn toolbar-btn">
+	<i class="fa fa-shopping-cart"></i>
+	<span class="cart-item_count">{{ cart.items|length }}</span>
+</a>
+<div class="cart-item-wrapper dropdown-sidemenu dropdown-hover-2">
+	{% if not cart.empty %}
+		{% for key, item in cart.items %}
+			{% if key < 5 %}
+				{% set product = item.product %}
+				<div class="single-cart-item">
+					<div class="cart-img">
+						{% if product.thumbnail %}
+							<picture>
+								<source srcset="{{ (thumbnailPath ~ product.thumbnailUrl) | imagine_filter('small_product_thumb_webp') }}" type="image/webp">
+								<source srcset="{{ (thumbnailPath ~ product.thumbnailUrl) | imagine_filter('small_product_thumb_jpeg') }}" type="image/jpeg">
+								<img
+									width="78"
+									height="78"
+									loading="lazy"
+									src="{{ (thumbnailPath ~ product.thumbnailUrl) | imagine_filter('small_product_thumb_jpeg') }}"
+									alt="{{ product.name ~ '_image' }}"
+									class="">
+							</picture>
+						{% else %}
+							<img
+								width="78"
+								height="78"
+								class=""
+								loading="lazy"
+								src="{{ product.thumbnailUrl }}"
+								alt="{{ product.name ~ '_image' }}"
+							>
+						{% endif %}
+					</div>
+					<div class="cart-text">
+						<h5 class="title"><a href="{{ path('app_cart') }}">{{ product.name }}</a></h5>
+						<div class="cart-text-btn">
+							<div class="cart-qty">
+								<span>{{ item.quantity }}×</span>
+								<span class="cart-price">{{ item.total | format_currency('XOF', locale='fr') }}</span>
+							</div>
+							<form
+								style="display: inline-block;"
+								action="{{ path('app_cart_remove_item', {
+									productId: item.product.id,
+									colorId: item.color ? item.color.id : null,
+								}) }}"
+								method="POST"
+							>
+								<input type="hidden" name="_token" value="{{ csrf_token('remove_item') }}" />
+								<button type="submit"><i class="fa fa-trash"></i></button>
+							</form>
+
+						</div>
+					</div>
+				</div>
+			{% endif %}
+		{% endfor %}
+		<div class="d-flex justify-content-between">
+
+		</div>
+		<div class="cart-price-total d-flex justify-content-between">
+			<h5>Total :</h5>
+			<h5>{{ cart.total | format_currency('XOF', locale='fr') }}</h5>
+		</div>
+		<div class="cart-links d-flex justify-content-between">
+			<a class="btn product-cart button-icon flosun-button dark-btn" href="{{ path('app_cart') }}">View cart</a>
+			<a class="btn flosun-button secondary-btn rounded-0" href="checkout.html">Checkout</a>
+		</div>
+
+	{% else %}
+		<div class="single-cart-item">
+			<div class="cart-text">
+				<h5 class="title">Votre panier est vide</h5>
+			</div>
+		</div>
+		<div class="cart-links d-flex justify-content-between">
+			<a class="btn product-cart button-icon flosun-button dark-btn" href="cart.html">Découvrir nos produits</a>
+		</div>
+	{% endif %}
+</div>

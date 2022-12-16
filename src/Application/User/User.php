@@ -13,11 +13,13 @@ use Symfony\Component\HttpFoundation\File\File;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
 use App\Infrastructure\Auth\Entity\SocialLoggableTrait;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use function Symfony\Component\Translation\t;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
+#[UniqueEntity(fields: ['email'], message: 'There is already an account with this email')]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
     #[ORM\Id]
@@ -46,58 +48,61 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private ?string $lastname = null;
 
 	#[ORM\Column(type: Types::SIMPLE_ARRAY, nullable: true)]
-	private array $pronoun = [];
+               	private array $pronoun = [];
 
 	#[ORM\Column(length: 255, nullable: true)]
-	private ?string $phoneNumber = null;
+               	private ?string $phoneNumber = null;
 
 	#[ORM\Column(type: Types::DATE_IMMUTABLE)]
-	private ?DateTimeImmutable $created_at = null;
+               	private ?DateTimeImmutable $created_at = null;
 
 	#[ORM\Column(length: 2, nullable: true, options: ['default' => 'BJ'])]
-	private ?string $country = null;
+               	private ?string $country = null;
 
 	#[ORM\Column(type: Types::TEXT, nullable: true)]
-	private ?string $more = null;
+               	private ?string $more = null;
 
 	#[ORM\OneToMany(mappedBy: 'customer', targetEntity: Purchase::class)]
-	private Collection $purchases;
+               	private Collection $purchases;
 
 	#[ORM\Column(type: Types::STRING, nullable: true, options: ['default' => 'null'])]
-	private ?string $theme = null;
+               	private ?string $theme = null;
 
 	#[Vich\UploadableField(mapping:"avatars", fileNameProperty:"avatarName")]
-	private ?File $avatarFile = null;
+               	private ?File $avatarFile = null;
 
 	#[ORM\Column(type: Types::STRING, length: 255, nullable: true)]
-	private ?string $avatarName = null;
+               	private ?string $avatarName = null;
 
 	#[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
-	private ?\DateTimeInterface $updatedAt = null;
+               	private ?\DateTimeInterface $updatedAt = null;
 
 	#[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
-	private ?\DateTimeInterface $bannedAt = null;
+               	private ?\DateTimeInterface $bannedAt = null;
 
 	#[ORM\Column(type: Types::STRING, nullable: true, options: ['default' => null])]
-	private ?string $lastLoginIp = null;
+               	private ?string $lastLoginIp = null;
 
 	#[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true, options: ['default' => null])]
-	private ?\DateTimeInterface $lastLoginAt = null;
+               	private ?\DateTimeInterface $lastLoginAt = null;
 
 	#[ORM\Column(type: Types::STRING, nullable: true, options: ['default' => null])]
-	private ?string $invoiceInfo = null;
+               	private ?string $invoiceInfo = null;
 
 	#[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true, options: ['default' => null])]
-	private DateTime $agreedTermsAt;
+               	private DateTime $agreedTermsAt;
+
+    #[ORM\Column(type: 'boolean')]
+    private $isVerified = false;
 
 	public function __construct() {
-		$this->created_at = new DateTimeImmutable();
-	}
+               		$this->created_at = new DateTimeImmutable();
+               	}
 
 	public function getId(): ?int
-    {
-        return $this->id;
-    }
+                   {
+                       return $this->id;
+                   }
 
     public function getEmail(): ?string
     {
@@ -201,221 +206,233 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     }
 
 	public function __toString(): string
-	{
-		return $this->firstname . (' ' . $this->lastname ?? null);
-	}
+               	{
+               		return $this->firstname . (' ' . $this->lastname ?? null);
+               	}
 
 	/**
 	 * @return Collection<int, Purchase>
 	 */
 	public function getPurchases(): Collection
-	{
-		return $this->purchases;
-	}
+               	{
+               		return $this->purchases;
+               	}
 
 	public function addPurchase(Purchase $purchase): self
-	{
-		if (!$this->purchases->contains($purchase)) {
-			$this->purchases->add($purchase);
-			$purchase->setCustomer($this);
-		}
-
-		return $this;
-	}
+               	{
+               		if (!$this->purchases->contains($purchase)) {
+               			$this->purchases->add($purchase);
+               			$purchase->setCustomer($this);
+               		}
+               
+               		return $this;
+               	}
 
 	public function removePurchase(Purchase $purchase): self
-	{
-		if ($this->purchases->removeElement($purchase)) {
-			// set the owning side to null (unless already changed)
-			if ($purchase->getCustomer() === $this) {
-				$purchase->setCustomer(null);
-			}
-		}
-
-		return $this;
-	}
+               	{
+               		if ($this->purchases->removeElement($purchase)) {
+               			// set the owning side to null (unless already changed)
+               			if ($purchase->getCustomer() === $this) {
+               				$purchase->setCustomer(null);
+               			}
+               		}
+               
+               		return $this;
+               	}
 
 	public function getTheme(): ?string
-	{
-		return $this->theme;
-	}
+               	{
+               		return $this->theme;
+               	}
 
 	public function setTheme(?string $theme): self
-	{
-		$this->theme = $theme;
-
-		return $this;
-	}
+               	{
+               		$this->theme = $theme;
+               
+               		return $this;
+               	}
 
 	public function getPronoun(): array
-	{
-		return $this->pronoun;
-	}
+               	{
+               		return $this->pronoun;
+               	}
 
 	public function setPronoun(array $pronoun): User
-	{
-		$this->pronoun = $pronoun;
-		return $this;
-	}
+               	{
+               		$this->pronoun = $pronoun;
+               		return $this;
+               	}
 
 	public function getPhoneNumber(): ?string
-	{
-		return $this->phoneNumber;
-	}
+               	{
+               		return $this->phoneNumber;
+               	}
 
 	public function setPhoneNumber(?string $phoneNumber): User
-	{
-		$this->phoneNumber = $phoneNumber;
-		return $this;
-	}
+               	{
+               		$this->phoneNumber = $phoneNumber;
+               		return $this;
+               	}
 
 	public function getCreatedAt(): ?DateTimeImmutable
-	{
-		return $this->created_at;
-	}
+               	{
+               		return $this->created_at;
+               	}
 
 	public function setCreatedAt(?DateTimeImmutable $created_at): User
-	{
-		$this->created_at = $created_at;
-		return $this;
-	}
+               	{
+               		$this->created_at = $created_at;
+               		return $this;
+               	}
 
 	public function getCountry(): ?string
-	{
-		return $this->country;
-	}
+               	{
+               		return $this->country;
+               	}
 
 	public function setCountry(?string $country): User
-	{
-		$this->country = $country;
-		return $this;
-	}
+               	{
+               		$this->country = $country;
+               		return $this;
+               	}
 
 	public function getMore(): ?string
-	{
-		return $this->more;
-	}
+               	{
+               		return $this->more;
+               	}
 
 	public function setMore(?string $more): User
-	{
-		$this->more = $more;
-		return $this;
-	}
+               	{
+               		$this->more = $more;
+               		return $this;
+               	}
 
 	public function getAvatarFile(): ?File
-	{
-		return $this->avatarFile;
-	}
+               	{
+               		return $this->avatarFile;
+               	}
 
 	public function setAvatarFile(?File $avatarFile): User
-	{
-		$this->avatarFile = $avatarFile;
-		return $this;
-	}
+               	{
+               		$this->avatarFile = $avatarFile;
+               		return $this;
+               	}
 
 	public function getAvatarName(): ?string
-	{
-		return $this->avatarName;
-	}
+               	{
+               		return $this->avatarName;
+               	}
 
 	public function setAvatarName(?string $avatarName): User
-	{
-		$this->avatarName = $avatarName;
-		return $this;
-	}
+               	{
+               		$this->avatarName = $avatarName;
+               		return $this;
+               	}
 
 	public function getUpdatedAt(): ?\DateTimeInterface
-	{
-		return $this->updatedAt;
-	}
+               	{
+               		return $this->updatedAt;
+               	}
 
 	public function setUpdatedAt(?\DateTimeInterface $updatedAt): User
-	{
-		$this->updatedAt = $updatedAt;
-		return $this;
-	}
+               	{
+               		$this->updatedAt = $updatedAt;
+               		return $this;
+               	}
 
 	public function getBannedAt(): ?\DateTimeInterface
-	{
-		return $this->bannedAt;
-	}
+               	{
+               		return $this->bannedAt;
+               	}
 
 	public function setBannedAt(?\DateTimeInterface $bannedAt): User
-	{
-		$this->bannedAt = $bannedAt;
-		return $this;
-	}
+               	{
+               		$this->bannedAt = $bannedAt;
+               		return $this;
+               	}
 
 	public function isBanned(): bool
-	{
-		return null !== $this->bannedAt;
-	}
+               	{
+               		return null !== $this->bannedAt;
+               	}
 
 	public function canLogin(): bool
-	{
-		return !$this->isBanned();
-	}
+               	{
+               		return !$this->isBanned();
+               	}
 
 	public function getLastLoginIp(): ?string
-	{
-		return $this->lastLoginIp;
-	}
+               	{
+               		return $this->lastLoginIp;
+               	}
 
 	public function setLastLoginIp(?string $lastLoginIp): User
-	{
-		$this->lastLoginIp = $lastLoginIp;
-		return $this;
-	}
+               	{
+               		$this->lastLoginIp = $lastLoginIp;
+               		return $this;
+               	}
 
 	public function getLastLoginAt(): ?\DateTimeInterface
-	{
-		return $this->lastLoginAt;
-	}
+               	{
+               		return $this->lastLoginAt;
+               	}
 
 	public function setLastLoginAt(?\DateTimeInterface $lastLoginAt): User
-	{
-		$this->lastLoginAt = $lastLoginAt;
-		return $this;
-	}
+               	{
+               		$this->lastLoginAt = $lastLoginAt;
+               		return $this;
+               	}
 
 	public function getInvoiceInfo(): ?string
-	{
-		return $this->invoiceInfo;
-	}
+               	{
+               		return $this->invoiceInfo;
+               	}
 
 	public function setInvoiceInfo(?string $invoiceInfo): User
-	{
-		$this->invoiceInfo = $invoiceInfo;
-		return $this;
-	}
+               	{
+               		$this->invoiceInfo = $invoiceInfo;
+               		return $this;
+               	}
 
 	public function getAgreedTermsAt(): ?DateTimeInterface
-	{
-		return $this->agreedTermsAt;
-	}
+               	{
+               		return $this->agreedTermsAt;
+               	}
 
 	public function agreeToTerms()
-	{
-		$this->agreedTermsAt = new DateTime();
-	}
+               	{
+               		$this->agreedTermsAt = new DateTime();
+               	}
 
 	public function getRoleIdentifier(): string
-	{
-		if (in_array('ROLE_SUPER_ADMIN', $this->roles)) {
-			return t('super_admin');
-		} else if (in_array('ROLE_DEVELOPER', $this->roles)) {
-			return t('developer');
-		} else if (in_array('ROLE_STOCK', $this->roles)) {
-			return t('administrator');
-		}else if (in_array('ROLE_MANAGER', $this->roles)) {
-			return t('manager');
-		} else {
-			throw new AccessDeniedException('Vous n\'avez pas les droits pour accéder à cette page');
-		}
-	}
+               	{
+               		if (in_array('ROLE_SUPER_ADMIN', $this->roles)) {
+               			return t('super_admin');
+               		} else if (in_array('ROLE_DEVELOPER', $this->roles)) {
+               			return t('developer');
+               		} else if (in_array('ROLE_STOCK', $this->roles)) {
+               			return t('administrator');
+               		}else if (in_array('ROLE_MANAGER', $this->roles)) {
+               			return t('manager');
+               		} else {
+               			throw new AccessDeniedException('Vous n\'avez pas les droits pour accéder à cette page');
+               		}
+               	}
 
 	public function getInitials(): string
-	{
-		return strtoupper(substr($this->firstname, 0, 1) . substr($this->lastname, 0, 1));
-	}
+               	{
+               		return strtoupper(substr($this->firstname, 0, 1) . substr($this->lastname, 0, 1));
+               	}
+
+    public function isVerified(): bool
+    {
+        return $this->isVerified;
+    }
+
+    public function setIsVerified(bool $isVerified): self
+    {
+        $this->isVerified = $isVerified;
+
+        return $this;
+    }
 }

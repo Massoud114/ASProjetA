@@ -14,160 +14,160 @@ use App\Application\Product\Repository\CategoryRepository;
 #[ORM\Entity(repositoryClass: CategoryRepository::class)]
 class Category
 {
-    #[ORM\Id]
-    #[ORM\GeneratedValue]
-    #[ORM\Column]
-    #[Groups(['product:item:read', 'product:collection:read', 'product:write'])]
-    private ?int $id = null;
+	#[ORM\Id]
+	#[ORM\GeneratedValue]
+	#[ORM\Column]
+	#[Groups(['product:item:read', 'product:collection:read', 'product:write'])]
+	private ?int $id = null;
 
-    #[
+	#[
 		ORM\Column(length: 255),
 		Groups(['product:item:read', 'product:collection:read']),
-        Assert\NotBlank(),
-	    Assert\Length(min: 4)
-    ]
-    private ?string $name = null;
+		Assert\NotBlank(),
+		Assert\Length(min: 4)
+	]
+	private ?string $name = null;
 
-    #[ORM\ManyToMany(targetEntity: Product::class, mappedBy: 'categories')]
-    private Collection $products;
+	#[ORM\ManyToMany(targetEntity: Product::class, mappedBy: 'categories')]
+	private Collection $products;
 
-    #[ORM\Column(length: 255, nullable: true)]
-    #[Groups(['product:item:read', 'product:collection:read'])]
-    private ?string $slug = null;
+	#[ORM\Column(length: 255, nullable: true)]
+	#[Groups(['product:item:read', 'product:collection:read'])]
+	private ?string $slug = null;
 
-    #[ORM\ManyToOne(targetEntity: self::class, inversedBy: 'children')]
-    #[Groups(['product:item:read'])]
-    private ?self $parent = null;
+	#[ORM\ManyToOne(targetEntity: self::class, inversedBy: 'children')]
+	#[Groups(['product:item:read'])]
+	private ?self $parent = null;
 
 	/**
 	 * One Category has Many Categories.
 	 * @var Collection<int, Category>
 	 */
-    #[ORM\OneToMany(mappedBy: 'parent', targetEntity: self::class)]
-    private Collection $children;
+	#[ORM\OneToMany(mappedBy: 'parent', targetEntity: self::class)]
+	private Collection $children;
 
-    #[ORM\Column(nullable: true)]
-    private ?DateTimeImmutable $createdAt = null;
+	#[ORM\Column(nullable: true)]
+	private ?DateTimeImmutable $createdAt = null;
 
-    public function __construct()
-    {
+	public function __construct()
+	{
 		$this->createdAt = new DateTimeImmutable();
-        $this->products = new ArrayCollection();
-        $this->children = new ArrayCollection();
-    }
+		$this->products = new ArrayCollection();
+		$this->children = new ArrayCollection();
+	}
 
-    public function getId(): ?int
-    {
-        return $this->id;
-    }
+	public function getId(): ?int
+	{
+		return $this->id;
+	}
 
-    public function getName(): ?string
-    {
-        return $this->name;
-    }
+	public function getName(): ?string
+	{
+		return $this->name;
+	}
 
-    public function setName(string $name): self
-    {
-        $this->name = $name;
+	public function setName(string $name): self
+	{
+		$this->name = $name;
 
-        return $this;
-    }
+		return $this;
+	}
 
-    /**
-     * @return Collection<int, Product>
-     */
-    public function getProducts(): Collection
-    {
-        return $this->products;
-    }
+	/**
+	 * @return Collection<int, Product>
+	 */
+	public function getProducts(): Collection
+	{
+		return $this->products;
+	}
 
-    public function addProduct(Product $product): self
-    {
-        if (!$this->products->contains($product)) {
-            $this->products->add($product);
-            $product->addCategory($this);
-        }
+	public function addProduct(Product $product): self
+	{
+		if (!$this->products->contains($product)) {
+			$this->products->add($product);
+			$product->addCategory($this);
+		}
 
-        return $this;
-    }
+		return $this;
+	}
 
-    public function removeProduct(Product $product): self
-    {
-        if ($this->products->removeElement($product)) {
-            $product->removeCategory($this);
-        }
+	public function removeProduct(Product $product): self
+	{
+		if ($this->products->removeElement($product)) {
+			$product->removeCategory($this);
+		}
 
-        return $this;
-    }
+		return $this;
+	}
 
-    public function getSlug(): ?string
-    {
-        return $this->slug;
-    }
+	public function getSlug(): ?string
+	{
+		return $this->slug;
+	}
 
-    public function setSlug(?string $slug): self
-    {
-        $this->slug = $slug;
+	public function setSlug(?string $slug): self
+	{
+		$this->slug = $slug;
 
-        return $this;
-    }
+		return $this;
+	}
 
-    public function getParent(): ?self
-    {
-        return $this->parent;
-    }
+	/**
+	 * @return Collection<int, self>
+	 */
+	public function getChildren(): Collection
+	{
+		return $this->children;
+	}
 
-    public function setParent(?self $parent): self
-    {
-        $this->parent = $parent;
+	public function addChild(self $child): self
+	{
+		if (!$this->children->contains($child)) {
+			$this->children->add($child);
+			$child->setParent($this);
+		}
 
-        return $this;
-    }
+		return $this;
+	}
 
-    /**
-     * @return Collection<int, self>
-     */
-    public function getChildren(): Collection
-    {
-        return $this->children;
-    }
+	public function removeChild(self $child): self
+	{
+		if ($this->children->removeElement($child)) {
+			// set the owning side to null (unless already changed)
+			if ($child->getParent() === $this) {
+				$child->setParent(null);
+			}
+		}
 
-    public function addChild(self $child): self
-    {
-        if (!$this->children->contains($child)) {
-            $this->children->add($child);
-            $child->setParent($this);
-        }
+		return $this;
+	}
 
-        return $this;
-    }
+	public function getParent(): ?self
+	{
+		return $this->parent;
+	}
 
-    public function removeChild(self $child): self
-    {
-        if ($this->children->removeElement($child)) {
-            // set the owning side to null (unless already changed)
-            if ($child->getParent() === $this) {
-                $child->setParent(null);
-            }
-        }
+	public function setParent(?self $parent): self
+	{
+		$this->parent = $parent;
 
-        return $this;
-    }
+		return $this;
+	}
 
 	public function __toString(): string
-         	{
-         		return $this->name;
-         	}
+	{
+		return $this->name;
+	}
 
-    public function getCreatedAt(): ?DateTimeImmutable
-    {
-        return $this->createdAt;
-    }
+	public function getCreatedAt(): ?DateTimeImmutable
+	{
+		return $this->createdAt;
+	}
 
-    public function setCreatedAt(?DateTimeImmutable $createdAt): self
-    {
-        $this->createdAt = $createdAt;
+	public function setCreatedAt(?DateTimeImmutable $createdAt): self
+	{
+		$this->createdAt = $createdAt;
 
-        return $this;
-    }
+		return $this;
+	}
 }

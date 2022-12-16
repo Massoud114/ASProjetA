@@ -20,10 +20,9 @@ use Symfony\Component\String\Slugger\SluggerInterface;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 
 #[Route('/product', name: 'product_')]
-#[IsGranted('ROLE_STOCK')]
+//#[IsGranted('ROLE_STOCK')]
 class ProductController extends CrudController
 {
 	protected string $menuItem = 'product';

@@ -25,6 +25,10 @@ services:
             - '../src/Entity/'
             - '../src/Kernel.php'
 
+    App\Infrastructure\EventSubscriber\ErrorResponseSubscriber:
+        tags:
+            - { name: kernel.event_subscriber }
+
     App\Admin\Controller\:
         resource: '../src/Admin/Controller'
         tags: ['controller.service_arguments']

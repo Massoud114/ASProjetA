@@ -19,9 +19,9 @@
 		<span class="tb-product justify-content-sm-center justify-content-lg-start">
 		{% if product.thumbnail %}
 			<picture>
-				<source srcset="{{ (thumbnailPath ~ product.thumbnailUrl) | imagine_filter('admin_product_thumb_webp') }}" type="image/webp">
-				<source srcset="{{ (thumbnailPath ~ product.thumbnailUrl) | imagine_filter('admin_product_thumb_jpeg') }}" type="image/jpeg">
-				<img loading="lazy" src="{{ (thumbnailPath ~ product.thumbnailUrl) | imagine_filter('admin_product_thumb_jpeg') }}" alt="{{ product.name ~ '_image' }}" class="thumb">
+				<source srcset="{{ (thumbnailPath ~ product.thumbnailUrl) | imagine_filter('small_product_thumb_webp') }}" type="image/webp">
+				<source srcset="{{ (thumbnailPath ~ product.thumbnailUrl) | imagine_filter('small_product_thumb_jpeg') }}" type="image/jpeg">
+				<img loading="lazy" src="{{ (thumbnailPath ~ product.thumbnailUrl) | imagine_filter('small_product_thumb_jpeg') }}" alt="{{ product.name ~ '_image' }}" class="thumb">
 			</picture>
 		{% else %}
 			<img src="{{ product.thumbnailUrl }}" alt="{{ product.name ~ '_image' }}" class="thumb">

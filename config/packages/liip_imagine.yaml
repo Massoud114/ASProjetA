@@ -18,12 +18,12 @@ liip_imagine:
     filter_sets:
         cache: ~
 
-        admin_product_thumb_jpeg:
+        small_product_thumb_jpeg:
             format: jpeg
             quality: 75
             filters:
                 thumbnail: { size: [48, 48], mode: inset }
-        admin_product_thumb_webp:
+        small_product_thumb_webp:
             format: webp
             quality: 100
             filters:
@@ -32,9 +32,9 @@ liip_imagine:
             format: jpeg
             quality: 75
             filters:
-                thumbnail: { size: [400, 400], mode: inset }
+                thumbnail: { size: [260, 260], mode: inset }
         product_thumb_webp:
             format: webp
             quality: 100
             filters:
-                thumbnail: { size: [400, 400], mode: inset }
+                thumbnail: { size: [260, 260], mode: inset }

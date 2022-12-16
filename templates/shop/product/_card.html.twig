@@ -5,9 +5,16 @@
 				<a class="d-block" href="product-details.html">
 					{% if product.thumbnail %}
 						<picture>
-							<source srcset="{{ (thumbnailPath ~ product.thumbnailUrl) | imagine_filter('admin_product_thumb_webp') }}" type="image/webp">
-							<source srcset="{{ (thumbnailPath ~ product.thumbnailUrl) | imagine_filter('admin_product_thumb_jpeg') }}" type="image/jpeg">
-							<img loading="lazy" src="{{ (thumbnailPath ~ product.thumbnailUrl) | imagine_filter('admin_product_thumb_jpeg') }}" alt="{{ product.name ~ '_image' }}" class="product-image-1 w-100" height="350" width="350">
+							<source srcset="{{ (thumbnailPath ~ product.thumbnailUrl) | imagine_filter('small_product_thumb_webp') }}" type="image/webp">
+							<source srcset="{{ (thumbnailPath ~ product.thumbnailUrl) | imagine_filter('small_product_thumb_jpeg') }}" type="image/jpeg">
+							<img
+								width="305"
+								height="305"
+								loading="lazy"
+								src="{{ (thumbnailPath ~ product.thumbnailUrl) | imagine_filter('small_product_thumb_jpeg') }}"
+								alt="{{ product.name ~ '_image' }}"
+								class="product-image-1 w-100"
+							>
 						</picture>
 					{% else %}
 						<img src="{{ product.thumbnailUrl }}" alt="{{ product.name ~ '_image' }}" class="product-image-1 w-100" height="305" width="305">

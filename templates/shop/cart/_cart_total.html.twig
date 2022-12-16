@@ -1,0 +1,22 @@
+<div class="cart-calculator-wrapper">
+	<div class="cart-calculate-items">
+		<h3>{{ 'cart_totals'|trans }}</h3>
+		<div class="table-responsive">
+			<table class="table">
+				<tr>
+					<td>{{ 'sub_total'|trans }}</td>
+					<td>{{ cart.total | format_currency('XOF', locale='fr') }}</td>
+				</tr>
+				<tr>
+					<td>Shipping</td>
+					<td>$70</td>
+				</tr>
+				<tr class="total">
+					<td>{{ 'total'|trans }}</td>
+					<td class="total-amount">{{ cart.total | format_currency('XOF', locale='fr') }}</td>
+				</tr>
+			</table>
+		</div>
+	</div>
+	<a href="checkout.html" class="btn flosun-button primary-btn rounded-0 black-btn w-100">{{ 'proceed_to_checkout'|trans }}</a>
+</div>

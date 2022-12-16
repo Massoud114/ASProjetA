@@ -7,16 +7,19 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\UX\Dropzone\Form\DropzoneType;
 use App\Application\Product\Entity\Category;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Validator\Constraints\File;
+use App\Infrastructure\Type\SearchableEntityType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 class ProductType extends AbstractType
 {
+	public function __construct(private UrlGeneratorInterface $urlGenerator) { }
+
 	public function buildForm(FormBuilderInterface $builder, array $options): void
 	{
 		$builder
@@ -165,13 +168,11 @@ class ProductType extends AbstractType
 				],
 				'required' => false,
 			])
-			->add('categories', EntityType::class, [
-				'label' => 'category',
+			->add('categories', SearchableEntityType::class, [
 				'class' => Category::class,
-				'multiple' => true,
-				'choice_label' => 'name',
-				'attr' => [],
-				'required' => false,
+				'search' => $this->urlGenerator->generate('api_category_list'),
+				'label_property' => 'name',
+				'value_property' => 'id'
 			])
 			->add('thumbnailUrl', DropzoneType::class, [
 				'mapped' => false,
@@ -205,6 +206,7 @@ class ProductType extends AbstractType
 		$resolver->setDefaults([
 			'data_class' => Product::class,
 			'method' => 'POST',
+			'sanitize_html' => true,
 		]);
 	}
 }

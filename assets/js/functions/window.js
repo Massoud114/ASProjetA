@@ -53,3 +53,14 @@ export function flash(message, type = 'success', duration = 3) {
 	alert.innerText = message;
 	document.getElementById('toast-container').appendChild(alert);
 }
+
+export function debounce (callback, delay) {
+	let timeout
+
+	return (...args) => {
+		const context = this
+		clearTimeout(timeout)
+
+		timeout = setTimeout(() => callback.apply(context, args), delay)
+	}
+}

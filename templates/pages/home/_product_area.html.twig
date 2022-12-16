@@ -1,0 +1,115 @@
+<div class="product-area mt-text-3">
+	<div class="container custom-area-2 overflow-hidden">
+		<div class="row">
+
+			<div class="col-12 col-custom">
+				<div class="section-title text-center mb-30">
+					<span class="section-title-1">The Most Trendy</span>
+					<h3 class="section-title-3">Featured Products</h3>
+				</div>
+			</div>
+
+		</div>
+		<div class="row product-row">
+			<div class="col-12 col-custom">
+				<div
+					class="product-slider swiper-container anime-element-multi"
+					{{ stimulus_controller('swiper-slider', {
+						"options": {
+							"slidesPerView": 1,
+							"spaceBetween": 10,
+							"pagination": {
+								"el": '.swiper-pagination',
+								"type": 'bullets',
+								"clickable": 'true',
+							},
+							"breakpoints": {
+								320: {
+									"slidesPerView": 1,
+									"spaceBetween": 10
+								},
+								480: {
+									"slidesPerView": 2,
+									"spaceBetween": 10
+								},
+								768: {
+									"slidesPerView": 3,
+									"spaceBetween": 10
+								},
+								1200: {
+									"slidesPerView": 4,
+									"spaceBetween": 10
+								},
+							}
+						}
+					}) }}
+				>
+					<div class="swiper-wrapper">
+						{% for product in products %}
+							<div class="single-item swiper-slide">
+								<div class="single-product position-relative mb-30">
+									<div class="product-image">
+										<a class="d-block" href="{{ path('app_product_show', { slug : product.slug}) }}">
+											{% if product.thumbnail %}
+												<picture>
+													<source srcset="{{ (thumbnailPath ~ product.thumbnailUrl) | imagine_filter('product_thumb_webp') }}" type="image/webp">
+													<source srcset="{{ (thumbnailPath ~ product.thumbnailUrl) | imagine_filter('product_thumb_jpeg') }}" type="image/jpeg">
+													<img
+														width="260"
+														height="260"
+														class="product-image-1 w-100"
+														loading="lazy"
+														src="{{ (thumbnailPath ~ product.thumbnailUrl) | imagine_filter('product_thumb_jpeg') }}"
+														alt="{{ product.name ~ '_image' }}"
+													>
+												</picture>
+											{% else %}
+												<img src="{{ product.thumbnailUrl }}" alt="{{ product.name ~ '_image' }}" class="product-image-1 w-100" width="260" height="260">
+											{% endif %}
+										</a>
+										{% if product.isPromo %}
+											<span class="onsale">Promo!</span>
+										{% endif %}
+										<div class="add-action d-flex flex-column position-absolute">
+											<a href="compare.html" title="Compare">
+												<i class="lnr lnr-sync" data-toggle="tooltip" data-placement="left" title="Compare"></i>
+											</a>
+											<a href="wishlist.html" title="Add To Wishlist">
+												<i class="lnr lnr-heart" data-toggle="tooltip" data-placement="left" title="Wishlist"></i>
+											</a>
+											<a href="#exampleModalCenter" title="Quick View" data-toggle="modal" data-target="#exampleModalCenter">
+												<i class="lnr lnr-eye" data-toggle="tooltip" data-placement="left" title="Quick View"></i>
+											</a>
+										</div>
+									</div>
+									<div class="product-content">
+										<div class="product-title">
+											<h4 class="title-2"><a href="{{ path('app_product_show', { slug : product.slug}) }}">{{ product.name }}</a></h4>
+										</div>
+										<div class="product-rating">
+											<i class="fa fa-star"></i>
+											<i class="fa fa-star"></i>
+											<i class="fa fa-star"></i>
+											<i class="fa fa-star-o"></i>
+											<i class="fa fa-star-o"></i>
+										</div>
+										<div class="price-box">
+											{% if product.isPromo %}
+												<span class="regular-price">{{ product.fixedPrice | format_currency('XOF', locale='fr') }}</span>
+												<span class="old-price"><del>{{ product.fixedPrice | format_currency('XOF', locale='fr') }}</del></span>
+											{% else %}
+												<span class="regular-price">{{ product.fixedPrice | format_currency('XOF', locale='fr') }}</span>
+											{% endif %}
+										</div>
+										<a href="{{ path('app_product_show', { slug : product.slug}) }}" class="btn product-cart">Add to Cart</a>
+									</div>
+								</div>
+							</div>
+						{% endfor %}
+					</div>
+					<div class="swiper-pagination default-pagination"></div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

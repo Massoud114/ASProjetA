@@ -1,0 +1,113 @@
+<div class="container custom-area mb-4">
+	<div class="row">
+		<div class="col-lg-12 col-custom">
+			<div class="cart-table table-responsive">
+				{% if cart.items|length > 0 %}
+					<table class="table table-bordered">
+						<thead>
+							<tr>
+								<th class="pro-thumbnail">Image</th>
+								<th class="pro-title">Product</th>
+								<th class="pro-price">Price</th>
+								<th class="pro-quantity">Quantity</th>
+								<th class="pro-subtotal">Total</th>
+								<th class="pro-remove">Remove</th>
+							</tr>
+						</thead>
+						<tbody>
+							{% for item in cart.items %}
+									{% set product = item.product %}
+									<tr>
+										<td class="pro-thumbnail">
+											<a href="{{ path('app_product_show', {slug : item.product.slug}) }}">
+												{% if product.thumbnail %}
+													<picture>
+														<source srcset="{{ (thumbnailPath ~ product.thumbnailUrl) | imagine_filter('small_product_thumb_webp') }}" type="image/webp">
+														<source srcset="{{ (thumbnailPath ~ product.thumbnailUrl) | imagine_filter('small_product_thumb_jpeg') }}" type="image/jpeg">
+														<img
+															width="138"
+															height="138"
+															loading="lazy"
+															src="{{ (thumbnailPath ~ product.thumbnailUrl) | imagine_filter('small_product_thumb_jpeg') }}"
+															alt="{{ product.name ~ '_image' }}"
+															class="img-fluid"
+														>
+													</picture>
+												{% else %}
+													<img
+														height="138"
+														width="138"
+														src="{{ product.thumbnailUrl }}"
+														alt="{{ product.name ~ '_image' }}"
+														class="img-fluid"
+													>
+												{% endif %}
+											</a>
+										</td>
+										{#<div class="col-1">
+											{% if item.color %}
+												<span class="color-square" style="background-color: rgb({{ item.color.red }}, {{ item.color.green }}, {{ item.color.blue }});"></span>
+											{% endif %}
+										</div>#}
+										<td class="pro-title"><a href="#">{{ product.name }}</a></td>
+										<td class="pro-price"><span>{{ item.product.fixedPrice | format_currency('XOF', locale='fr') }}</span></td>
+										<td class="pro-quantity">
+											<form
+												class="quantity"
+												style="display: inline-block;"
+												action="{{ path('app_cart_update_item', {
+													productId: item.product.id,
+													colorId: item.color ? item.color.id: null
+												}) }}"
+												method="POST"
+											>
+												<input type="hidden" name="_token" value="{{ csrf_token('update_item') }}">
+												<div class="cart-plus-minus" {{ stimulus_controller('input-count-box') }}>
+													<input class="cart-plus-minus-box" value="{{ item.quantity }}" type="text" {{ stimulus_target('input-count-box', 'input') }}>
+													<div class="dec qtybutton" {{ stimulus_action('input-count-box', 'decrement', 'click') }}><i class="fa fa-minus"></i></div>
+													<div class="inc qtybutton" {{ stimulus_action('input-count-box', 'increment', 'click') }}><i class="fa fa-plus"></i></div>
+												</div>
+												<button type="submit" hidden="hidden">Update</button>
+											</form>
+										</td>
+										<td class="pro-subtotal"><span>{{ item.total | format_currency('XOF', locale='fr') }}</span></td>
+										<td class="pro-remove">
+											<form
+												style="display: inline-block;"
+												action="{{ path('app_cart_remove_item', {
+													productId: item.product.id,
+													colorId: item.color ? item.color.id : null,
+												}) }}"
+												method="POST"
+											>
+												<input type="hidden" name="_token" value="{{ csrf_token('remove_item') }}" />
+												<button type="submit"><i class="fa fa-trash"></i></button>
+											</form>
+										</td>
+									</tr>
+								{% endfor %}
+						</tbody>
+					</table>
+				{% else %}
+					<div>
+						{{ 'cart_empty'|trans }}
+						<button class="btn flosun-button primary-btn rounded-0 black-btn">{{ 'get_to_shopping'|trans }}</button>
+					</div>
+				{% endif %}
+			</div>
+
+			{% if cart.items|length > 0 %}
+				{{ include('shop/cart/_coupon.html.twig') }}
+			{% endif %}
+
+		</div>
+	</div>
+
+	{% if cart.items|length > 0 %}
+		<div class="row">
+			<div class="col-lg-5 ml-auto col-custom">
+				{{ include('shop/cart/_cart_total.html.twig', { cart : cart })}}
+			</div>
+		</div>
+	{% endif %}
+</div>

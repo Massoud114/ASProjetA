@@ -30,6 +30,7 @@ todo.md
 /public/uploads/
 npm-debug.log
 yarn-error.log
+.symfony.local.yaml
 ###< symfony/webpack-encore-bundle ###
 
 ###> liip/imagine-bundle ###

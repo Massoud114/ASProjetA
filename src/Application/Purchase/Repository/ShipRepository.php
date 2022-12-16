@@ -2,8 +2,8 @@
 
 namespace App\Application\Purchase\Repository;
 
-use App\Application\Purchase\Entity\Ship;
 use Doctrine\Persistence\ManagerRegistry;
+use App\Application\Purchase\Entity\Ship;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 
 /**

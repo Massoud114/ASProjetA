@@ -1,6 +1,9 @@
+import './bootstrap';
+
 import './scss/base/style.scss';
 import './styles/animate.min.css';
 import './styles/nice-select.min.css';
+import './styles/swiper-bundle.min.css';
 
 import 'bootstrap';
 import './js/scripts/sticky';

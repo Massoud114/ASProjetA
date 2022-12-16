@@ -435,5 +435,17 @@ class Product
 		return false;
 	}
 
+	public function getPrice(): ?float
+	{
+		// TODO: Check if product is promo
+		return $this->getFixedPrice();
+	}
+
+	public function hasColors()
+	{
+		// TODO: Implement hasColors() method.
+		return false;
+	}
+
 
 }

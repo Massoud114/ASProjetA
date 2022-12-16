@@ -142,4 +142,25 @@ class ProductRepository extends ServiceEntityRepository
 //            ->getOneOrNullResult()
 //        ;
 //    }
+
+	/**
+	 * @return float|int|mixed|string
+	 * Récupérer les produits les plus vendus
+	 */
+	public function findFeatured(): mixed
+	{
+		//TODO : ne pas afficher le produit actuellement visible
+		/*return $this->createQueryBuilder('p')
+			->select('p', 'count(pc) as pc_count')
+			->join('p.purchases', 'pc')
+			->groupBy('p.id')
+			->orderBy('pc_count', 'DESC')
+			->setMaxResults(10)
+			->getQuery()
+			->getResult();*/
+		return $this->createQueryBuilder('p')
+			->andWhere('p.favorite = 1')
+			->getQuery()
+			->getResult();
+	}
 }

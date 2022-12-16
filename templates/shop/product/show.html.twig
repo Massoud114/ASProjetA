@@ -1,0 +1,209 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+
+	<div class="breadcrumbs-area position-relative">
+		<div class="container">
+			<div class="row">
+				<div class="col-12 text-center">
+					<div class="breadcrumb-content position-relative section-content">
+						<h3 class="title-3">Product Details</h3>
+						<ul>
+							<li><a href="index.html">Home</a></li>
+							<li>Product Details</li>
+						</ul>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="single-product-main-area">
+		<div class="container container-default custom-area">
+			<div class="row">
+				<div class="col-lg-5 offset-lg-0 col-md-8 offset-md-2 col-custom">
+					<div class="product-details-img">
+
+					</div>
+				</div>
+				<div class="col-lg-7 col-custom">
+					<div class="product-summery position-relative">
+						<div class="product-head mb-3">
+							<h2 class="product-title">{{ product.name }}</h2>
+						</div>
+						<div class="price-box mb-2">
+							{% if product.isPromo %}
+								<span class="regular-price">{{ product.fixedPrice | format_currency('XOF', locale='fr') }}</span>
+								<span class="old-price"><del>{{ product.fixedPrice | format_currency('XOF', locale='fr') }}</del></span>
+							{% else %}
+								<span class="regular-price">{{ product.fixedPrice | format_currency('XOF', locale='fr') }}</span>
+							{% endif %}
+						</div>
+						<div class="product-rating mb-3">
+							<i class="fa fa-star"></i>
+							<i class="fa fa-star"></i>
+							<i class="fa fa-star"></i>
+							<i class="fa fa-star-o"></i>
+							<i class="fa fa-star-o"></i>
+						</div>
+						{% if product.brand %}
+							<div class="sku mb-3">
+								<span>{{ product.brand }}</span>
+							</div>
+						{% endif %}
+						<p class="desc-content mb-5">{{ product.description | sanitize_html | nl2br }}</p>
+						{{ form_start(addToCartForm, {
+							attr: { class: 'quantity-with_btn mb-5' }
+						}) }}
+							{% if addToCartForm.color is defined %}
+								<div
+										{{ stimulus_controller('color-square', {
+											colorId : addToCartForm.vars.data.product.colors[1].id
+										}) }}
+								>
+									{{ form_widget(addToCartForm.color, {
+										attr : {'data-color-square-target' : 'select'}
+									}) }}
+
+									{% for color in addToCartForm.vars.data.product.colors %}
+										<button
+												class="color-square"
+												type="button"
+												data-action="color-square#selectColor"
+												data-color-square-target="colorSquare"
+												data-color-id="{{ color.id }}"
+												style="background-color: rgb({{ color.red }}, {{ color.green }}, {{ color.blue }})"
+										></button>
+									{% endfor %}
+								</div>
+							{% endif %}
+							<div class="quantity">
+								<div class="cart-plus-minus" {{ stimulus_controller('input-count-box') }}>
+									{{ form_widget(addToCartForm.quantity, {
+										attr: {
+											'class': 'cart-plus-minus-box',
+											'data-input-count-box-target' : "input"
+										}
+									}) }}
+									<div class="dec qtybutton" {{ stimulus_action('input-count-box', 'decrement', 'click') }}>-</div>
+									<div class="inc qtybutton" {{ stimulus_action('input-count-box', 'increment', 'click') }}>+</div>
+								</div>
+							</div>
+							<div class="add-to_cart">
+								<button class="btn product-cart button-icon flosun-button dark-btn" type="submit">{{ 'add_to_cart' | trans }}</button>
+								<a class="btn flosun-button secondary-btn secondary-border rounded-0" href="wishlist.html">Add to wishlist</a>
+							</div>
+						{{ form_end(addToCartForm) }}
+
+						<div>
+							{{ form_errors(addToCartForm) }}
+							{% if addToCartForm.color is defined %}
+								{{ form_errors(addToCartForm.color) }}
+							{% endif %}
+							{{ form_errors(addToCartForm.quantity) }}
+						</div>
+
+						<div class="social-share mb-4">
+							<span>Partager :</span>
+							<a href="#"><i class="fa fa-facebook-square facebook-color"></i></a>
+							<a href="#"><i class="fa fa-whatsapp-square whatsapp-color"></i></a>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="row mt-no-text">
+				<div class="col-lg-12 col-custom">
+					<ul class="nav nav-tabs" id="myTab" role="tablist">
+						<li class="nav-item">
+							<a class="nav-link active text-uppercase" id="home-tab" data-toggle="tab" href="#connect-1" role="tab" aria-selected="true">{{ 'description'|trans }}</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link text-uppercase" id="profile-tab" data-toggle="tab" href="#connect-2" role="tab" aria-selected="false">{{ 'reviews' | trans }}</a>
+						</li>
+					</ul>
+					<div class="tab-content mb-text" id="myTabContent">
+						<div class="tab-pane fade show active" id="connect-1" role="tabpanel" aria-labelledby="home-tab">
+							<div class="desc-content">
+								{{ product.details ? (product.details | sanitize_html | nl2br) : '' }}
+							</div>
+						</div>
+						<div class="tab-pane fade" id="connect-2" role="tabpanel" aria-labelledby="profile-tab">
+							<!-- Start Single Content -->
+							<div class="product_tab_content  border p-3">
+								<div class="review_address_inner">
+									<!-- Start Single Review -->
+									<div class="pro_review mb-5">
+										<div class="review_thumb">
+											<img alt="review images" src="assets/images/review/1.jpg">
+										</div>
+										<div class="review_details">
+											<div class="review_info mb-2">
+												<div class="product-rating mb-2">
+													<i class="fa fa-star"></i>
+													<i class="fa fa-star"></i>
+													<i class="fa fa-star"></i>
+													<i class="fa fa-star-o"></i>
+													<i class="fa fa-star-o"></i>
+												</div>
+												<h5>Admin - <span> December 19, 2020</span></h5>
+											</div>
+											<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin in viverra ex, vitae vestibulum arcu. Duis sollicitudin metus sed lorem commodo, eu dapibus libero interdum. Morbi convallis viverra erat, et aliquet orci congue vel. Integer in odio enim. Pellentesque in dignissim leo. Vivamus varius ex sit amet quam tincidunt iaculis.</p>
+										</div>
+									</div>
+
+								</div>
+
+								<div class="rating_wrap">
+									<h5 class="rating-title-1 font-weight-bold mb-2">Add a review </h5>
+									<p class="mb-2">Your email address will not be published. Required fields are marked *</p>
+									<h6 class="rating-title-2 mb-2">Your Rating</h6>
+									<div class="rating_list mb-4">
+										<div class="review_info">
+											<div class="product-rating mb-3">
+												<i class="fa fa-star"></i>
+												<i class="fa fa-star"></i>
+												<i class="fa fa-star"></i>
+												<i class="fa fa-star-o"></i>
+												<i class="fa fa-star-o"></i>
+											</div>
+										</div>
+									</div>
+								</div>
+
+								<div class="comments-area comments-reply-area">
+									<div class="row">
+										<div class="col-lg-12 col-custom">
+											<form action="#" class="comment-form-area">
+												<div class="row comment-input">
+													<div class="col-md-6 col-custom comment-form-author mb-3">
+														<label>Name <span class="required">*</span></label>
+														<input type="text" required="required" name="Name">
+													</div>
+													<div class="col-md-6 col-custom comment-form-emai mb-3">
+														<label>Email <span class="required">*</span></label>
+														<input type="text" required="required" name="email">
+													</div>
+												</div>
+												<div class="comment-form-comment mb-3">
+													<label>Comment</label>
+													<textarea class="comment-notes" required="required"></textarea>
+												</div>
+												<div class="comment-form-submit">
+													<button class="btn flosun-button secondary-btn rounded-0">Submit</button>
+												</div>
+											</form>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+{% endblock %}
+
+{% block meta %}
+
+{% endblock %}
