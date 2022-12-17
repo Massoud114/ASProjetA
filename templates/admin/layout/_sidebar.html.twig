@@ -16,6 +16,37 @@
 					<span class="nk-menu-text">{{ 'products'|trans }}</span>
 				</a>
 			</li>
+			<li class="nk-menu-item has-sub {{ menu_active('purchase') }}">
+				<a href="#" class="nk-menu-link nk-menu-toggle" title="">
+					<span class="nk-menu-icon">{{ icon('bag', 'fill') }}</span>
+					<span class="nk-menu-text">{{ 'purchase'|trans }}</span>
+				</a>
+				<ul class="nk-menu-sub">
+					{% set statut_in_progress = constant('App\\Application\\Purchase\\Purchase::STATES')[1] %}
+					{% set statut_done = constant('App\\Application\\Purchase\\Purchase::STATES')[2] %}
+					{% set statut_canceled = constant('App\\Application\\Purchase\\Purchase::STATES')[3] %}
+					<li class="nk-menu-item {{ status is defined and status == statut_in_progress ? menu_active('purchase') : "" }}">
+						<a href="{{ path('admin_purchase_index', { status: statut_in_progress }) }}" class="nk-menu-link" title="{{ 'purchase.manage'|trans }}">
+							<span class="nk-menu-text">{{ 'purchase.in_progress'|trans }}</span>
+						</a>
+					</li>
+					<li class="nk-menu-item {{ status is defined and status == statut_done ? menu_active('purchase') : "" }}">
+						<a href="{{ path('admin_purchase_index', { status: statut_done }) }}" class="nk-menu-link" title="{{ 'purchase.manage'|trans }}">
+							<span class="nk-menu-text">{{ 'purchase.done'|trans }}</span>
+						</a>
+					</li>
+					<li class="nk-menu-item {{ status is defined and status == statut_canceled ? menu_active('purchase') : "" }}">
+						<a href="{{ path('admin_purchase_index', { status: statut_canceled }) }}" class="nk-menu-link" title="{{ 'purchase.manage'|trans }}">
+							<span class="nk-menu-text">{{ 'purchase.canceled'|trans }}</span>
+						</a>
+					</li>
+					<li class="nk-menu-item {{ status is defined and status == "not_confirmed" ? menu_active('purchase') : "" }}">
+						<a href="{{ path('admin_purchase_index', { status: "not_confirmed" }) }}" class="nk-menu-link" title="{{ 'purchase.manage'|trans }}">
+							<span class="nk-menu-text">{{ 'purchase.rejected'|trans }}</span>
+						</a>
+					</li>
+				</ul>
+			</li>
 			<li class="nk-menu-item has-sub {{ menu_active('category') }}">
 				<a href="#" class="nk-menu-link nk-menu-toggle" title="">
 					<span class="nk-menu-icon">{{ icon('puzzle', 'fill') }}</span>

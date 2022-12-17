@@ -54,6 +54,18 @@ class PurchaseRepository extends ServiceEntityRepository
 			->getSingleScalarResult();
 	}
 
+	public function getLatestOrderNumber(): int
+	{
+		$latestOrder = $this->createQueryBuilder('p')
+			->select('p.orderNumber')
+			->orderBy('p.orderNumber', 'DESC')
+			->setMaxResults(1)
+			->getQuery()
+			->getOneOrNullResult();
+
+		return $latestOrder ? intval($latestOrder['orderNumber']) : 1000;
+	}
+
 //    /**
 //     * @return Purchase[] Returns an array of Purchase objects
 //     */
@@ -78,4 +90,23 @@ class PurchaseRepository extends ServiceEntityRepository
 //            ->getOneOrNullResult()
 //        ;
 //    }
+	public function getPurchases(?string $status)
+	{
+		$query = $this->createQueryBuilder('row');
+
+		//Add row.total
+		//Add row.customer
+
+
+		if ($status and in_array($status, array_values(Purchase::STATES))){
+			$query->andWhere('row.status = :status')
+				->setParameter('status', array_search($status, Purchase::STATES));
+		} else if ($status and $status === "confirmed"){
+			$query->andWhere('row.confirmed = 1');
+		} else if ($status and $status === "not_confirmed"){
+			$query->andWhere('row.status = 0');
+		}
+
+		return $query;
+	}
 }

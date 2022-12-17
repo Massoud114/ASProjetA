@@ -16,6 +16,7 @@ export default class extends Controller {
 
 	connect () {
 		this.element.style.overflow = 'hidden'
+		this.element.style.resize = 'none'
 		const delay = this.resizeDebounceDelayValue
 
 		this.onResize = delay > 0 ? debounce(this.autogrow, delay) : this.autogrow

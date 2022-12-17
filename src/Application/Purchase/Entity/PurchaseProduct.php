@@ -16,7 +16,7 @@ class PurchaseProduct
     #[ORM\Column]
     private int $id;
 
-    #[ORM\ManyToOne(inversedBy: 'products')]
+    #[ORM\ManyToOne(inversedBy: 'purchaseProducts')]
     #[ORM\JoinColumn(nullable: false)]
     private Purchase $purchase;
 

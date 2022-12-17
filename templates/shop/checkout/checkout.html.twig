@@ -1,0 +1,71 @@
+{% extends 'base.html.twig' %}
+
+{% block title "Checkout" %}
+
+{% block cart_summary %}
+
+{% endblock %}
+
+{% block body %}
+	<div class="breadcrumbs-area position-relative">
+		<div class="container">
+			<div class="row">
+				<div class="col-12 text-center">
+					<div class="breadcrumb-content position-relative section-content">
+						<h3 class="title-3">Checkout</h3>
+						<ul>
+							<li><a href="index.html">Home</a></li>
+							<li>Checkout</li>
+						</ul>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="checkout-area mt-no-text">
+		<div class="container custom-container">
+			<div class="row">
+				<div class="col-12 col-custom">
+					<div class="coupon-accordion">
+						<h3>
+							Vous êtes sur le point de valider votre commande
+						</h3>
+						<p>
+							Lorem ipsum dolor sit amet,
+							consectetur adipisicing elit. A aliquam architecto
+							aspernatur assumenda consequatur dicta dolorum enim error, hic impedit, incidunt iusto labor
+							iosam, mollitia nam officiis porro possimus provident quas quibusdam repudiandae rerum sit
+							suscipit unde ut velit veritatis voluptatum? Beatae debitis dolor dolorum
+							facere fugiat minus numquam optio, placeat qui recusandae rem tenetur totam
+							. Eum officiis quam unde vel voluptatibus. Aliquid architecto assumenda,
+							{#// TODO : ASK ChatGPT after#}
+						</p>
+					</div>
+				</div>
+			</div>
+
+			{{ form_start(checkoutForm, {
+				'attr' : {
+					'class' : 'row'
+				}
+			}) }}
+				<div class="col-lg-6 col-12 col-custom">
+					{{ include('shop/checkout/_order_form.html.twig') }}
+				</div>
+				<div class="col-lg-6 col-12 col-custom">
+					{{ include('shop/checkout/_order_summary.html.twig') }}
+				</div>
+			{{ form_end(checkoutForm) }}
+			<div>
+				<a href="{{ path('app_cart') }}" class="btn flosun-button secondary-btn black-color rounded-0 w-100">
+					&lt;&lt; {{ 'go_back'|trans }}
+				</a>
+			</div>
+		</div>
+	</div>
+{% endblock %}
+
+{% block meta %}
+	<meta name="robots" content="noindex, follow" />
+{% endblock %}

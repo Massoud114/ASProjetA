@@ -11,8 +11,8 @@ use App\Application\Purchase\Repository\ShipRepository;
 class Ship
 {
 	const STATES = [
-		1 => "Livrée",
-		2 => "Annulé",
+		1 => "shipped",
+		2 => "canceled",
 	];
 
 	#[ORM\Id]
@@ -144,4 +144,5 @@ class Ship
 		$this->shipper = $shipper;
 		return $this;
 	}
+
 }

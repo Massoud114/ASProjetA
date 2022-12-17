@@ -107,11 +107,13 @@
 				<div class="col-lg-2 col-md-6 col-6 col-custom">
 					<div class="header-right-area main-nav">
 						<ul class="nav">
-							{% if cart is defined %}
-								<li class="minicart-wrap">
-									{% include 'shop/cart/cart_summary.html.twig' with {cart:cart} %}
-								</li>
-							{% endif %}
+							{% block cart_summary %}
+								{% if cart is defined %}
+									<li class="minicart-wrap">
+										{% include 'shop/cart/cart_summary.html.twig' with {cart:cart} %}
+									</li>
+								{% endif %}
+							{% endblock %}
 							<li class="sidemenu-wrap">
 								<a href="#"><i class="fa fa-search"></i> </a>
 								<ul class="dropdown-sidemenu dropdown-hover-2 dropdown-search">
@@ -289,7 +291,9 @@
 					<ul class="menu-top-menu">
 						<li><a href="about-us.html">About Us</a></li>
 					</ul>
-					<p class="desc-content">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. <br> Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. <br> Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+					<p class="desc-content">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. <br> Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut
+						aliquip ex ea commodo consequat. <br> Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt
+						mollit anim id est laborum.</p>
 					<div class="switcher">
 						<div class="language">
 							<span class="switcher-title">Language: </span>

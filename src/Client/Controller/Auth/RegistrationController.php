@@ -3,11 +3,11 @@
 namespace App\Client\Controller\Auth;
 
 use App\Application\User\User;
-use App\Security\EmailVerifier;
 use App\Form\RegistrationFormType;
 use Symfony\Component\Mime\Address;
 use App\Application\User\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use App\Infrastructure\Auth\EmailVerifier;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;

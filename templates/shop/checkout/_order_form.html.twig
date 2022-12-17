@@ -1,0 +1,18 @@
+<div>
+	<div class="checkbox-form">
+		<h3>{{ 'informations'|trans }}</h3>
+		<div class="row">
+			<div class="col-md-12 col-custom">
+			</div>
+			<div class="col-md-6 col-custom">
+				{{ form_row(checkoutForm.phoneNumber) }}
+				{{ form_errors(checkoutForm.phoneNumber) }}
+			</div>
+		</div>
+		<div class="different-address">
+			<div class="order-notes mt-3">
+				{{ form_row(checkoutForm.notes) }}
+			</div>
+		</div>
+	</div>
+</div>

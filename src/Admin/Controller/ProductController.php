@@ -136,6 +136,7 @@ class ProductController extends CrudController
 			}
 
 			$product->setSlug($slugger->slug($product->getName()));
+			$this->em->flush();
 
 			$this->addFlash('success', 'product.updated');
 

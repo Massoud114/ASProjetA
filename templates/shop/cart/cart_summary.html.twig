@@ -1,11 +1,11 @@
 <a href="cart_html" class="minicart-btn toolbar-btn">
 	<i class="fa fa-shopping-cart"></i>
-	<span class="cart-item_count">{{ cart.items|length }}</span>
+	<span class="cart-item_count">{{ cart ? cart.items|length : 0 }}</span>
 </a>
 <div class="cart-item-wrapper dropdown-sidemenu dropdown-hover-2">
 	{% if not cart.empty %}
 		{% for key, item in cart.items %}
-			{% if key < 5 %}
+			{% if key < 4 %}
 				{% set product = item.product %}
 				<div class="single-cart-item">
 					<div class="cart-img">
@@ -37,7 +37,7 @@
 						<div class="cart-text-btn">
 							<div class="cart-qty">
 								<span>{{ item.quantity }}×</span>
-								<span class="cart-price">{{ item.total | format_currency('XOF', locale='fr') }}</span>
+								<span class="cart-price">{{ item.product.fixedPrice | format_currency('XOF', locale='fr') }}</span>
 							</div>
 							<form
 								style="display: inline-block;"

@@ -1,0 +1,66 @@
+<div class="your-order">
+	<h3>{{ 'your_order'|trans }}</h3>
+	<div class="your-order-table table-responsive">
+		<table class="table">
+			<thead>
+				<tr>
+					<th class="cart-product-name">{{ 'product'|trans }}</th>
+					<th class="cart-product-total">{{ 'total'|trans }}</th>
+				</tr>
+			</thead>
+			<tbody>
+				{% for item in cart.items %}
+					<tr class="cart_item">
+						<td class="cart-product-name">
+							{{ item.product.name }}
+							<strong class="product-quantity">× {{ item.quantity }}</strong>
+						</td>
+						<td class="cart-product-total text-center">
+							<span class="amount">{{ item.total | format_currency('XOF', locale='fr') }}</span>
+						</td>
+					</tr>
+				{% endfor %}
+			</tbody>
+			<tfoot>
+				<tr class="cart-subtotal">
+					<th>{{ 'cart_subtotal'|trans }}</th>
+					<td class="text-center">
+						<span class="amount">{{ cart.total | format_currency('XOF', locale='fr') }}</span>
+					</td>
+				</tr>
+				<tr class="order-total">
+					<th>{{ 'order_total'|trans }}</th>
+					<td class="text-center">
+						<strong>
+							<span class="amount">{{ cart.total | format_currency('XOF', locale='fr') }}</span>
+						</strong>
+					</td>
+				</tr>
+			</tfoot>
+		</table>
+	</div>
+	<div class="payment-method">
+		<div class="payment-accordion">
+			<div id="accordion">
+				<div class="card">
+					<div class="card-header">
+						<h5 class="panel-title mb-3">
+							<a href="#" class="" >
+								Nous vous contacterons pour la suite
+								{# TODO: AST ChatGPT #}
+							</a>
+						</h5>
+					</div>
+					<div id="" class="" >
+						<div class="card-body mb-2 mt-2">
+							<p>Make your payment directly into our bank account. Please use your Order ID as the payment reference. Your order won’t be shipped until the funds have cleared in our account.</p>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="order-button-payment">
+				<button type="submit" class="btn flosun-button secondary-btn black-color rounded-0 w-100">{{ 'place_order'|trans }}</button>
+			</div>
+		</div>
+	</div>
+</div>
