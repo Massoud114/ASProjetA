@@ -54,7 +54,7 @@ export default class extends Controller {
 
 		this.selectAllTarget.checked = checkboxesCheckedCount > 0
 		this.selectAllTarget.indeterminate = checkboxesCheckedCount > 0 && checkboxesCheckedCount < checkboxesCount
-		checkboxesCheckedCount > 0 ? this.enter() : this.leave()
+		// checkboxesCheckedCount > 0 ? this.enter() : this.leave()
 		this.actionTargets.forEach(element => this.refreshActions(element))
 	}
 

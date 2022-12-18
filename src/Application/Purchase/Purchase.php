@@ -23,6 +23,7 @@ class Purchase
 		1 => 'progress',
 		2 => 'done',
 		3 => 'canceled',
+		4 => 'rejected'
 	];
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -106,9 +107,14 @@ class Purchase
         return $this;
     }
 
-    public function getStatus(): string
+    public function getStatusString(): string
     {
         return self::STATES[$this->status];
+    }
+
+    public function getStatus(): int
+    {
+        return $this->status;
     }
 
     public function setStatus(int $status): self
@@ -265,11 +271,29 @@ class Purchase
 		return $this;
 	}
 
-	public function getShortLabel(): string {
+	public function getShortLabel(): string
+	{
 		$nbProducts = $this->purchaseProducts->count();
 		if ($nbProducts == 1) {
-			return $this->purchaseProducts->first()->name;
+			return $this->purchaseProducts->first()->getProduct()->getName();
 		}
 		return $nbProducts . " " . t('products');
+	}
+
+	public function getStatusBadge(): string
+	{
+		switch ($this->status){
+			case 1:
+				if($this->confirmed)
+					return "success"; // new
+				return "warning"; // progress
+			case 2:
+				return "success"; // done
+			case 3:
+				return "secondary"; // canceled
+			case 4:
+				return "danger"; // rejected
+		}
+		return "";
 	}
 }

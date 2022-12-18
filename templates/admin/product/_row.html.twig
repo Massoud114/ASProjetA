@@ -38,13 +38,13 @@
 	<div class="nk-tb-col tb-col-md text-center">
 		<div class="asterisk tb-asterisk">
 			<a
-					href="#"
-					data-product-id="{{ product.id }}"
-					data-favorite="{{ product.isFavorite ? "true" : "false" }}"
-					class="{{ product.isFavorite ? 'active' : '' }}"
-					id="switch-favorite-{{ product.id }}"
-					data-row-id="{{ product.id }}"
-					{{ stimulus_action('admin--list', 'toggleFavorite', 'click') }}
+				href="#"
+				data-product-id="{{ product.id }}"
+				data-favorite="{{ product.isFavorite ? "true" : "false" }}"
+				class="{{ product.isFavorite ? 'active' : '' }}"
+				id="switch-favorite-{{ product.id }}"
+				data-row-id="{{ product.id }}"
+				{{ stimulus_action('admin--list', 'toggleFavorite', 'click') }}
 			>
 				{{ icon('star', '', 'asterisk-off') }}
 				{{ icon('star', 'fill', 'asterisk-on') }}

@@ -47,7 +47,7 @@ export default class extends Controller {
 		 				<button type="button" class="btn btn-default cancelButton" id="btnNo">
 		 					<em class="icon ni ni-na"></em> <span>${this.cancelValue}</span>
 		 				</button>
-		 				<button type="button" class="btn btn-danger confirmButton" id="btnYes">
+		 				<button type="button" class="btn btn-${this.iconValue} confirmButton" id="btnYes">
 		 					<em class="icon ni ni-trash"></em>  <span>${this.confirmButtonTextValue || null}</span>
 		 				</button>
 		 			</div>

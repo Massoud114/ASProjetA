@@ -19,9 +19,9 @@ class CheckoutFormType extends AbstractType
 	            'help' => "phone_number.to_be_used_to_contact",
 	            'required' => false
             ])
-	        ->add('notes', TextareaType::class, [
-		        'label' => 'notes',
-		        'help' => 'notesHelp',
+	        ->add('more', TextareaType::class, [
+		        'label' => 'more',
+		        'help' => 'checkout.moreHelp',
 		        'required' => false,
 		        'attr' => [
 			        'data-controller' => 'textarea-autogrow',

@@ -1,0 +1,13 @@
+{% extends 'admin/layout/_squeleton_new.html.twig' %}
+
+{% block formTitle  'purchase.edit' | trans %}
+
+{% block title 'purchase.edit'|trans %}
+
+{% block form %}
+	{% include 'admin/purchase/_form.html.twig' with {
+		'form' : form,
+		'action' : 'edit',
+		'button_label' : 'update'|trans
+	} %}
+{% endblock %}

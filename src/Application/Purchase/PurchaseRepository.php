@@ -2,6 +2,7 @@
 
 namespace App\Application\Purchase;
 
+use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 
@@ -90,13 +91,22 @@ class PurchaseRepository extends ServiceEntityRepository
 //            ->getOneOrNullResult()
 //        ;
 //    }
-	public function getPurchases(?string $status)
+	public function getPurchases(?string $status): QueryBuilder
 	{
-		$query = $this->createQueryBuilder('row');
 
-		//Add row.total
-		//Add row.customer
-
+		//eaget load
+		$query = $this->createQueryBuilder('row')
+			->leftJoin('row.purchaseProducts', 'purchaseProducts')
+			->addSelect('purchaseProducts')
+			->leftJoin('purchaseProducts.product', 'product')
+			->addSelect('product')
+			->leftJoin('row.customer', 'customer')
+			->addSelect('customer')
+			->leftJoin('row.ship', 'ship')
+			->addSelect('ship')
+			->leftJoin('row.invoice', 'invoice')
+			->addSelect('invoice')
+		;
 
 		if ($status and in_array($status, array_values(Purchase::STATES))){
 			$query->andWhere('row.status = :status')
@@ -104,7 +114,7 @@ class PurchaseRepository extends ServiceEntityRepository
 		} else if ($status and $status === "confirmed"){
 			$query->andWhere('row.confirmed = 1');
 		} else if ($status and $status === "not_confirmed"){
-			$query->andWhere('row.status = 0');
+			$query->andWhere('row.status = 4');
 		}
 
 		return $query;

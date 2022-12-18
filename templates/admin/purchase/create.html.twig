@@ -1,0 +1,8 @@
+{% extends 'admin/layout/_squeleton_new.html.twig' %}
+
+{% block title 'purchase.add'|trans %}
+{% block formTitle 'purchase.add'|trans %}
+
+{% block form %}
+	{% include 'admin/purchase/_form.html.twig' with {'form' : form, 'action' : 'create'} %}
+{% endblock %}

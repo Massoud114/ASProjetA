@@ -2,7 +2,7 @@ import {Controller} from '@hotwired/stimulus';
 
 export default class extends Controller {
 	static values = {
-		trigger: "product-delete"
+		trigger: String
 	}
 	connect() {
 		this.element.style.display = "none"

@@ -50,7 +50,7 @@
 
 		<form
 				method="post"
-				class="delete-form"
+				class="action-form"
 				id=""
 				data-controller="delete-form submit-confirm"
 				data-submit-confirm-title-value="{{ 'delete_warning_title'|trans }}"
@@ -59,7 +59,7 @@
 				data-submit-confirm-confirm-button-text-value="{{ 'delete.label'|trans }}"
 				data-submit-confirm-cancel-value="{{ 'cancel'|trans }}"
 				data-submit-confirm-async-submit-value="{{ true }}"
-				data-delete-form-trigger-value="product-delete"
+				data-action-form-trigger-value="product-delete"
 				{{ stimulus_action('submit-confirm', 'onSubmit', 'submit') }}
 		>
 			<input type="hidden" name="token" value="{{ csrf_token('delete') }}"/>

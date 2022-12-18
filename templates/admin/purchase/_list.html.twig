@@ -1,0 +1,219 @@
+<div
+		class="nk-block"
+		data-action="submit-confirm:async:submitted->reload-content#refreshContent"
+		{{ stimulus_target('reload-content', 'content') }}
+>
+	<div class="card card-stretch">
+		<div class="card-inner-group">
+			<div class="card-inner">
+				<div class="card-title-group">
+					<div class="card-title">
+						<h5 class="title"></h5>
+					</div>
+					<div class="card-tools me-n1">
+						<ul class="btn-toolbar gx-1">
+							<li>
+								<a href="#" class="search-toggle toggle-search btn btn-icon" data-target="search"><em class="icon ni ni-search"></em></a>
+							</li>
+							<li class="btn-toolbar-sep"></li>
+							<li>
+								<div class="dropdown">
+									<a href="#" class="btn btn-trigger btn-icon dropdown-toggle" data-bs-toggle="dropdown">
+										<div class="badge badge-circle bg-primary">4</div>
+										<em class="icon ni ni-filter-alt"></em>
+									</a>
+									<div class="filter-wg dropdown-menu dropdown-menu-xl dropdown-menu-end">
+										<div class="dropdown-head">
+											<span class="sub-title dropdown-title">Advance Filter</span>
+											<div class="dropdown">
+												<a href="#" class="link link-light">
+													<em class="icon ni ni-more-h"></em>
+												</a>
+											</div>
+										</div>
+										<div class="dropdown-body dropdown-body-rg">
+											<div class="row gx-6 gy-4">
+												<div class="col-6">
+													<div class="form-group">
+														<label class="overline-title overline-title-alt">Type</label>
+														<select class="form-select js-select2">
+															<option value="any">Any Type</option>
+															<option value="deposit">Deposit</option>
+															<option value="buy">Buy Coin</option>
+															<option value="sell">Sell Coin</option>
+															<option value="transfer">Transfer</option>
+															<option value="withdraw">Withdraw</option>
+														</select>
+													</div>
+												</div>
+												<div class="col-6">
+													<div class="form-group">
+														<label class="overline-title overline-title-alt">Status</label>
+														<select class="form-select js-select2">
+															<option value="any">Any Status</option>
+															<option value="pending">Pending</option>
+															<option value="cancel">Cancel</option>
+															<option value="process">Process</option>
+															<option value="completed">Completed</option>
+														</select>
+													</div>
+												</div>
+												<div class="col-6">
+													<div class="form-group">
+														<label class="overline-title overline-title-alt">Pay Currency</label>
+														<select class="form-select js-select2">
+															<option value="any">Any Coin</option>
+															<option value="bitcoin">Bitcoin</option>
+															<option value="ethereum">Ethereum</option>
+															<option value="litecoin">Litecoin</option>
+														</select>
+													</div>
+												</div>
+												<div class="col-6">
+													<div class="form-group">
+														<label class="overline-title overline-title-alt">Method</label>
+														<select class="form-select js-select2">
+															<option value="any">Any Method</option>
+															<option value="paypal">PayPal</option>
+															<option value="bank">Bank</option>
+														</select>
+													</div>
+												</div>
+												<div class="col-6">
+													<div class="form-group">
+														<div class="custom-control custom-control-sm custom-checkbox">
+															<input type="checkbox" class="custom-control-input" id="includeDel">
+															<label class="custom-control-label" for="includeDel"> Including Deleted</label>
+														</div>
+													</div>
+												</div>
+												<div class="col-12">
+													<div class="form-group">
+														<button type="button" class="btn btn-secondary">Filter</button>
+													</div>
+												</div>
+											</div>
+										</div>
+										<div class="dropdown-foot between">
+											<a class="clickable" href="#">Reset Filter</a>
+											<a href="#savedFilter" data-bs-toggle="modal">Save Filter</a>
+										</div>
+									</div><!-- .filter-wg -->
+								</div><!-- .dropdown -->
+							</li>
+							<li>
+								<div class="dropdown">
+									<a href="#" class="btn btn-trigger btn-icon dropdown-toggle" data-bs-toggle="dropdown">
+										<em class="icon ni ni-setting"></em>
+									</a>
+									<div class="dropdown-menu dropdown-menu-xs dropdown-menu-end">
+										<ul class="link-check">
+											<li><span>Show</span></li>
+											<li class="active"><a href="#">10</a></li>
+											<li><a href="#">20</a></li>
+											<li><a href="#">50</a></li>
+										</ul>
+										<ul class="link-check">
+											<li><span>Order</span></li>
+											<li class="active"><a href="#">DESC</a></li>
+											<li><a href="#">ASC</a></li>
+										</ul>
+									</div>
+								</div>
+							</li>
+						</ul>
+					</div>
+					<div class="card-search search-wrap" data-search="search">
+						<div class="search-content">
+							<a href="#" class="search-back btn btn-icon toggle-search" data-target="search"><em class="icon ni ni-arrow-left"></em></a>
+							<input type="text" class="form-control border-transparent form-focus-none" placeholder="Quick search by transaction">
+							<button class="search-submit btn btn-icon"><em class="icon ni ni-search"></em></button>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="card-inner p-0">
+				<div class="nk-tb-list nk-tb-tnx">
+					<div class="nk-tb-item nk-tb-head">
+						<div class="nk-tb-col nk-tb-col-check">
+							<div class="custom-control custom-control-sm custom-checkbox notext">
+								<input type="checkbox" class="custom-control-input" id="massiveCheck" {{ stimulus_target('checkbox-all', 'selectAll') }}>
+								<label class="custom-control-label" for="massiveCheck"></label>
+							</div>
+						</div>
+						<div class="nk-tb-col{{ sorted(rows, 'row.orderNumber') ? ' focus' : '' }} ">
+							{{ sort_by(rows, 'number'|trans, 'row.orderNumber') }}
+						</div>
+						<div class="nk-tb-col tb-col-md{{ sorted(rows, 'row.createdAt') ? ' focus' : '' }}">
+							{{ sort_by(rows, 'date'|trans, 'row.createdAt') }}
+						</div>
+						<div class="nk-tb-col">
+							<span class="d-none d-sm-block">{{ 'status' | trans }}</span>
+						</div>
+						<div class="nk-tb-col tb-col-sm">
+							<span>{{ 'customer' | trans }}</span>
+						</div>
+						<div class="nk-tb-col tb-col-md">
+							<span>{{ 'purchased' | trans }}</span>
+						</div>
+						<div class="nk-tb-col{{ sorted(rows, 'row.total') ? ' focus' : '' }}">
+							{{ sort_by(rows, 'total'|trans, 'row.total') }}
+						</div>
+						<div class="nk-tb-col nk-tb-col-tools">
+							{{ 'actions'|trans }}
+						</div>
+					</div>
+
+					{% for purchase in rows %}
+						{{ include('admin/purchase/_row.html.twig', { purchase: purchase }) }}
+					{% endfor %}
+
+				</div>
+			</div>
+			<div class="card-inner">
+				<div class="nk-block-between-md g-3">
+					<div class="g">
+						{{ paginate(rows) }}
+					</div>
+					<div class="g">
+						<div class="pagination-goto d-flex justify-content-center justify-content-md-start gx-3">
+							{{ 'purchases.total' }} : {{ rows|length }}
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<form
+				method="post"
+				id=""
+				data-controller="action-form submit-confirm"
+				data-submit-confirm-title-value="{{ 'order_accept_warning_title'|trans }}"
+				data-submit-confirm-text-value="{{ 'order_accept_warning_text'|trans }}"
+				data-submit-confirm-icon-value="{{ 'warning' }}"
+				data-submit-confirm-confirm-button-text-value="{{ 'accept.label'|trans }}"
+				data-submit-confirm-cancel-value="{{ 'cancel'|trans }}"
+				data-submit-confirm-async-submit-value="{{ true }}"
+				data-action-form-trigger-value="purchase-accept"
+				{{ stimulus_action('submit-confirm', 'onSubmit', 'submit') }}
+			>
+				<input type="hidden" name="token" value="{{ csrf_token('accept') }}"/>
+			</form>
+
+			<form
+				method="post"
+				id=""
+				data-controller="action-form submit-confirm"
+				data-submit-confirm-title-value="{{ 'order_reject_warning_title'|trans }}"
+				data-submit-confirm-text-value="{{ 'order_reject_warning_text'|trans }}"
+				data-submit-confirm-icon-value="{{ 'warning' }}"
+				data-submit-confirm-confirm-button-text-value="{{ 'reject.label'|trans }}"
+				data-submit-confirm-cancel-value="{{ 'cancel'|trans }}"
+				data-submit-confirm-async-submit-value="{{ true }}"
+				data-action-form-trigger-value="purchase-reject"
+				{{ stimulus_action('submit-confirm', 'onSubmit', 'submit') }}
+			>
+				<input type="hidden" name="token" value="{{ csrf_token('reject') }}"/>
+			</form>
+		</div>
+	</div>
+</div>

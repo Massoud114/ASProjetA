@@ -1,78 +1,79 @@
-prev: "préc"
-products: "Produits"
+prev: préc
+products: Produits
 products.manage: 'Gestions des produits'
-products.orders: "Commandes"
+products.orders: Commandes
 products.add: 'Ajouter un produit'
 products.edit: 'Modification du produit'
-single: "Unitaire"
-pack: "Pack"
+single: Unitaire
+pack: Pack
 on_command: 'Sur Commande'
-product.label: "Produit"
+product.label: Produit
 product.add: 'Ajouter un produit'
 product.edit: 'Modifier un produit'
 product.delete: 'Supprimer un produit'
 product.updated: 'Le produit a bien été modifié !'
 product.created: 'Le produit a bien été crée !'
-product.form.name: 'Quel est le nom du produit ?'
-product.form.nameHelp: 'Example : "Fleurs séchées de chine 100g, Pack de portes clés 50, Poster 30x40..."'
-product.form.types: "Quel type de produit s'agit-il ?"
-product.form.fixedPrice: 'A quel prix le produit sera t-il vendu ?'
-product.form.fixedPriceHelp: 'Ce prix est celui qui sera affiché sur le site / Vous pourrez le modifier facilement depuis la liste des produits'
-product.form.brand: 'Marque du produit'
-product.form.brandHelp: 'Vous pouvez ignorer cette partie si vous ne souhaitez pas afficher la marque du produit'
-product.form.description: "Décrivez un peu votre produit, ce qu'il contient, ce qu'il est, etc..."
-product.form.descriptionHelp: "Entrer une bonne description. S'il s'agit d'un pack, listez la contenance du pack. Donnez toutes les infos possible pour permettre à un  utilisateur de comprendre le produit"
-product.form.toggleHelp: 'Si vous souhaitez que le produit soit visible sur le site, cochez la case'
-product.form.image: 'Image du produit'
-product.form.imageHelp: "Choisissez l'image qui représentera le produit. Vous pourrez la modifier après !"
-product.form.imageLabel: 'Image du produit'
-product.form.tabHelp: "Cliquez sur les différents onglets pour ajouter plus d'informations. Votre produit sera mieux perçu si vous donnez beaucoup de détails"
-product.form.detailsHelp: 'Soyez libre de décrire le produit comme vous le souhaitez. Vous pouvez ajouter des images, des vidéos, des liens, etc... Au moins 3  paragraphes sont souhaités'
+product.form:
+    name: 'Quel est le nom du produit ?'
+    nameHelp: 'Example : "Fleurs séchées de chine 100g, Pack de portes clés 50, Poster 30x40..."'
+    types: "Quel type de produit s'agit-il ?"
+    fixedPrice: 'A quel prix le produit sera t-il vendu ?'
+    fixedPriceHelp: 'Ce prix est celui qui sera affiché sur le site / Vous pourrez le modifier facilement depuis la liste des produits'
+    brand: 'Marque du produit'
+    brandHelp: 'Vous pouvez ignorer cette partie si vous ne souhaitez pas afficher la marque du produit'
+    description: "Décrivez un peu votre produit, ce qu'il contient, ce qu'il est, etc..."
+    descriptionHelp: "Entrer une bonne description. S'il s'agit d'un pack, listez la contenance du pack. Donnez toutes les infos possible pour permettre à un  utilisateur de comprendre le produit"
+    toggleHelp: 'Si vous souhaitez que le produit soit visible sur le site, cochez la case'
+    image: 'Image du produit'
+    imageHelp: "Choisissez l'image qui représentera le produit. Vous pourrez la modifier après !"
+    imageLabel: 'Image du produit'
+    tabHelp: "Cliquez sur les différents onglets pour ajouter plus d'informations. Votre produit sera mieux perçu si vous donnez beaucoup de détails"
+    detailsHelp: 'Soyez libre de décrire le produit comme vous le souhaitez. Vous pouvez ajouter des images, des vidéos, des liens, etc... Au moins 3  paragraphes sont souhaités'
 product.deleted_successfully: 'Le produit a bien été supprimé !'
 product.deleted_confirm: 'Êtes-vous sûr de vouloir supprimer ce produit ?'
 product.deleted_error: 'Une erreur est survenue lors de la suppression du produit'
 products.deleted_successfully: 'Les produits ont bien été supprimé !'
 products.deleted_confirm: 'Êtes-vous sûr de vouloir supprimer ces produit ?'
 products.deleted_error: 'Une erreur est survenue lors de la suppression des produit'
-brand: "Marque"
+brand: Marque
 stockQuantityHelp: "Entrer 0 s'il s'agit d'une commande"
 stockQuantity: 'Quantité en stock'
 makingPrice: 'Prix de fabrication / réalisation'
 fixedPrice: 'Prix fixé'
 maxPrice: 'Prix maximum de vente'
 minPrice: 'Prix minimum de vente'
-weight: "Poids"
+weight: Poids
 weightUnit: 'Unité de poids'
-kg: "kg"
-g: "g"
-mg: "mg"
-thickness: "Épaisseur"
+kg: kg
+g: g
+mg: mg
+thickness: Épaisseur
 thicknessUnit: "Unité d'épaisseur"
-mm: "mm"
-cm: "cm"
-m: "m"
-width: "Largeur"
+mm: mm
+cm: cm
+m: m
+width: Largeur
 widthUnit: 'Unité de largeur'
-height: "Hauteur"
+height: Hauteur
 heightUnit: 'Unité de hauteur'
-length: "Longueur"
+length: Longueur
 lengthUnit: 'Unité de longueur'
-category: "Catégorie"
-colors: "Couleurs"
-images: "Images"
-Description: "Description"
-Name: "Nom"
+category: Catégorie
+colors: Couleurs
+images: Images
+Description: Description
+Name: Nom
 fixed.price: 'Prix fixé'
-Stock: "Stock"
-shown: "Affiché"
-actions: "Actions"
-edit: "Modifier"
-update: "Mettre à jour"
-view: "Voir"
-remove: "Supprimer"
-delete: "Supprimer"
-dashboard: "Tableau de bord"
-save: "Enregistrer"
+Stock: Stock
+shown: Affiché
+actions: Actions
+edit: Modifier
+update: 'Mettre à jour'
+view: Voir
+remove: Supprimer
+delete: Supprimer
+dashboard: 'Tableau de bord'
+save: Enregistrer
 next_step: 'Étape suivante'
 prev_step: 'Étape Précédente'
 back_to_list: 'Retour à la liste'
@@ -82,45 +83,94 @@ dropzoneHelp: 'Glisser et déposer un fichier ou cliquez pour naviguer'
 dropzoneMultiHelp: 'Glisser et déposer des fichiers ou cliquez pour naviguer'
 dropzoneImage: 'Glisser et déposer une image ou cliquez pour naviguer'
 dropzoneImageMultiHelp: 'Glisser et déposer des images ou cliquez pour naviguer'
-more: "Supplémentaires"
-details: "Détails"
+more: Supplémentaires
+details: Détails
 form_contains_errors: 'Oups! Vous avez fait une erreur dans le formulaire. Veuillez vérifier les champs marqués en rouge'
 selling_management: 'Gestion des ventes'
 site_management: 'Gestion du site'
 site_settings: 'Paramètres du site'
-sliders: "Carousel"
-settings: "Paramètres"
+sliders: Carousel
+settings: Paramètres
 finance_management: 'Gestion des finances'
 delete_warning_title: 'Êtes vous sur de vouloir supprimer ?'
 delete_warning_text: 'Vous ne pourrez pas revenir en arrière, vérifier bien que vous ne risquez rien en supprimant. Ne forcez la suppression que si cela est nécessaire'
-cancel: "Annuler"
-delete.label: "Supprimer"
+cancel: Annuler
+delete.label: Supprimer
 forceRemove: 'Forcer la suppression'
 form_contains_error: 'Le formulaire contient des erreurs'
 social_links: 'Liens sociaux'
 super_admin: 'Super Administrateur'
-developer: "Développeur"
-administrator: "Administrateur"
-manager: "Gestionnaire"
+developer: Développeur
+administrator: Administrateur
+manager: Gestionnaire
 product.search: 'Rechercher un produit'
 'Frequently Asked Questions': 'Questions fréquentes'
 faq.help: __faq.help
 faq.edit: 'Éditer la FAQ'
 faq.add: 'Ajouter une FAQ'
-result: "Résultat"
+result: Résultat
 add_to_cart: 'Ajouter au Panier'
-compare: "Comparer"
+compare: Comparer
 add_to_wishlist: 'Ajouter à la liste de souhaits'
 wishlist: 'Liste de souhaits'
-others: "Autres"
-categories.manage: "Gérer les catégories"
-categories: "Catégories"
-delete_modal.title: "Êtes vous sur de vouloir supprimer ?"
-delete_modal.body: "Vous ne pourrez pas revenir en arrière, vérifier bien que vous ne risquez rien en supprimant."
-label.cancel: "Annuler"
-label.delete: "Supprimer"
-add: "Ajouter"
-save_and_create_new: "Enregistrer et créer"
-
-social_links.form:
-    help: "Laissez vide les liens que vous ne  souhaitez pas affichez ou que vous n'avez pas"
+others: Autres
+categories.manage: 'Gérer les catégories'
+categories: Catégories
+delete_modal.title: 'Êtes vous sur de vouloir supprimer ?'
+delete_modal.body: 'Vous ne pourrez pas revenir en arrière, vérifier bien que vous ne risquez rien en supprimant.'
+label.cancel: Annuler
+label.delete: Supprimer
+add: Ajouter
+save_and_create_new: 'Enregistrer et créer'
+social_links.form.help: "Laissez vide les liens que vous ne souhaitez pas affichez ou que vous n'avez pas"
+item_added: "Item ajouté"
+category.deleted: "Catégorie supprimé"
+social_links.updated: "Liens sociaux mis à jour"
+cannot_be_delete: "Impossible de supprimer l'élément"
+has_children: "Cet élément contient des éléments enfants"
+purchases: "Commandes"
+number: "Numéro"
+date: Date
+status: Status
+customer: Client
+purchased: "Commandé"
+total: Total
+order_accept_warning_title: "Êtes vous sur d'accepter la commande ?"
+order_accept_warning_text: "En acceptant la commande, vous confirmer le démarrage de la réalisation de la commande. Vous pourrez annuler la commande plus 
+tard si vous le désirez"
+accept.label: "Accepter"
+order_reject_warning_title: "Êtes vous sur de rejeter la commande ?"
+order_reject_warning_text: "Ne faites cela que si cela est nécessaire"
+reject.label: "Rejeter"
+purchase.edit: "Modifier la commande"
+purchase.add: "Insérer une commande"
+view_order: "Voir la commande"
+order_details: "Détails"
+accept_order: "Accepter la commande"
+reject_order: "Rejeter la commande"
+cancel_order: "Annuler la commande"
+social_links.edit: "Modifier"
+social_links.add: "Ajouter un lien social"
+purchase: "Commandes"
+purchase.manage: "Gérer les commandes"
+purchase.in_progress: "Commandes en cours"
+purchase.done: "Commandes terminées"
+purchase.canceled: "Commandes annulées"
+purchase.rejected: "Commandes rejetées"
+purchase.all: "Toutes les commandes"
+category.edit: "Modifier la catégorie"
+category.add: "Ajouter une catégorie"
+cart_totals: "Total du panier"
+sub_total: "Sous-total"
+proceed_to_checkout: "Procéder au paiement"
+cart_empty: "Panier vide"
+get_to_shopping: "Faire des achats"
+go_back: "Retour"
+informations: Informations
+your_order: "Votre commande"
+product: "Produit"
+cart_subtotal: "Sous total Panier"
+order_total: "Total Commande"
+place_order: "Commander"
+description: Description
+reviews: Commentaires

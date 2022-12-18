@@ -45,6 +45,11 @@
 							<span class="nk-menu-text">{{ 'purchase.rejected'|trans }}</span>
 						</a>
 					</li>
+					<li class="nk-menu-item {{ status is defined and status == "all" ? menu_active('purchase') : "" }}">
+						<a href="{{ path('admin_purchase_index', { status: "all" }) }}" class="nk-menu-link" title="{{ 'purchase.manage'|trans }}">
+							<span class="nk-menu-text">{{ 'purchase.all'|trans }}</span>
+						</a>
+					</li>
 				</ul>
 			</li>
 			<li class="nk-menu-item has-sub {{ menu_active('category') }}">
