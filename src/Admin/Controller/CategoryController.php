@@ -66,14 +66,21 @@ class CategoryController extends CrudController
 			$categoryRepository->add($category, true);
 
 			$category->setSlug($slugger->slug($category->getName()));
+			$categoryRepository->add($category, true);
 
+			if ($request->isXmlHttpRequest()) {
+				return new Response(null, 204);
+			}
 			if ($form->get('saveAndCreateNew')->isClicked()) {
 				return $this->redirectToRoute($this->routePrefix . '_create');
 			}
+
 			return $this->redirectToRoute($this->routePrefix . '_index', [], Response::HTTP_SEE_OTHER);
 		}
 
-		return $this->renderForm('admin/category/create.html.twig', [
+		$template = $request->isXmlHttpRequest() ? '_form' : 'create';
+
+		return $this->renderForm("admin/category/$template.html.twig", [
 			'category' => $category,
 			'form' => $form,
 			'prefix' => $this->routePrefix,
@@ -91,13 +98,18 @@ class CategoryController extends CrudController
 			$category->setSlug($slugger->slug($category->getName()));
 			$categoryRepository->add($category, true);
 
+			if ($request->isXmlHttpRequest()) {
+				return new Response(null, 204);
+			}
 			return $this->redirectToRoute($this->routePrefix . '_index', [], Response::HTTP_SEE_OTHER);
 		}
+		$template = $request->isXmlHttpRequest() ? '_form' : 'edit';
 
-		return $this->renderForm('admin/category/edit.html.twig', [
+		return $this->renderForm("admin/category/$template.html.twig", [
 			'category' => $category,
 			'form' => $form,
 			'prefix' => $this->routePrefix,
+			'menu' => $this->menuItem,
 		]);
 	}
 

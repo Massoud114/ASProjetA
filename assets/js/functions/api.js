@@ -45,10 +45,11 @@ export async function jsonFetch (url, params = {}, parse = true) {
  * @param {RequestInfo} url
  * @param params
  * @return {Promise<Object>}
+ * @param {boolean} parse
  */
-export async function jsonFetchOrFlash (url, params = {}) {
+export async function jsonFetchOrFlash (url, params = {}, parse = true) {
   try {
-    return await jsonFetch(url, params)
+    return await jsonFetch(url, params, parse)
   } catch (e) {
     if (e instanceof ApiError) {
       flash(e.name, 'danger', 4)

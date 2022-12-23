@@ -4,5 +4,9 @@
 {% block formTitle 'category.add'|trans %}
 
 {% block form %}
-	{% include 'admin/category/_form.html.twig' with {'form' : form, 'action' : 'create'} %}
+	<div class="card">
+		<div class="card-inner">
+			{% include 'admin/category/_form.html.twig' with {'form' : form, 'action' : 'create'} %}
+		</div>
+	</div>
 {% endblock %}

@@ -1,9 +1,25 @@
-<li class="nk-block-tools-opt">
-	<a href="{{ path(prefix ~ '_create') }}" class="btn btn-icon btn-primary d-md-none">
-		{{ icon('plus') }}
-	</a>
-	<a href="{{ path(prefix ~ '_create') }}" class="btn btn-primary d-none d-md-inline-flex">
-		{{ icon('plus') }}
-		<span>{{ 'add'|trans }}</span>
-	</a>
-</li>
+<div
+	class="toggle-expand-content"
+	data-content="pageMenu"
+	{{ stimulus_controller('modal-form', {
+		formUrl: path(prefix ~ '_create')
+	}) }}
+	data-action="hidden.bs.modal->modal-form#modalHidden"
+>
+	<li class="nk-block-tools-opt">
+		<button
+			class="btn btn-icon btn-primary d-md-none"
+			{{ stimulus_action("modal-form", "openModal") }}
+		>{{ icon('plus') }}</button>
+
+		<button
+			class="btn btn-primary d-none d-md-inline-flex"
+			{{ stimulus_action("modal-form", "openModal") }}
+		>{{ icon('plus') }}<span>{{ 'add'|trans }}</span></button>
+	</li>
+
+	{{ include('admin/layout/_modal.html.twig', {
+		modalTitle: 'category.add'|trans,
+		modalId: 'category-add-modal',
+	}) }}
+</div>
