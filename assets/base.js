@@ -1,20 +1,11 @@
 import './bootstrap';
 
-import './scss/base/style.scss';
-import './styles/animate.min.css';
-import './styles/nice-select.min.css';
-import './styles/swiper-bundle.min.css';
-
 import 'bootstrap';
-import './js/scripts/sticky';
-import './js/scripts/offcanvas';
-import './js/scripts/responsive_menu';
-import './js/scripts/scroll_top';
+import 'swiper';
+import './js/functions/base_utils';
 
-document.addEventListener('DOMContentLoaded', function () {
-	window.setTimeout(function () {
-		document.querySelector('#preloader').style.display = 'none'
-		document.body.style.overflow = 'visible'
-	}, 350)
-})
+import './scss/base/style.scss';
+import './styles/swiper-bundle.min.css';
+import './styles/glightbox.min.css';
 
+import './js/scripts/base_custom';

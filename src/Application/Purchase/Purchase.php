@@ -49,10 +49,10 @@ class Purchase
     private Collection $purchaseProducts;
 
     #[ORM\OneToOne(mappedBy: 'purchase', cascade: ['persist', 'remove'])]
-    private Ship $ship;
+    private ?Ship $ship;
 
     #[ORM\OneToOne(mappedBy: 'purchase', cascade: ['persist', 'remove'])]
-    private Invoice $invoice;
+    private ?Invoice $invoice;
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $more = null;
@@ -167,7 +167,7 @@ class Purchase
         return $this;
     }
 
-    public function getShip(): Ship
+    public function getShip(): ?Ship
     {
         return $this->ship;
     }
@@ -184,7 +184,7 @@ class Purchase
         return $this;
     }
 
-    public function getInvoice(): Invoice
+    public function getInvoice(): ?Invoice
     {
         return $this->invoice;
     }

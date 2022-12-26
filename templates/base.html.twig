@@ -13,33 +13,85 @@
             {{ encore_entry_script_tags('base') }}
         {% endblock %}
         <meta name="turbolinks-cache-control" content="no-cache"/>
-        <link rel="apple-touch-icon" sizes="128x128" href="/favicons/icon-128x128.png">
+        <link rel="shortcut icon" type="image/x-icon" href="assets/img/favicon.ico">
         {% block meta '' %}
         <meta property="og:title" content="{{ block('title') }}"/>
         <meta property="og:site_name" content="luxdec.bj"/>
         <meta property="og:language" content="{{ app.request.locale }}"/>
         <meta name="twitter:author" content="@luxdev.bj"/>
         <link rel="stylesheet" href="/print.css" media="print">
-
     </head>
+
     <body class="">
 
         <div id="preloader">
-            <div class="preloader">
-                <div class="spinner-block">
-                    <h1 class="spinner spinner-3 mb-0">.</h1>
+            <div id="ctn-preloader" class="ctn-preloader">
+                <div class="animation-preloader">
+                    <div class="spinner"></div>
+                    <div class="txt-loading">
+                    <span data-text-preloader="L" class="letters-loading">
+                        L
+                    </span>
+
+                        <span data-text-preloader="O" class="letters-loading">
+                        O
+                    </span>
+
+                        <span data-text-preloader="A" class="letters-loading">
+                        A
+                    </span>
+
+                        <span data-text-preloader="D" class="letters-loading">
+                        D
+                    </span>
+
+                        <span data-text-preloader="I" class="letters-loading">
+                        I
+                    </span>
+
+                        <span data-text-preloader="N" class="letters-loading">
+                        N
+                    </span>
+
+                        <span data-text-preloader="G" class="letters-loading">
+                        G
+                    </span>
+                    </div>
                 </div>
+                <div class="loader-section section-left"></div>
+                <div class="loader-section section-right"></div>
             </div>
         </div>
 
-        {% include 'layouts/_header.html.twig' %}
+        <header class="header__section">
+            {% include 'layouts/header_parts/_header_desktop.html.twig' %}
 
-        {% block body %}{% endblock %}
+            {% include 'layouts/header_parts/_header_mobile_sidebar.html.twig' %}
 
-        {% include 'layouts/_footer.html.twig' %}
+            {% include 'layouts/header_parts/_navbar_mobile.html.twig' %}
 
-        <a class="scroll-to-top" href="#">
-            <i class="fa fa-arrow-up"></i>
-        </a>
+            {% block cart_summary %}
+                {% if cart is defined %}
+                    <div class="offCanvas__minicart">
+                        {% include 'shop/cart/cart_summary.html.twig' with {cart:cart} %}
+                    </div>
+                {% endif %}
+            {% endblock %}
+
+            {% include 'layouts/header_parts/_searchbox.html.twig' %}
+
+        </header>
+
+        <main class="main__content_wrapper">
+            {% block body %}{% endblock %}
+        </main>
+
+        <footer class="footer__section footer__bg">
+            {% include 'layouts/footer_parts/_links.html.twig' %}
+            {% include 'layouts/footer_parts/_copyright.html.twig' %}
+        </footer>
+
+
+        {% include 'layouts/_scroll_to_top.html.twig' %}
     </body>
 </html>

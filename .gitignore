@@ -22,6 +22,7 @@
 .idea
 demo2
 flosun
+becute
 todo.md
 
 ###> symfony/webpack-encore-bundle ###
@@ -36,3 +37,4 @@ yarn-error.log
 ###> liip/imagine-bundle ###
 /public/media/cache/
 ###< liip/imagine-bundle ###
+/public/assets/img/

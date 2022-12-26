@@ -1,0 +1,24 @@
+{{ form_start(registrationForm, { attr : { 'class' : "account__login register" }}) }}
+	{% for flash_error in app.flashes('verify_email_error') %}
+		<div class="alert alert-danger" role="alert">{{ flash_error }}</div>
+	{% endfor %}
+	<div class="account__login--header mb-25">
+		<h2 class="account__login--header__title mb-15">Create an Account</h2>
+		<p class="account__login--header__desc">Register here if you are a new customer</p>
+	</div>
+	<div class="account__login--inner">
+		<label>
+			{{ form_widget(registrationForm.email, { attr : { 'class' : "account__login--input" }}) }}
+		</label>
+		<label>
+			{{ form_widget(registrationForm.plainPassword, { attr : { 'class' : "account__login--input" }}) }}
+		</label>
+		<button class="account__login--btn primary__btn mb-10" type="submit">Submit & Register</button>
+		<div class="account__login--remember position__relative">
+			{{ form_widget(registrationForm.agreeTerms, { attr : { 'class' : "account__login--input" }}) }}
+			<span class="checkout__checkbox--checkmark"></span>
+			<label class="checkout__checkbox--label login__remember--label" for="check2">
+				I have read and agree to the terms & conditions</label>
+		</div>
+	</div>
+{{ form_end(registrationForm) }}

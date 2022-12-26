@@ -1,0 +1,72 @@
+<div class="account__login">
+	<div class="account__login--header mb-25">
+		<h2 class="account__login--header__title mb-15">Login</h2>
+		<p class="account__login--header__desc">Login if you area a returning customer.</p>
+	</div>
+	{% if error %}
+		<div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+	{% endif %}
+
+	{% if app.user %}
+		<div class="mb-3">
+			You are logged in as {{ app.user.userIdentifier }}, <a href="{{ path('app_logout') }}">Logout</a>
+		</div>
+	{% endif %}
+	<form method="post" class="account__login--inner">
+		<label>
+			<input
+					class="account__login--input"
+					placeholder="Email Address"
+					type="email"
+					value="{{ last_username }}"
+					name="username"
+					id="inputUsername"
+					autocomplete="username"
+					required
+					autofocus
+			>
+		</label>
+		<label>
+			<input
+					class="account__login--input"
+					placeholder="Password"
+					type="password"
+					name="password"
+					id="inputPassword"
+					autocomplete="current-password"
+					required
+			>
+		</label>
+		{% if app.request.get('_target_path') %}
+			<input type="hidden" name="_target_path" value="{{ app.request.get('_target_path') }}"/>
+		{% endif %}
+		<input type="hidden" name="_csrf_token"
+		       value="{{ csrf_token('authenticate') }}"
+		>
+		<div class="account__login--remember__forgot mb-15 d-flex justify-content-between align-items-center">
+			<div class="account__login--remember position__relative">
+				<input
+						class="checkout__checkbox--input"
+						id="check1"
+						type="checkbox"
+						name="_remember_me"
+				>
+				<span class="checkout__checkbox--checkmark"></span>
+				<label class="checkout__checkbox--label login__remember--label" for="check1">
+					Remember me</label>
+			</div>
+			<button class="account__login--forgot"  type="submit">Forgot Your Password?</button>
+		</div>
+		<button class="account__login--btn primary__btn" type="submit">Login</button>
+		<div class="account__login--divide">
+			<span class="account__login--divide__text">OR</span>
+		</div>
+		<div class="account__social d-flex justify-content-center mb-15">
+			<a class="account__social--link google" href="{{ path('oauth_connect', {
+				'service' : 'google',
+				'_target_path': app.request.get('_target_path')
+			}) }}">Se connecter avec Google</a>
+		</div>
+		<p class="account__login--signup__text">Don,t Have an Account? <button type="submit">Sign up now</button></p>
+	</form>
+</div>

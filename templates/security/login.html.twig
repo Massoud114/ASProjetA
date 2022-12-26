@@ -3,44 +3,38 @@
 {% block title %}Log in!{% endblock %}
 
 {% block body %}
-<form method="post">
-    {% if error %}
-        <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
-    {% endif %}
-
-    {% if app.user %}
-        <div class="mb-3">
-            You are logged in as {{ app.user.userIdentifier }}, <a href="{{ path('app_logout') }}">Logout</a>
+    <div class="breadcrumb__section breadcrumb__bg">
+        <div class="container">
+            <div class="row row-cols-1">
+                <div class="col">
+                    <div class="breadcrumb__content text-center">
+                        <ul class="breadcrumb__content--menu d-flex justify-content-center">
+                            <li class="breadcrumb__content--menu__items"><a href="index.html">Home</a></li>
+                            <li class="breadcrumb__content--menu__items"><span>Account Page</span></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
         </div>
-    {% endif %}
+    </div>
 
-    <h1 class="h3 mb-3 font-weight-normal">Please sign in</h1>
-    <label for="inputUsername">Email ou Nom d'utilisateur</label>
-    <input type="text" value="{{ last_username }}" name="username" id="inputUsername" class="form-control" autocomplete="username" required autofocus>
-    <label for="inputPassword">Password</label>
-    <input type="password" name="password" id="inputPassword" class="form-control" autocomplete="current-password" required>
-    {% if app.request.get('_target_path') %}
-        <input type="hidden" name="_target_path" value="{{ app.request.get('_target_path') }}"/>
-    {% endif %}
-    <input type="hidden" name="_csrf_token"
-           value="{{ csrf_token('authenticate') }}"
-    >
+    <div class="login__section section--padding">
+        <div class="container">
+            <div>
+                <div class="login__section--inner">
+                    <div class="row row-cols-md-2 row-cols-1">
+                        <div class="col">
+                            {{ include('security/_login_form.html.twig') }}
+                        </div>
+                        <div class="col" {{ stimulus_controller('async-loader', {
+                            'url' : path('app_register'),
+                            'canAccess' : is_granted("PUBLIC_ACCESS")
+                        }) }}>
 
-        <div class="checkbox mb-3">
-            <label>
-                <input type="checkbox" name="_remember_me"> Remember me
-            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
-
-    <button class="btn btn-lg btn-primary" type="submit">
-        Sign in
-    </button>
-
-    <a class="btn btn-lg btn-primary" href="{{ path('oauth_connect', {
-        'service' : 'google',
-        '_target_path': app.request.get('_target_path')
-    }) }}">
-        Se connecter avec Google
-    </a>
-</form>
+    </div>
 {% endblock %}

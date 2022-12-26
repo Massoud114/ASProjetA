@@ -70,6 +70,7 @@ class LoginFormAuthenticator extends AbstractLoginFormAuthenticator
             return new RedirectResponse($targetPath);
         }
 
+		// TODO : check user role and go to admin
         return new RedirectResponse($this->urlGenerator->generate('app_home'));
     }
 

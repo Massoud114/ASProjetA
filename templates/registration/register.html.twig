@@ -3,19 +3,34 @@
 {% block title %}Register{% endblock %}
 
 {% block body %}
-    {% for flash_error in app.flashes('verify_email_error') %}
-        <div class="alert alert-danger" role="alert">{{ flash_error }}</div>
-    {% endfor %}
+	<div class="breadcrumb__section breadcrumb__bg">
+		<div class="container">
+			<div class="row row-cols-1">
+				<div class="col">
+					<div class="breadcrumb__content text-center">
+						<ul class="breadcrumb__content--menu d-flex justify-content-center">
+							<li class="breadcrumb__content--menu__items"><a href="index.html">Home</a></li>
+							<li class="breadcrumb__content--menu__items"><span>Account Page</span></li>
+						</ul>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
 
-    <h1>Register</h1>
-
-    {{ form_start(registrationForm) }}
-        {{ form_row(registrationForm.email) }}
-        {{ form_row(registrationForm.plainPassword, {
-            label: 'Password'
-        }) }}
-        {{ form_row(registrationForm.agreeTerms) }}
-
-        <button type="submit" class="btn">Register</button>
-    {{ form_end(registrationForm) }}
+	<div class="login__section section--padding">
+		<div class="container">
+			<form method="post">
+				<div class="login__section--inner">
+					<div class="row row-cols-md-2 row-cols-1">
+						<div class="col">
+						</div>
+						<div class="col">
+							{{ include('registration/_register_form.html.twig') }}
+						</div>
+					</div>
+				</div>
+			</form>
+		</div>
+	</div>
 {% endblock %}

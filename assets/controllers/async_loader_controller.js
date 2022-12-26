@@ -5,53 +5,36 @@ export default class extends Controller {
 
 	static values = {
 		url: String,
-		lazy: Boolean,
+		canAccess: Boolean,
+	}
+
+	static targets = ['container']
+
+	get canAccess() {
+		return this.canAccessValue
 	}
 
 	initialize () {
-		this.load().bind(this)
-		this.lazyLoad().bind(this)
+		this.load.bind(this)
 	}
+
+	disconnect () {	}
 
 	connect () {
 		if (!this.hasUrlValue) {
 			console.error('[stimulus-content-loader] You need to pass an url to fetch the remote content.')
 			return
 		}
-
-		this.lazyValue ? this.load() : this.lazyLoad()
+		this.container = this.hasContainerTarget ? this.containerTarget : this.element
+		if (this.canAccess)	{
+			this.load().then(r => r)
+		} else {
+			this.container.innerHTML = "An error occurred"
+		}
 	}
-
-	disconnect () {	}
 
 	async load () {
 		const response = await jsonFetch(this.urlValue, {}, false)
-		this.element.innerHTML = response ?? 'An error occurred'
+		this.container.innerHTML = response ?? 'An error occurred'
 	}
-
-	lazyLoad () {
-		console.log('lazyLoad')
-	}
-
-	/*lazyLoad () {
-		const options = {
-			threshold: 0.4,
-			rootMargin: this.lazyLoadingRootMarginValue
-		}
-
-		const observer = new IntersectionObserver(
-			(entries: IntersectionObserverEntry[], observer: IntersectionObserver) => {
-				entries.forEach((entry: IntersectionObserverEntry) => {
-					if (entry.isIntersecting) {
-						this.load()
-
-						observer.unobserve(entry.target)
-					}
-				})
-			},
-			options
-		)
-
-		observer.observe(this.element)
-	}*/
 }
