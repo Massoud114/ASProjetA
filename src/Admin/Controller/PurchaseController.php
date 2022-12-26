@@ -9,6 +9,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Application\Purchase\PurchaseRepository;
+use App\Application\Purchase\Form\AcceptOrderType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
@@ -118,21 +119,17 @@ class PurchaseController extends CrudController
 	}
 
 	#[Route('/{id}/show', name: 'show')]
-	public function show(Purchase $purchase): Response
+	public function show(Purchase $purchase, Request $request): Response
 	{
-
-	}
-
-	#[Route('/{id}/accept', name: 'accept')]
-	public function accept(Purchase $purchase): Response
-	{
-
-	}
-
-	#[Route('/{id}/reject', name: 'reject')]
-	public function reject(Purchase $purchase): Response
-	{
-
+		return $this->render('admin/purchase/show.html.twig', [
+			'purchase' => $purchase,
+			'customer' => $purchase->getCustomer(),
+			'ship' => $purchase->getShip(),
+			'invoices' => $purchase->getInvoice(),
+			'purchasedItems' => $purchase->getPurchaseProducts(),
+			'menu' => $this->menuItem,
+			'prefix' => $this->routePrefix,
+		]);
 	}
 
 	#[Route('/{id}/cancel', name: 'cancel')]
@@ -153,24 +150,6 @@ class PurchaseController extends CrudController
 		$this->em->flush();
 
 		$this->addFlash('success', 'purchase.deleted_successfully');
-
-		return $this->redirect($this->getRedirectUrl($request, $this->urlGenerator));
-	}
-
-	#[Route('/massive-delete', name: 'massive_delete')]
-	public function massiveDelete(Request $request, PurchaseRepository $purchaseRepository): Response
-	{
-		if (!$this->isCsrfTokenValid('massive-delete', $request->request->get('token'))) {
-			$this->addFlash('error', 'invalid_csrf_token');
-			$this->back();
-		}
-
-		$ids = $request->request->get('purchaseIds');
-		$ids = explode(',', $ids);
-
-		$purchaseRepository->removeByIds($ids);
-
-		$this->addFlash('success', 'purchases.delete.successfully');
 
 		return $this->redirect($this->getRedirectUrl($request, $this->urlGenerator));
 	}

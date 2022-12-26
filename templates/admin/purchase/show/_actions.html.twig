@@ -1,0 +1,10 @@
+{% set cancelLink = path(prefix ~ '_cancel', {id: purchase.id}) %}
+
+<div class="nk-block-head-content">
+	<a class="btn btn-primary d-none d-md-inline-flex" href="{{ cancelLink }}">
+		{{ icon('stop') }}<span>{{ 'cancel_order'|trans }}</span>
+	</a>
+	<a class="btn btn-icon btn-primary d-md-none" href="{{ cancelLink }}">
+		{{ icon('stop') }}
+	</a>
+</div>

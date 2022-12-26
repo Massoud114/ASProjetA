@@ -1,0 +1,50 @@
+<div class="row g-gs">
+	{% for item in purchasedItems %}
+		{% set product = item.product %}
+		{% set productShowLink = path('admin_product_show', {id : product.id}) %}
+		{% set productExternalShowLink = path('app_product_show', {slug : product.slug}) %}
+		<div class="col-xxl-3 col-lg-4 col-sm-6">
+			<div class="card product-card h-auto">
+				<div class="product-thumb">
+					<a href="{{ productShowLink }}">
+						{% if product.thumbnail %}
+							<picture>
+								<source srcset="{{ (thumbnailPath ~ product.thumbnailUrl) | imagine_filter('product_thumb_webp') }}" type="image/webp">
+								<source srcset="{{ (thumbnailPath ~ product.thumbnailUrl) | imagine_filter('product_thumb_jpeg') }}" type="image/jpeg">
+								<img loading="lazy" src="{{ (thumbnailPath ~ product.thumbnailUrl) | imagine_filter('product_thumb_jpeg') }}" height="auto" width="zut" alt="{{ product.name ~ '_image' }}" class="card-img-top">
+							</picture>
+						{% else %}
+							<img src="{{ product.thumbnailUrl }}" alt="{{ product.name ~ '_image' }}" class="card-img-top" height="auto" width="zut">
+						{% endif %}
+					</a>
+					<ul class="product-actions">
+						<li>
+							<a href="{{ productShowLink }}">{{ icon('eye') }}</a>
+						</li>
+						<li>
+							<a href="{{ productExternalShowLink }}" target="_blank">{{ icon('reply-fill') }}</a>
+						</li>
+					</ul>
+				</div>
+				<div class="card-inner text-center">
+					<ul class="product-tags">
+						<li>{{ 'color'|trans }} : _______</li>
+						<li>{{ 'taille'|trans }} : _______</li>
+						<li>{{ 'quantity'|trans }} : {{ item.quantity }}</li>
+					</ul>
+					<h5 class="product-title"><a href="{{ productShowLink }}">{{ product.name }}</a></h5>
+					{% if product.promo %}
+						<div class="product-price text-primary h5">
+							<small class="text-muted del fs-13px">{{ product.fixedPrice | format_currency('XOF', locale='fr') }}</small>
+							{{ product.fixedPrice | format_currency('XOF', locale='fr') }}
+						</div>
+					{% else %}
+						<div class="product-price text-primary h5">
+							{{ product.fixedPrice | format_currency('XOF', locale='fr') }}
+						</div>
+					{% endif %}
+				</div>
+			</div>
+		</div>
+	{% endfor %}
+</div>

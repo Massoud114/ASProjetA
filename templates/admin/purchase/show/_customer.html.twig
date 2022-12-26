@@ -1,0 +1,86 @@
+{% set customer = purchase.customer %}
+<div class="card-inner">
+	<div class="nk-block">
+		<div class="nk-block-head">
+			<h5 class="title">{{ 'info_about_client'|trans }}</h5>
+		</div>
+		<div class="profile-ud-list">
+			<div class="profile-ud-item">
+				<div class="profile-ud wider">
+					<span class="profile-ud-label">{{ 'title'|trans }}</span>
+					<span class="profile-ud-value">{{ customer.pronoun }}</span>
+				</div>
+			</div>
+			<div class="profile-ud-item">
+				<div class="profile-ud wider">
+					<span class="profile-ud-label">{{ 'full_name'|trans }}</span>
+					<span class="profile-ud-value">{{ customer }}</span>
+				</div>
+			</div>
+			<div class="profile-ud-item">
+				<div class="profile-ud wider">
+					<span class="profile-ud-label">{{ 'username'|trans }}</span>
+					<span class="profile-ud-value">{{ customer.username }}</span>
+				</div>
+			</div>
+			<div class="profile-ud-item">
+				<div class="profile-ud wider">
+					<span class="profile-ud-label">{{ 'phoneNumber'|trans }}</span>
+					<span class="profile-ud-value">{{ customer.phoneNumber }}</span>
+				</div>
+			</div>
+			{% if purchase.phoneNumber %}
+				<div class="profile-ud-item">
+					<div class="profile-ud wider">
+						<span class="profile-ud-label">{{ 'phoneNumber.for_purchase'|trans }}</span>
+						<span class="profile-ud-value">{{ purchase.phoneNumber }}</span>
+					</div>
+				</div>
+			{% endif %}
+			<div class="profile-ud-item">
+				<div class="profile-ud wider">
+					<span class="profile-ud-label">{{ 'email_address'|trans }}</span>
+					<span class="profile-ud-value">{{ customer.email }}</span>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="nk-divider divider md"></div>
+
+	<div class="nk-block">
+		<div class="row justify-content-between">
+			<div>
+				<a href="#" class="btn btn primary">{{ icon('eye') }} <span>{{ 'user.show_profile'|trans }}</span></a>
+			</div>
+
+			<div>
+				<a href="mailto:{{ customer.email }}" class="btn btn danger">{{ icon('mail') }} <span>{{ 'send_email'|trans }}</span></a>
+			</div>
+
+			<div>
+				<a href="#" class="btn btn success">{{ icon('whatsapp') }} <span>{{ 'contact_whatsapp'|trans }}</span></a>
+			</div>
+
+			<div>
+				<a href="tel:+229{{ customer.phoneNumber }}" class="btn btn warning">{{ icon('call') }} <span>{{ 'call'|trans }}</span></a>
+			</div>
+
+		</div>
+	</div>
+
+	<div class="nk-divider divider md"></div>
+
+	<div class="nk-block">
+		<div class="nk-block-head nk-block-head-sm nk-block-between">
+			<h5 class="title">{{ 'commande_note'|trans }}</h5>
+		</div>
+		<div class="bq-note">
+			<div class="bq-note-item">
+				<div class="bq-note-text">
+					<p>{{ purchase.notes }}</p>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

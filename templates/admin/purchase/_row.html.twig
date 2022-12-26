@@ -1,9 +1,6 @@
 {% set editLink = path(prefix ~ '_edit', {id: purchase.id}) %}
 {% set showLink = path(prefix ~ '_show', {id: purchase.id}) %}
-{% set deleteLink = path(prefix ~ '_delete', {id: purchase.id}) %}
-{% set acceptLink = path(prefix ~ '_accept', {id: purchase.id}) %}
-{% set rejectLink = path(prefix ~ '_reject', {id: purchase.id}) %}
-{% set cancelLink = path(prefix ~ '_cancel', {id: purchase.id}) %}
+{#{% set deleteLink = path(prefix ~ '_delete', {id: purchase.id}) %}#}
 
 <div class="nk-tb-item">
 	<div class="nk-tb-col nk-tb-col-check">
@@ -53,20 +50,6 @@
 							<li>
 								<a href="{{ showLink }}">{{ icon('eye') }}<span>{{ 'order_details'|trans }}</span></a>
 							</li>
-							{% if purchase.status == 1 and not purchase.confirmed %}
-								<li>
-									<a class="purchase-accept" href="#" data-url="{{ acceptLink }}">
-										{{ icon('check-circle') }}<span>{{ 'accept_order'|trans }}</span>
-									</a>
-								</li>
-								<li>
-									<a class="purchase-reject" href="#" data-url="{{ rejectLink }}">{{ icon('na') }}<span>{{ 'reject_order'|trans }}</span></a>
-								</li>
-							{% elseif purchase.status == constant('App\\Application\\Purchase\\Purchase::STATES')[1] and purchase.confirmed %}
-								<li>
-									<a href="{{ cancelLink }}">{{ icon('stop') }}<span>{{ 'cancel_order'|trans }}</span></a>
-								</li>
-							{% endif %}
 						</ul>
 					</div>
 				</div>

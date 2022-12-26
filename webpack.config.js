@@ -21,8 +21,8 @@ Encore
      * and one CSS file (e.g. app.css) if your JavaScript imports CSS.
      */
     .addEntry('base', './assets/base.js')
-    // .addEntry('admin', './assets/admin.js')
-    // .addEntry('editor', './assets/js/editor.js')
+    .addEntry('admin', './assets/admin.js')
+    .addEntry('editor', './assets/js/editor.js')
     .copyFiles({
         from: './assets/images',
         to: 'images/[path][name].[ext]',

@@ -1,0 +1,111 @@
+{% extends 'admin/base.html.twig' %}
+
+{% block title 'order.details'|trans %}
+
+{% block body %}
+	<div class="container-fluid">
+		<div class="nk-content-inner">
+			<div class="nk-content-body">
+				<div class="nk-block-head nk-block-head-sm">
+					<div class="nk-block-between">
+						<div class="nk-block-head-content">
+							<h3 class="nk-block-title page-title">{{ 'order.details_of'|trans }} N° <span class="text-primary fw-bold">#{{ purchase.orderNumber }}</span></h3>
+						</div>
+						{{ include('admin/purchase/show/_actions.html.twig') }}
+					</div>
+				</div>
+				<div class="nk-block nk-block-lg">
+					<div class="card">
+						<ul class="nav nav-tabs nav-tabs-mb-icon nav-tabs-card">
+							<li class="nav-item">
+								<a class="nav-link active" data-bs-toggle="tab" href="#products">
+									{{ icon('cart') }}<span>{{ 'products'|trans }}</span>
+								</a>
+							</li>
+							<li class="nav-item">
+								<a class="nav-link" data-bs-toggle="tab" href="#customer">
+									{{ icon('user-c') }}<span>{{ 'customer'|trans }} </span>
+								</a>
+							</li>
+							<li class="nav-item">
+								<a class="nav-link" data-bs-toggle="tab" href="#ship">
+									{{ icon('send') }}<span>{{ 'ship'|trans }} </span>
+								</a>
+							</li>
+							<li class="nav-item">
+								<a class="nav-link" data-bs-toggle="tab" href="#invoice">
+									{{ icon('file-docs') }}<span>{{ 'invoice'|trans }} </span>
+								</a>
+							</li>
+							<li class="nav-item">
+								<a class="nav-link" data-bs-toggle="tab" href="#payment">
+									{{ icon('dollar-sign') }}<span>{{ 'payment'|trans }} </span>
+								</a>
+							</li>
+						</ul>
+						<div class="card-inner">
+							<div class="tab-content">
+								<div class="tab-pane active" id="products">
+									{{ include('admin/purchase/show/_products.html.twig') }}
+								</div>
+								<div class="tab-pane" id="customer">
+									{{ include('admin/purchase/show/_customer.html.twig') }}
+								</div>
+								<div class="tab-pane" id="ship">
+									{% if not purchase.ship %}
+										<div class="card-inner">
+											{% if not purchase.confirmed %}
+												<div class="alert alert-warning alert-icon">
+													{{ icon('alert-triangle') }}
+													{{ 'order.not_confirmed'|trans }}
+												</div>
+											{% elseif not purchase.status == constant('App\\Application\\Purchase\\Purchase::STATES')[4] %}
+												<div class="alert alert-warning alert-icon">
+													{{ icon('alert-triangle') }}
+													{{ 'order.ship.not_planned'|trans }}
+												</div>
+												<div class="m-auto">
+													<a href="#" class="btn btn-primary btn-block">
+														{{ 'order.ship.plan'|trans }}
+													</a>
+												</div>
+											{% endif %}
+										</div>
+									{% else %}
+										{{ include('admin/purchase/show/_ship.html.twig') }}
+									{% endif %}
+								</div>
+								<div class="tab-pane" id="invoice">
+									{% if not purchase.invoice %}
+										<div class="card-inner">
+											{% if not purchase.confirmed %}
+												<div class="alert alert-warning alert-icon">
+													{{ icon('alert-triangle') }}
+													{{ 'order.not_confirmed'|trans }}
+												</div>
+											{% elseif not purchase.status == constant('App\\Application\\Purchase\\Purchase::STATES')[4] %}
+												<div class="alert alert-warning alert-icon">
+													{{ icon('alert-triangle') }}
+													{{ 'order.invoice.not_made'|trans }}
+												</div>
+												<div class="m-auto">
+													<a href="#" class="btn btn-primary btn-block">
+														{{ 'order.invoice.make'|trans }}
+													</a>
+												</div>
+											{% endif %}
+										</div>
+									{% else %}
+										{{ include('admin/purchase/show/_invoice.html.twig') }}
+									{% endif %}
+								</div>
+								<div class="tab-pane" id="payment">
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+{% endblock %}

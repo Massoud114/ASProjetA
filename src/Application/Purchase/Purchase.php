@@ -20,11 +20,12 @@ use function Symfony\Component\Translation\t;
 class Purchase
 {
 	const STATES = [
-		1 => 'progress',
-		2 => 'done',
-		3 => 'canceled',
-		4 => 'rejected'
+		1 => 'new',
+		2 => 'progress',
+		3 => 'done',
+		4 => 'canceled',
 	];
+
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
@@ -66,9 +67,6 @@ class Purchase
 
 	#[ORM\Column(type: Types::TEXT, nullable: true)]
 	private ?string $notes = null;
-
-	#[ORM\Column(type: Types::BOOLEAN, nullable: false, options: ['default' => false])]
-	private ?bool $confirmed = false;
 
     public function __construct()
     {
@@ -260,17 +258,6 @@ class Purchase
 		return $this;
 	}
 
-	public function isConfirmed(): ?bool
-	{
-		return $this->confirmed;
-	}
-
-	public function setConfirmed(?bool $confirmed): self
-	{
-		$this->confirmed = $confirmed;
-		return $this;
-	}
-
 	public function getShortLabel(): string
 	{
 		$nbProducts = $this->purchaseProducts->count();
@@ -282,18 +269,12 @@ class Purchase
 
 	public function getStatusBadge(): string
 	{
-		switch ($this->status){
-			case 1:
-				if($this->confirmed)
-					return "success"; // new
-				return "warning"; // progress
-			case 2:
-				return "success"; // done
-			case 3:
-				return "secondary"; // canceled
-			case 4:
-				return "danger"; // rejected
-		}
-		return "";
+		return match ($this->status) {
+			1 => "danger",
+			2 => "warning",
+			3 => "success",
+			4 => "secondary",
+			default => "",
+		};
 	}
 }

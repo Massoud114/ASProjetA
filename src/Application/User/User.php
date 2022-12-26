@@ -19,7 +19,7 @@ use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use function Symfony\Component\Translation\t;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
-#[UniqueEntity(fields: ['email'], message: 'There is already an account with this email')]
+#[UniqueEntity(fields: ['email, username'], message: 'There is already an account with this email')]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
 	#[ORM\Id]
@@ -47,8 +47,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 	#[ORM\Column(length: 255, nullable: true)]
 	private ?string $lastname = null;
 
-	#[ORM\Column(type: Types::SIMPLE_ARRAY, nullable: true)]
-	private array $pronoun = [];
+	#[ORM\Column(length: 4, nullable: true)]
+	private ?string $pronoun = null;
 
 	#[ORM\Column(length: 255, nullable: true)]
 	private ?string $phoneNumber = null;
@@ -256,12 +256,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 		return $this;
 	}
 
-	public function getPronoun(): string
+	public function getPronoun(): ?string
 	{
-		return join(" ", $this->pronoun);
+		return $this->pronoun;
 	}
 
-	public function setPronoun(array $pronoun): User
+	public function setPronoun(string $pronoun): User
 	{
 		$this->pronoun = $pronoun;
 		return $this;
