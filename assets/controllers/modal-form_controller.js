@@ -19,8 +19,14 @@ export default class extends Controller {
 		this.modal = new Modal(this.modalTarget);
 		this.modal.show();
 
-		this.modalBodyTarget.innerHTML = await jsonFetch(this.formUrlValue, {},
-			false);
+		// fetch and render response inside modal no matter if there is an error
+		try {
+			this.modalBodyTarget.innerHTML = await jsonFetch(this.formUrlValue, {}, false);
+		} catch (e) {
+			this.modalBodyTarget.innerHTML = "An error occurred";
+			console.error(e);
+		}
+
 		this.modalBodyTarget.querySelectorAll('button[type="submit"]').
 			forEach((button) => {
 				button.style.display = 'none';
@@ -29,24 +35,27 @@ export default class extends Controller {
 
 	async submitForm(event) {
 		const $form = this.modalBodyTarget.querySelector('form');
-		await fetch(this.formUrlValue || $form.getAttribute('action'), {
-			method: $form.method,
-			body: new FormData($form),
-			headers: {
-				Accept: 'application/json',
-				'X-Requested-With': 'XMLHttpRequest',
-			},
-		}).then((response) => {
+		try {
+			const response = await fetch(this.formUrlValue || $form.getAttribute('action'), {
+				method: $form.method,
+				body: new FormData($form),
+				headers: {
+					Accept: 'application/json',
+					'X-Requested-With': 'XMLHttpRequest',
+				},
+			}).then((response => response));
+
 			if (response.status === 204) {
 				flash('Nouvel Élément', 'success', 4);
 				this.modal.hide();
 				this.dispatch('success');
 			} else {
-				this.modalBodyTarget.innerHTML = response.text()
+				this.modalBodyTarget.innerHTML = await response.text()
 			}
-		}).catch((e) => {
-			this.modalBodyTarget.innerHTML = e.responseText;
-		});
+		} catch (e) {
+			flash("An error occurred", 'danger', 4);
+			this.modal.hide();
+		}
 	}
 
 	modalHidden() {

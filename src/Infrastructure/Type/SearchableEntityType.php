@@ -35,8 +35,8 @@ class SearchableEntityType extends AbstractType
 			function (Collection $value): array {
 				return $value->map(fn($d) => (string) $d->getId())->toArray();
 			},
-			function (array $ids) use ($options): Collection {
-				if (empty($ids)) {
+			function (array|null $ids) use ($options): Collection {
+				if (empty($ids) || !is_array($ids)) {
 					return new ArrayCollection();
 				}
 				return new ArrayCollection(
@@ -52,6 +52,7 @@ class SearchableEntityType extends AbstractType
 		$view->vars['placeholder'] = null;
 		$view->vars['placeholder_in_choices'] = false;
 		$view->vars['multiple'] = true;
+		$view->vars['required'] = true;
 		$view->vars['preferred_choices'] = [];
 		$view->vars['choices'] = $this->choices($form->getData());
 		$view->vars['choice_translation_domain'] = false;

@@ -16,13 +16,14 @@ use Symfony\Component\HttpFoundation\File\File;
 use App\Application\Media\Image\ImageRepository;
 use App\Application\Purchase\PurchaseRepository;
 use Liip\ImagineBundle\Imagine\Cache\CacheManager;
+use App\Application\Product\Form\SimpleProductType;
 use Symfony\Component\String\Slugger\SluggerInterface;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
-use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 
 #[Route('/product', name: 'product_')]
-//#[IsGranted('ROLE_STOCK')]
+#[IsGranted('ROLE_STOCK')]
 class ProductController extends CrudController
 {
 	protected string $menuItem = 'product';
@@ -73,9 +74,7 @@ class ProductController extends CrudController
 	{
 		$product = new Product();
 
-		$form = $this->createForm(ProductType::class, $product)
-		             ->add('saveAndCreateNew', SubmitType::class);
-
+		$form = $this->createForm(SimpleProductType::class, $product);
 		$form->handleRequest($request);
 
 		if ($form->isSubmitted() and $form->isValid()) {
@@ -93,15 +92,16 @@ class ProductController extends CrudController
 			$this->em->persist($product);
 
 			$this->em->flush();
-			$this->addFlash('success', 'product.created');
 
-			if ($form->get('saveAndCreateNew')->isClicked()) {
-				return $this->redirectToRoute($this->routePrefix . '_create');
+			if ($request->isXmlHttpRequest()) {
+				return new Response(null, 204);
 			}
+			$this->addFlash('success', 'product.created');
 			return $this->redirectToRoute($this->routePrefix . '_index');
 		}
 
-		return $this->renderForm("admin/product/create.html.twig", [
+		$template = $request->isXmlHttpRequest() ? '_simple_form' : 'create';
+		return $this->renderForm("admin/product/_simple_form.html.twig", [
 			'form' => $form,
 			'menu' => $this->menuItem,
 			'prefix' => $this->routePrefix,

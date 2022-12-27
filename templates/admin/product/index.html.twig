@@ -12,6 +12,7 @@
 						url : path(app.request.attributes.get('_route'), app.request.query.all)
 					}
 				}) }}
+				data-action="submit-confirm:async:submitted->reload-content#refreshContent modal-form:success->reload-content#refreshContent"
 			>
 				<div class="nk-block-head nk-block-head-sm">
 					<div class="nk-block-between">
@@ -24,17 +25,18 @@
 						<div class="nk-block-head-content">
 							<div class="toggle-wrap nk-block-tools-toggle">
 								<a href="#" class="btn btn-icon btn-trigger toggle-expand me-n1" data-target="pageMenu"><em class="icon ni ni-more-v"></em></a>
-								<div class="toggle-expand-content" data-content="pageMenu">
-									<ul class="nk-block-tools g-3">
-										{{ include('admin/product/_actions.html.twig') }}
-									</ul>
-								</div>
+								{{ include('admin/product/_actions.html.twig') }}
 							</div>
 						</div>
 					</div>
 				</div>
 
-				{{ include('admin/product/_list.html.twig') }}
+				<div
+						class="nk-block"
+						{{ stimulus_target('reload-content', 'content') }}
+				>
+					{{ include('admin/product/_list.html.twig') }}
+				</div>
 			</div>
 		</div>
 	</div>

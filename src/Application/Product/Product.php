@@ -76,7 +76,6 @@ class Product
 
 	#[
 		ORM\Column(type: Types::TEXT, nullable: true),
-		Assert\NotBlank,
 		Assert\Type(type: 'string'),
 		Groups(['product:item:read', 'product:write'])
 	]
@@ -90,7 +89,7 @@ class Product
 	private ?string $type = null;
 
 	#[
-		ORM\Column,
+		ORM\Column(nullable: true),
 		Assert\Type(type: 'numeric'),
 		Assert\PositiveOrZero,
 		Groups(['product:item:read', 'product:write'])
@@ -109,6 +108,7 @@ class Product
 		ORM\Column,
 		Assert\Type(type: 'numeric'),
 		Assert\PositiveOrZero,
+		Assert\NotBlank,
 		Groups(['product:item:read', 'product:collection:read', 'product:write'])
 	]
 	private int $stockQuantity = 0;
@@ -117,6 +117,7 @@ class Product
 		ORM\Column(nullable: true),
 		Assert\Type(type: 'numeric'),
 		Assert\PositiveOrZero,
+		Assert\NotBlank,
 		Groups(['product:item:read', 'product:write'])
 	]
 	private ?float $makingPrice = null;

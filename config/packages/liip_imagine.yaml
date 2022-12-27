@@ -22,12 +22,12 @@ liip_imagine:
             format: jpeg
             quality: 75
             filters:
-                thumbnail: { size: [48, 48], mode: inset }
+                thumbnail: { size: [48, 48], mode: outbound }
         small_product_thumb_webp:
             format: webp
             quality: 100
             filters:
-                thumbnail: { size: [48, 48], mode: inset }
+                thumbnail: { size: [48, 48], mode: outbound }
         product_thumb_jpeg:
             format: jpeg
             quality: 75
