@@ -1,0 +1,12 @@
+{% extends 'admin/layout/_squeleton_new.html.twig' %}
+
+{% block title 'promotion.add'|trans %}
+{% block formTitle 'promotion.add'|trans %}
+
+{% block form %}
+	<div class="card">
+		<div class="card-inner">
+			{% include 'admin/promotion/_form.html.twig' with {'form' : form, 'action' : 'create'} %}
+		</div>
+	</div>
+{% endblock %}

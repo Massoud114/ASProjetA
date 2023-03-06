@@ -2,12 +2,12 @@
 
 namespace App\Application\Product;
 
+use App\Application\Shop\Data\SearchData;
+use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
-use App\Application\Shop\Data\SearchData;
-use Knp\Component\Pager\PaginatorInterface;
 use Knp\Component\Pager\Pagination\PaginationInterface;
-use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Knp\Component\Pager\PaginatorInterface;
 
 /**
  * @extends ServiceEntityRepository<Product>
@@ -162,5 +162,13 @@ class ProductRepository extends ServiceEntityRepository
 			->andWhere('p.favorite = 1')
 			->getQuery()
 			->getResult();
+	}
+
+	public function getProductListQuery()
+	{
+		return $this->createQueryBuilder('row')
+		            ->leftJoin('row.purchaseProducts', 'purchases')
+		            ->addSelect('purchases')
+		;
 	}
 }

@@ -3,16 +3,16 @@
 namespace App\Admin\Controller;
 
 use App\Application\Product\Entity\Category;
+use App\Application\Product\Form\CategoryType;
+use App\Application\Product\Repository\CategoryRepository;
 use App\Helper\Paginator\PaginatorInterface;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use App\Application\Product\Form\CategoryType;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\String\Slugger\SluggerInterface;
-use App\Application\Product\Repository\CategoryRepository;
-use Symfony\Component\Form\Extension\Core\Type\SubmitType;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use function Symfony\Component\Translation\t;
 
 #[Route('/category', name: 'category_')]
@@ -63,8 +63,6 @@ class CategoryController extends CrudController
 		$form->handleRequest($request);
 
 		if ($form->isSubmitted() && $form->isValid()) {
-			$categoryRepository->add($category, true);
-
 			$category->setSlug($slugger->slug($category->getName()));
 			$categoryRepository->add($category, true);
 

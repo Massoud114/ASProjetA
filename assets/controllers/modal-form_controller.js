@@ -36,7 +36,7 @@ export default class extends Controller {
 	async submitForm(event) {
 		const $form = this.modalBodyTarget.querySelector('form');
 		try {
-			const response = await fetch(this.formUrlValue || $form.getAttribute('action'), {
+			const response = fetch(this.formUrlValue || $form.getAttribute('action'), {
 				method: $form.method,
 				body: new FormData($form),
 				headers: {

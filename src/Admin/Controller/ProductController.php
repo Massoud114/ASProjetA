@@ -2,25 +2,25 @@
 
 namespace App\Admin\Controller;
 
-use App\Application\Product\Product;
 use App\Application\Media\Image\Image;
-use Doctrine\ORM\EntityManagerInterface;
+use App\Application\Media\Image\ImageRepository;
+use App\Application\Product\Form\ProductType;
+use App\Application\Product\Form\SimpleProductType;
+use App\Application\Product\Product;
+use App\Application\Product\ProductRepository;
+use App\Application\Purchase\PurchaseRepository;
 use App\Helper\Paginator\PaginatorInterface;
 use App\Infrastructure\Service\FileUploader;
+use Doctrine\ORM\EntityManagerInterface;
+use Liip\ImagineBundle\Imagine\Cache\CacheManager;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
+use Symfony\Component\HttpFoundation\File\File;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
-use App\Application\Product\Form\ProductType;
-use App\Application\Product\ProductRepository;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\HttpFoundation\File\File;
-use App\Application\Media\Image\ImageRepository;
-use App\Application\Purchase\PurchaseRepository;
-use Liip\ImagineBundle\Imagine\Cache\CacheManager;
-use App\Application\Product\Form\SimpleProductType;
-use Symfony\Component\String\Slugger\SluggerInterface;
-use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
+use Symfony\Component\String\Slugger\SluggerInterface;
 
 #[Route('/product', name: 'product_')]
 #[IsGranted('ROLE_STOCK')]
@@ -43,8 +43,10 @@ class ProductController extends CrudController
 	public function index(Request $request, ProductRepository $repository): Response
 	{
 		$query = $repository
-			->createQueryBuilder('row')
-		    ->orderBy('row.createdAt', "DESC");
+			->getProductListQuery()
+		;
+
+		dd($query->getQuery()->setMaxResults(1)->getOneOrNullResult());
 
 		if ($request->get('q')) {
 			$query = $this->applySearch(trim($request->get('q')), $query, ['name', 'fixedPrice']);
@@ -52,7 +54,7 @@ class ProductController extends CrudController
 
 //		$this->paginator
 
-		$this->paginator->allowSort('row.id', 'row.title', 'row.fixedPrice', 'row.createdAt');
+		$this->paginator->allowSort('row.id', 'row.title', 'row.fixedPrice', 'row.createdAt', 'row.makingPrice', 'row.stockQuantity');
 		$rows = $this->paginator->paginate($query->getQuery());
 
 		$template = $request->isXmlHttpRequest() ? '_list' : 'index';

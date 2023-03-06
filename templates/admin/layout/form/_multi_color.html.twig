@@ -1,0 +1,20 @@
+{% block _product_colors_widget %}
+	<ul class="custom-control-group">
+		{% for color in choices %}
+			{# <div class="form-check">
+				<input type="checkbox" id="product_colors_12" name="product[colors][]" class="form-check-input" value="12">
+				<label class="form-check-label" for="product_colors_12">#a52a2a</label>
+			</div> #}
+			<li>
+				<div class="custom-control custom-checkbox custom-control-pro custom-control-pro-icon no-control">
+					<input type="checkbox" class="custom-control-input" name="{{ full_name }}" id="{{ id ~ '_' ~ color.value }}" value="{{ color.value }}">
+					<label title="{{ color.data.name }}" class="custom-control-label dot dot-big" data-bg="{{ color.label }}" for="{{ id ~ '_' ~ color.value }}" style="background: {{ color.label }};"></label>
+				</div>
+			</li>
+		{% endfor %}
+	</ul>
+{% endblock %}
+
+{% block _product_colors_label %}
+	<label class="form-label">{{ label | trans }}</label>
+{% endblock %}

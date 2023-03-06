@@ -2,15 +2,15 @@
 
 namespace App\Admin\Controller;
 
+use App\Application\Purchase\Form\AcceptOrderType;
 use App\Application\Purchase\Purchase;
-use Doctrine\ORM\EntityManagerInterface;
+use App\Application\Purchase\PurchaseRepository;
 use App\Helper\Paginator\PaginatorInterface;
+use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use App\Application\Purchase\PurchaseRepository;
-use App\Application\Purchase\Form\AcceptOrderType;
-use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 #[Route('/purchase', name: 'purchase_')]
@@ -76,6 +76,9 @@ class PurchaseController extends CrudController
 		if ($form->isSubmitted() and $form->isValid()) {
 
 			$this->em->persist($purchase);
+
+			// TODO : dispatch an event to reduce stock
+//			$this->dispatchMessage(new CreatePurchase($purchase));
 
 			$this->em->flush();
 			$this->addFlash('success', 'purchase.created');

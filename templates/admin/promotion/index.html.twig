@@ -1,0 +1,45 @@
+{% extends 'admin/base.html.twig' %}
+
+{% block title 'promotions'|trans %}
+
+{% block body %}
+	<div class="container-fluid">
+		<div class="nk-content-inner">
+			<div class="nk-content-body"
+				{{ stimulus_controller('reload-content', {
+					url : path(app.request.attributes.get('_route'), app.request.query.all)
+				}) }}
+				data-action="submit-confirm:async:submitted->reload-content#refreshContent modal-form:success->reload-content#refreshContent"
+			>
+				<div class="nk-block-head nk-block-head-sm">
+					<div class="nk-block-between">
+						<div class="nk-block-head-content">
+							<h3 class="nk-block-title page-title">
+								{{ 'promotions'|trans }}
+							</h3>
+							<div class="nk-block-des text-soft">
+								<p>Il y a 2 promotions en cours.</p>
+							</div>
+						</div>
+
+						<div class="nk-block-head-content">
+							<div class="toggle-wrap nk-block-tools-toggle">
+								<a href="#" class="btn btn-icon btn-trigger toggle-expand me-n1" data-target="pageMenu"><em class="icon ni ni-more-v"></em></a>
+								{{ include('admin/promotion/_actions.html.twig') }}
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<div
+					class="nk-block"
+					{{ stimulus_target('reload-content', 'content') }}
+				>
+					{{ include('admin/promotion/_list.html.twig') }}
+				</div>
+			</div>
+		</div>
+	</div>
+{% endblock %}
+
+

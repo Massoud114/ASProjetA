@@ -1,0 +1,47 @@
+{% block dropzone_widget -%}
+	{%- set dataController = (attr['data-controller']|default('') ~ ' dropzone')|trim -%}
+	{%- set attr = attr|merge({ 'data-controller': '', class: (attr.class|default('') ~ ' dropzone-input')|trim}) -%}
+	<div data-controller="{{ dataController }}">
+
+		<input type="file" {{ block('widget_attributes') }} data-dropzone-target="input"/>
+
+		<div
+				class="upload-zone dropzone dz-clickable"
+				data-dropzone-target="zone"
+				data-action="click->dropzone#onSelectButtonClick"
+		>
+			<div class="dz-message" data-dropzone-target="placeholderContainer">
+			<span class="dz-message-text" data-dropzone-target="placeholder">
+				{{- translation_domain is same as(false) ? attr.placeholder : attr.placeholder|trans({}, translation_domain) -}}
+			</span>
+				<span class="dz-message-or">or</span>
+				<button
+						class="btn btn-primary"
+						data-action="dropzone#onSelectButtonClick"
+				>SELECT
+				</button>
+			</div>
+		</div>
+	</div>
+
+
+
+
+
+
+
+
+
+
+	{# <div class="dropzone-container" data-controller="{{ dataController }}">
+		<input type="file" {{ block('widget_attributes') }} data-dropzone-target="input" />
+
+		<div class="dropzone-placeholder" data-dropzone-target="placeholder">
+			{%- if attr.placeholder is defined and attr.placeholder is not none -%}
+				{{- translation_domain is same as(false) ? attr.placeholder : attr.placeholder|trans({}, translation_domain) -}}
+			{%- endif -%}
+		</div>
+
+		<div class="previews" data-dropzone-target="previews" style="display: none"></div>
+	</div> #}
+{%- endblock %}

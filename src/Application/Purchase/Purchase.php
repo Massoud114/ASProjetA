@@ -2,17 +2,18 @@
 
 namespace App\Application\Purchase;
 
-use Doctrine\DBAL\Types\Types;
-use App\Application\User\User;
-use Doctrine\ORM\Mapping as ORM;
+use App\Application\Campaign\Promotion;
 use App\Application\Invoice\Invoice;
-use App\Application\Purchase\Entity\Ship;
 use App\Application\Purchase\Entity\Cart;
-use Doctrine\Common\Collections\Collection;
-use Doctrine\Common\Collections\ArrayCollection;
 use App\Application\Purchase\Entity\PurchaseProduct;
-use Symfony\Component\Validator\Constraints as Assert;
+use App\Application\Purchase\Entity\Ship;
+use App\Application\User\User;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\DBAL\Types\Types;
+use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Validator\Constraints as Assert;
 use function Symfony\Component\Translation\t;
 
 #[ORM\Entity(repositoryClass: PurchaseRepository::class)]
@@ -26,37 +27,37 @@ class Purchase
 		4 => 'canceled',
 	];
 
-    #[ORM\Id]
-    #[ORM\GeneratedValue]
-    #[ORM\Column]
-    private ?int $id = null;
+	#[ORM\Id]
+	#[ORM\GeneratedValue]
+	#[ORM\Column]
+	private ?int $id = null;
 
 	#[ORM\Column(type: Types::INTEGER, nullable: true)]
 	private ?int $orderNumber = 1000;
 
-    #[ORM\Column]
-    private ?\DateTimeImmutable $createdAt;
+	#[ORM\Column]
+	private ?\DateTimeImmutable $createdAt;
 
-    #[ORM\Column]
-    private int $status = 1;
+	#[ORM\Column]
+	private int $status = 1;
 
-    #[
+	#[
 		ORM\ManyToOne(targetEntity: User::class, inversedBy: 'purchases'),
-	    ORM\JoinColumn(nullable: false),
-    ]
-    private ?User $customer = null;
+		ORM\JoinColumn(nullable: false),
+	]
+	private ?User $customer = null;
 
-    #[ORM\OneToMany(mappedBy: 'purchase', targetEntity: PurchaseProduct::class, cascade: ['persist'], orphanRemoval: true)]
-    private Collection $purchaseProducts;
+	#[ORM\OneToMany(mappedBy: 'purchase', targetEntity: PurchaseProduct::class, cascade: ['persist'], orphanRemoval: true)]
+	private Collection $purchaseProducts;
 
-    #[ORM\OneToOne(mappedBy: 'purchase', cascade: ['persist', 'remove'])]
-    private ?Ship $ship;
+	#[ORM\OneToOne(mappedBy: 'purchase', cascade: ['persist', 'remove'])]
+	private ?Ship $ship;
 
-    #[ORM\OneToOne(mappedBy: 'purchase', cascade: ['persist', 'remove'])]
-    private ?Invoice $invoice;
+	#[ORM\OneToOne(mappedBy: 'purchase', cascade: ['persist', 'remove'])]
+	private ?Invoice $invoice;
 
-    #[ORM\Column(type: Types::TEXT, nullable: true)]
-    private ?string $more = null;
+	#[ORM\Column(type: Types::TEXT, nullable: true)]
+	private ?string $more = null;
 
 	#[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
 	private ?\DateTime $estimatedMakeAt = null;
@@ -68,16 +69,19 @@ class Purchase
 	#[ORM\Column(type: Types::TEXT, nullable: true)]
 	private ?string $notes = null;
 
-    public function __construct()
-    {
-	    $this->createdAt = new \DateTimeImmutable();
-	    $this->purchaseProducts = new ArrayCollection();
-    }
+	#[ORM\ManyToOne(inversedBy: 'purchases')]
+	private ?Promotion $promotion = null;
 
-    public function getId(): ?int
-    {
-        return $this->id;
-    }
+	public function __construct()
+	{
+		$this->createdAt = new \DateTimeImmutable();
+		$this->purchaseProducts = new ArrayCollection();
+	}
+
+	public function getId(): ?int
+	{
+		return $this->id;
+	}
 
 	public function getOrderNumber(): ?int
 	{
@@ -86,130 +90,120 @@ class Purchase
 
 	public function setOrderNumber(?int $orderNumber): self
 	{
-		if ($orderNumber < 1000){
+		if ($orderNumber < 1000) {
 			throw new \RuntimeException('Please fill a value greater than 900');
 		}
 		$this->orderNumber = $orderNumber;
 		return $this;
 	}
 
-    public function getCreatedAt(): ?\DateTimeImmutable
-    {
-        return $this->createdAt;
-    }
+	public function getCreatedAt(): ?\DateTimeImmutable
+	{
+		return $this->createdAt;
+	}
 
-    public function setCreatedAt(\DateTimeImmutable $createdAt): self
-    {
-        $this->createdAt = $createdAt;
+	public function setCreatedAt(\DateTimeImmutable $createdAt): self
+	{
+		$this->createdAt = $createdAt;
 
-        return $this;
-    }
+		return $this;
+	}
 
-    public function getStatusString(): string
-    {
-        return self::STATES[$this->status];
-    }
+	public function getStatusString(): string
+	{
+		return self::STATES[$this->status];
+	}
 
-    public function getStatus(): int
-    {
-        return $this->status;
-    }
+	public function getStatus(): int
+	{
+		return $this->status;
+	}
 
-    public function setStatus(int $status): self
-    {
-		if (!in_array($status, array_keys(self::STATES))){
+	public function setStatus(int $status): self
+	{
+		if (!in_array($status, array_keys(self::STATES))) {
 			throw new \RuntimeException('Invalid status passed to Purchase');
 		}
-        $this->status = $status;
-        return $this;
-    }
+		$this->status = $status;
+		return $this;
+	}
 
-    public function getCustomer(): ?User
-    {
-        return $this->customer;
-    }
+	public function getCustomer(): ?User
+	{
+		return $this->customer;
+	}
 
-    public function setCustomer(?User $user): self
-    {
-        $this->customer = $user;
-        return $this;
-    }
+	public function setCustomer(?User $user): self
+	{
+		$this->customer = $user;
+		return $this;
+	}
 
-    /**
-     * @return Collection|PurchaseProduct[]
-     */
-    public function getPurchaseProducts(): Collection | array
-    {
-        return $this->purchaseProducts;
-    }
+	/**
+	 * @return Collection|PurchaseProduct[]
+	 */
+	public function getPurchaseProducts(): Collection | array
+	{
+		return $this->purchaseProducts;
+	}
 
-    public function addPurchaseProduct(PurchaseProduct $product): self
-    {
-        if (!$this->purchaseProducts->contains($product)) {
-            $this->purchaseProducts->add($product);
-            $product->setPurchase($this);
-        }
+	public function removePurchaseProduct(PurchaseProduct $product): self
+	{
+		if ($this->purchaseProducts->removeElement($product)) {
+			// set the owning side to null (unless already changed)
+			if ($product->getPurchase() === $this) {
+				$product->setPurchase(null);
+			}
+		}
 
-        return $this;
-    }
+		return $this;
+	}
 
-    public function removePurchaseProduct(PurchaseProduct $product): self
-    {
-        if ($this->purchaseProducts->removeElement($product)) {
-            // set the owning side to null (unless already changed)
-            if ($product->getPurchase() === $this) {
-                $product->setPurchase(null);
-            }
-        }
+	public function getShip(): ?Ship
+	{
+		return $this->ship;
+	}
 
-        return $this;
-    }
+	public function setShip(Ship $ship): self
+	{
+		// set the owning side of the relation if necessary
+		if ($ship->getPurchase() !== $this) {
+			$ship->setPurchase($this);
+		}
 
-    public function getShip(): ?Ship
-    {
-        return $this->ship;
-    }
+		$this->ship = $ship;
 
-    public function setShip(Ship $ship): self
-    {
-        // set the owning side of the relation if necessary
-        if ($ship->getPurchase() !== $this) {
-            $ship->setPurchase($this);
-        }
+		return $this;
+	}
 
-        $this->ship = $ship;
+	public function getInvoice(): ?Invoice
+	{
+		return $this->invoice;
+	}
 
-        return $this;
-    }
+	public function setInvoice(Invoice $invoice): self
+	{
+		// set the owning side of the relation if necessary
+		if ($invoice->getPurchase() !== $this) {
+			$invoice->setPurchase($this);
+		}
 
-    public function getInvoice(): ?Invoice
-    {
-        return $this->invoice;
-    }
+		$this->invoice = $invoice;
 
-    public function setInvoice(Invoice $invoice): self
-    {
-        // set the owning side of the relation if necessary
-        if ($invoice->getPurchase() !== $this) {
-            $invoice->setPurchase($this);
-        }
+		return $this;
+	}
 
-        $this->invoice = $invoice;
+	public function getMore(): ?string
+	{
+		return $this->more;
+	}
 
-        return $this;
-    }
+	public function setMore(?string $more): self
+	{
+		$this->more = $more;
 
-    public function getMore(): ?string
-    {
-        return $this->more;
-    }
-
-    public function setMore(?string $more): self
-    {
-        $this->more = $more;
-
-        return $this;
-    }
+		return $this;
+	}
 
 	public function getEstimatedMakeAt(): ?\DateTime
 	{
@@ -229,9 +223,19 @@ class Purchase
 		}
 	}
 
+	public function addPurchaseProduct(PurchaseProduct $product): self
+	{
+		if (!$this->purchaseProducts->contains($product)) {
+			$this->purchaseProducts->add($product);
+			$product->setPurchase($this);
+		}
+
+		return $this;
+	}
+
 	public function getTotal(): int
 	{
-		return array_reduce($this->purchaseProducts->toArray(), function($accumulator, PurchaseProduct $item) {
+		return array_reduce($this->purchaseProducts->toArray(), function ($accumulator, PurchaseProduct $item) {
 			return $accumulator + $item->getTotal();
 		}, 0);
 	}
@@ -276,5 +280,17 @@ class Purchase
 			4 => "secondary",
 			default => "",
 		};
+	}
+
+	public function getPromotion(): ?Promotion
+	{
+		return $this->promotion;
+	}
+
+	public function setPromotion(?Promotion $promotion): self
+	{
+		$this->promotion = $promotion;
+
+		return $this;
 	}
 }

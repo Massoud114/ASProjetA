@@ -1,0 +1,53 @@
+{% set editLink = path(prefix ~ '_edit', {id: promotion.id}) %}
+{% set deleteLink = path(prefix ~ '_delete', {id: promotion.id}) %}
+
+<tr class="nk-tb-item">
+	<td class="nk-tb-col">
+		<a href="" class="project-title">
+			<div class="user-avatar sq bg-purple"><span>DD</span></div>
+			<div class="project-info">
+				<h6 class="title">{{ promotion.promoCode }}</h6>
+			</div>
+		</a>
+	</td>
+	<td class="nk-tb-col">
+		<span>{{ promotion.endAt }}</span>
+	</td>
+	<td class="nk-tb-col">
+		<span>{{ promotion.percentage }} %</span>
+	</td>
+	<td class="nk-tb-col">
+		{% set now = "now"|date("Y-m-d") %}
+		{% if promotion.startAt > now %}
+			<span>Coming Soon</span>
+		{% elseif promotion.endAt < now %}
+			<span>Expired</span>
+		{% else %}
+			<span>Active</span>
+		{% endif %}
+	</td>
+	<td class="nk-tb-col nk-tb-col-tools">
+		<ul class="nk-tb-actions gx-1">
+			<li>
+				<div class="dropdown">
+					<a href="#" class="dropdown-toggle btn btn-sm btn-icon btn-trigger" data-bs-toggle="dropdown"><em class="icon ni ni-more-h"></em></a>
+					<div class="dropdown-menu dropdown-menu-end">
+						<ul class="link-list-opt no-bdr">
+							<li><a href="#">{{ icon('eye') }}<span>View Project</span></a></li>
+							<li><a href="{{ editLink }}">{{ icon('edit') }}<span>Edit Project</span></a></li>
+							<li>
+								<form action="{{ deleteLink }}" class="d-inline">
+									<input type="hidden" name="token" value="{{ csrf_token('delete-promotion') }}"/>
+									<input type="hidden" name="method" value="DELETE">
+									<button type="submit">
+										{{ icon('trash') }}<span>{{ 'delete'|trans }}</span>
+									</button>
+								</form>
+							</li>
+						</ul>
+					</div>
+				</div>
+			</li>
+		</ul>
+	</td>
+</tr>

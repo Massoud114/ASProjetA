@@ -1,0 +1,44 @@
+<table class="nk-tb-list is-separate nk-tb-ulist">
+	<thead>
+		<tr class="nk-tb-item nk-tb-head">
+			<th class="nk-tb-col">
+				<span class="sub-text">Code Promo</span>
+			</th>
+			<th class="nk-tb-col">
+				<span class="sub-text{{ sorted(rows, 'row.endAt') ? ' focus' : '' }}">{{ sort_by(rows, 'endDate'|trans, 'row.endAt') }}</span>
+			</th>
+			<th class="nk-tb-col">
+				<span class="sub-text{{ sorted(rows, 'row.percentage') ? ' focus' : '' }}">
+					{{ sort_by(rows, 'percentage'|trans, 'row.percentage') }}
+				</span>
+			</th>
+			<th class="nk-tb-col">
+				<span class="sub-text">Status</span>
+			</th>
+			<th class="nk-tb-col nk-tb-col-tools text-end">
+				<div class="dropdown">
+					<a href="#" class="disabled btn btn-xs btn-trigger btn-icon dropdown-toggle me-n1" data-bs-toggle="dropdown" data-offset="0,5"><em class="icon ni ni-more-h"></em></a>
+				</div>
+			</th>
+		</tr>
+	</thead>
+	<tbody>
+		{% for promotion in rows %}
+			{{ include('admin/promotion/_row.html.twig', { promotion: promotion }) }}
+		{% endfor %}
+	</tbody>
+</table>
+<div class="inner">
+	<div class="card-inner">
+		<div class="nk-block-between-md g-3">
+			<div class="g">
+				{{ paginate(rows) }}
+			</div>
+			<div class="g">
+				<div class="pagination-goto d-flex justify-content-center justify-content-md-start gx-3">
+					Nombre total d'éléments : {{ rows|length }}
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

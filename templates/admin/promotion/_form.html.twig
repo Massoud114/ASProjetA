@@ -1,0 +1,54 @@
+{{ form_start(form) }}
+	{% if form.vars.errors|length > 0 %}
+		<div class="alert alert-fill alert-danger alert-icon">
+			{{ icon('cross-circle') }} {{ 'form_contains_error' | trans }}
+		</div>
+	{% endif %}
+
+	<div class="row g-4">
+		<div class="col-lg-6 col-md-8 col-sm-12">
+			{{ form_row(form.image) }}
+		</div>
+	</div>
+
+	<div class="row g-4 mb-3">
+		<div class="col-lg-4 col-md-4 col-sm-6">
+			{{ form_row(form.private) }}
+		</div>
+	</div>
+
+	<div class="row g-4 mb-3">
+		<div class="col-lg-4 col-md-4 col-sm-6">
+			{{ form_row(form.startAt) }}
+		</div>
+		<div class="col-lg-4 col-md-4 col-sm-6">
+			{{ form_row(form.endAt) }}
+		</div>
+	</div>
+
+	<div class="row g-4 mb-3">
+		<div class="col-lg-4 col-md-4 col-sm-6">
+			{{ form_row(form.promoCode) }}
+		</div>
+	</div>
+
+	<div class="row g-4 mb-3">
+		<div class="col-lg-4 col-md-4 col-sm-6">
+			{{ form_row(form.percentage) }}
+		</div>
+	</div>
+
+	<div class="row g-4 mb-3">
+		<div class="col-lg-4 col-md-4 col-sm-6">
+			{{ form_row(form.products) }}
+		</div>
+	</div>
+
+	<div class="mt-4 text-center">
+		<div class="form-group">
+			<button type="submit" class="btn btn-lg btn-primary">{{ button_label|default('save') | trans }}</button>
+		</div>
+	</div>
+{{ form_end(form) }}
+
+

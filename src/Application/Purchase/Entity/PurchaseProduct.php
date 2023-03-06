@@ -2,11 +2,11 @@
 
 namespace App\Application\Purchase\Entity;
 
-use Doctrine\ORM\Mapping as ORM;
+use App\Application\Product\Entity\Color;
 use App\Application\Product\Product;
 use App\Application\Purchase\Purchase;
-use App\Application\Product\Entity\Color;
 use App\Application\Purchase\Repository\PurchaseProductRepository;
+use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: PurchaseProductRepository::class)]
 class PurchaseProduct
@@ -20,7 +20,7 @@ class PurchaseProduct
     #[ORM\JoinColumn(nullable: false)]
     private Purchase $purchase;
 
-    #[ORM\ManyToOne]
+    #[ORM\ManyToOne(inversedBy: 'purchaseProducts')]
     #[ORM\JoinColumn(nullable: false)]
     private Product $product;
 

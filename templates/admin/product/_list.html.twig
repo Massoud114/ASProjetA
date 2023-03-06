@@ -14,13 +14,22 @@
 					<div class="nk-tb-col{{ sorted(rows, 'row.name') ? ' focus' : '' }} text-center">
 						{{ sort_by(rows, 'Name'|trans, 'row.name') }}
 					</div>
+
 					<div class="nk-tb-col{{ sorted(rows, 'row.fixedPrice') ? ' focus' : '' }} text-center">
 						{{ sort_by(rows, 'fixed.price'|trans, 'row.fixedPrice') }}
 					</div>
-					<div class="nk-tb-col{{ sorted(rows, 'row.stockQuantity') ? ' focus' : '' }} text-center">
-						{{ sort_by(rows, 'Stock'|trans, 'row.stockQuantity') }}
+					<div class="nk-tb-col{{ sorted(rows, 'row.makingPrice') ? ' focus' : '' }} text-center">
+						{{ sort_by(rows, 'making.price'|trans, 'row.makingPrice') }}
 					</div>
-					<div class="nk-tb-col tb-col-md text-center">{{ icon('star', 'round', 'tb-asterisk') }}</div>
+					<div class="nk-tb-col text-center">
+						Sell Count
+					</div>
+					<div class="nk-tb-col text-center">
+						Stock
+					</div>
+					<div class="nk-tb-col text-center">
+						Estimation
+					</div>
 					<div class="nk-tb-col nk-tb-col-tools text-center">{{ 'actions'|trans }}</div>
 				</div>
 

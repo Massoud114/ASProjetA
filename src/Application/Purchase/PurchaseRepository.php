@@ -2,9 +2,9 @@
 
 namespace App\Application\Purchase;
 
+use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
-use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 
 /**
  * @extends ServiceEntityRepository<Purchase>
@@ -111,10 +111,6 @@ class PurchaseRepository extends ServiceEntityRepository
 		if ($status and in_array($status, array_values(Purchase::STATES))){
 			$query->andWhere('row.status = :status')
 				->setParameter('status', array_search($status, Purchase::STATES));
-		} else if ($status and $status === "confirmed"){
-			$query->andWhere('row.confirmed = 1');
-		} else if ($status and $status === "not_confirmed"){
-			$query->andWhere('row.status = 4');
 		}
 
 		return $query;

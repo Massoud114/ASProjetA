@@ -52,6 +52,12 @@
 					</li>
 				</ul>
 			</li>
+			<li class="nk-menu-item {{ menu_active('promotion') }}">
+				<a href="{{ path('admin_promotion_index') }}" class="nk-menu-link" title="{{ 'promotions'|trans }}">
+					<span class="nk-menu-icon">{{ icon('percent') }}</span>
+					<span class="nk-menu-text">{{ 'promotions'|trans }}</span>
+				</a>
+			</li>
 			<li class="nk-menu-item has-sub {{ menu_active('category') }}">
 				<a href="#" class="nk-menu-link nk-menu-toggle" title="">
 					<span class="nk-menu-icon">{{ icon('puzzle', 'fill') }}</span>

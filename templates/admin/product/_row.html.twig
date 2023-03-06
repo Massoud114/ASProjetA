@@ -66,30 +66,6 @@
 									<span>{{ 'remove'|trans }}</span>
 								</a>
 							</li>
-							{#<li>
-								<form
-										action="{{ deleteLink }}"
-										method="post"
-										class="delete-form"
-										id="delete-form-force#{{ product.id }}"
-										{{ stimulus_controller('submit-confirm', {
-											'title' : 'delete_warning_title'|trans,
-											'text' : 'delete_warning_text'|trans,
-											'icon' : 'warning',
-											'confirmButtonText' : 'delete.label'|trans,
-											'cancel' : 'cancel'|trans,
-											'asyncSubmit' : true
-										}) }}
-										{{ stimulus_action('submit-confirm', 'onSubmit') }}
-								>
-									<input type="hidden" name="token" value="{{ csrf_token('delete') }}"/>
-									<input type="hidden" name="force" value="true"/>
-									<button type="submit" class="btn p-0 w-100">
-										{{ icon('trash', null, 'text-danger') }}
-										<span>{{ 'forceRemove'|trans }}</span>
-									</button>
-								</form>
-							</li>#}
 						</ul>
 					</div>
 				</div>

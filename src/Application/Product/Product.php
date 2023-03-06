@@ -2,22 +2,24 @@
 
 namespace App\Application\Product;
 
-use ApiPlatform\Metadata\Get;
-use Doctrine\DBAL\Types\Types;
-use Doctrine\ORM\Mapping as ORM;
-use ApiPlatform\Metadata\Patch;
+use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Metadata\Delete;
+use ApiPlatform\Metadata\Get;
+use ApiPlatform\Metadata\Patch;
+use App\Application\Campaign\Promotion;
+use App\Application\Media\Image\Image;
+use App\Application\Product\Entity\Category;
+use App\Application\Purchase\Entity\PurchaseProduct;
 use App\Helper\Entity\MesurableTrait;
 use App\Helper\Entity\SluggableTrait;
 use App\Helper\Entity\TimestampTrait;
-use ApiPlatform\Metadata\ApiResource;
-use App\Application\Media\Image\Image;
-use Doctrine\Common\Collections\Collection;
-use App\Application\Product\Entity\Category;
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\DBAL\Types\Types;
+use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
-use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 #[ORM\Entity(repositoryClass: ProductRepository::class)]
 #[UniqueEntity(fields: ['name'], message: 'product.name.unique')]
@@ -154,10 +156,16 @@ class Product
 	#[Groups(['product:item:read', 'product:write'])]
 	private ?string $details = null;
 
+	#[ORM\OneToMany(mappedBy: 'product', targetEntity: PurchaseProduct::class, cascade: ['persist'], orphanRemoval: false)]
+	private Collection $purchaseProducts;
+
 	#[
 		ORM\ManyToMany(targetEntity: Category::class, inversedBy: 'products'),
 	]
 	private Collection $categories;
+
+	#[ORM\ManyToMany(targetEntity: Promotion::class, mappedBy: 'products')]
+	private Collection $promotions;
 
 	use MesurableTrait, SluggableTrait, TimestampTrait;
 
@@ -167,6 +175,7 @@ class Product
 		$this->updatedAt = new \DateTime();
 		$this->productImages = new ArrayCollection();
 		$this->categories = new ArrayCollection();
+		$this->promotions = new ArrayCollection();
 	}
 
 	public function getId(): ?int
@@ -290,17 +299,6 @@ class Product
 	{
 		$this->thumbnailUrl = $thumbnailUrl;
 
-		return $this;
-	}
-
-	public function getFixedPrice(): ?float
-	{
-		return $this->fixedPrice;
-	}
-
-	public function setFixedPrice(?float $fixedPrice): Product
-	{
-		$this->fixedPrice = $fixedPrice;
 		return $this;
 	}
 
@@ -436,17 +434,65 @@ class Product
 		return false;
 	}
 
-	public function getPrice(): ?float
-	{
-		// TODO: Check if product is promo
-		return $this->getFixedPrice();
-	}
-
 	public function hasColors()
 	{
 		// TODO: Implement hasColors() method.
 		return false;
 	}
 
+	public function sellCount(): int
+	{
+		return array_sum(array_map(function (PurchaseProduct $purchaseProduct) {
+			return $purchaseProduct->getQuantity();
+		}, $this->purchaseProducts->toArray()));
+	}
 
+	public function getEstimationAmount(): int
+	{
+		return $this->stockQuantity * $this->getPrice();
+	}
+
+	public function getPrice(): ?float
+	{
+		// TODO: Check if product is promo
+		return $this->getFixedPrice();
+	}
+
+	public function getFixedPrice(): ?float
+	{
+		return $this->fixedPrice;
+	}
+
+	public function setFixedPrice(?float $fixedPrice): Product
+	{
+		$this->fixedPrice = $fixedPrice;
+		return $this;
+	}
+
+	/**
+	 * @return Collection<int, Promotion>
+	 */
+	public function getPromotions(): Collection
+	{
+		return $this->promotions;
+	}
+
+	public function addPromotion(Promotion $promotion): self
+	{
+		if (!$this->promotions->contains($promotion)) {
+			$this->promotions->add($promotion);
+			$promotion->addProduct($this);
+		}
+
+		return $this;
+	}
+
+	public function removePromotion(Promotion $promotion): self
+	{
+		if ($this->promotions->removeElement($promotion)) {
+			$promotion->removeProduct($this);
+		}
+
+		return $this;
+	}
 }
